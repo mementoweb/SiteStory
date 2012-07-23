@@ -3,9 +3,8 @@
  *  mod_ta.c
  *  
  *
- *  Created by Dr. Lyudmila Balakireva on 6/15/09.
- *  Copyright (c) 2012, Los Alamos National Security, LLC All rights reserved.
- *  BSD open source software license. 
+ *  Created by Lyudmila Balakireva on 6/15/09.
+ *  Copyright 2009 LANL. All rights reserved.
  *
  */
 #include "httpd.h"
