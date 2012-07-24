@@ -1,0 +1,549 @@
+package gov.lanl.archive.resource;
+import gov.lanl.archive.ArchiveConfig;
+
+import gov.lanl.archive.Index;
+import gov.lanl.archive.Memento;
+
+import gov.lanl.archive.location.PairWriter;
+
+
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+
+import java.util.Date;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.TimeZone;
+import java.util.UUID;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.InflaterInputStream;
+import java.util.zip.ZipInputStream;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+
+import org.apache.commons.httpclient.ChunkedInputStream;
+
+/*
+@author Lyudmila Balakireva
+*/
+
+@Path("/put/{id:.*}")
+
+public class PutResource {
+	    private static final int _CR = 13;  
+	    private static final int _LF = 10; 
+	    static ThreadSafeSimpleDateFormat  hformatter;
+	    private static Index idx;
+	    private static List iplist;
+	    private String compress;
+	    private boolean chunked ;
+	    private String location;
+	    private String code ;
+	    private String verb;
+	    static @Context ServletConfig sc;
+	    static boolean contextinit = false;
+	    
+	  //  private static AbstractApplicationContext context;
+	    PairWriter wr = new PairWriter();
+	    static {
+	    
+	         //TimeZone tz = TimeZone.getTimeZone("UTC");
+	    	    System.out.println("put service init");
+			    idx = ArchiveConfig.getMetadataIndex();
+			    //ServletContext   scontext = sc.getServletContext();
+			     // if (scontext!=null) {
+			   // System.out.println("just to access srvlet context" + sc.getServletName());
+			    // sc.getServletContext().setAttribute("idx", idx);
+			   // sc.setAttribute("idx", idx);
+			      //}
+			    MyServletContextListener cl= MyServletContextListener.getInstance();
+			    cl.setAttribute("idx", idx);
+	            hformatter = new ThreadSafeSimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");	     
+	            TimeZone tzo = TimeZone.getTimeZone("GMT");
+	            hformatter.setTimeZone(tzo);
+	           // idx = ArchiveConfig.getMetadataIndex();
+	            iplist = ArchiveConfig.iplist;
+	     }
+	
+	    /*public 	PutResource( @Context ServletContext sc )
+	    {
+	       this.sc = sc;
+	       sc.setAttribute("idx", idx);
+	    }
+	   */
+	    
+	    
+	 /*
+	    @PostConstruct 
+		   public void postConstruct(){
+	    	//if (!contextinit) {
+	    	// ServletContext   scontext = sc.getServletContext();
+		      //if (scontext!=null) {
+	    	//	System.out.println ("postconstruct:");
+	    		//sc.getServletContext().setAttribute("idx", idx);
+	    		
+		      //}
+		      //contextinit =true;
+	    	//}
+	    }
+	    
+	   */ 
+		/*   @PreDestroy
+	       public void preDestroy() {
+			   System.out.println("closing index");
+			   ArchiveConfig.shutdown();
+			  
+	       }
+		  */ 
+		/*   
+		   @PostConstruct 
+		   public void postConstruct(){
+			      if  (sc.getServletContext().getInitParameter("ta.storage.basedir")!=null) {
+	    	    System.setProperty( "ta.storage.basedir", sc.getServletContext().getInitParameter("ta.storage.basedir") );
+			    System.out.println("dir called"+ sc.getServletContext().getInitParameter("ta.storage.basedir"));   
+	    	    }
+			      idx = ArchiveConfig.getMetadataIndex();
+			      System.out.println("postconstruct called");
+			//  System.setProperty( "ta.storage.basedir", sc.getServletContext().getInitParameter("ta.storage.basedir") );
+			  //  System.out.println("dir called"+ sc.getServletContext().getInitParameter("ta.storage.basedir"));   
+			     //  idx = ArchiveConfig.getMetadataIndex();
+			       iplist = ArchiveConfig.iplist;
+			       
+		   }
+		  */ 
+	    
+	@PUT
+	public  synchronized Response put_data (InputStream input, @PathParam("id") String url,@Context HttpServletRequest req) {
+				
+		   try {
+			   		System.out.println("from put id:" +url);
+			   		chunked = false;
+			   		compress="";
+			   		
+			   		code = "";
+			   		verb="";
+			   		
+			   		String ra = req.getRemoteAddr();
+			   		//System.out.println("remote adress:"+ra);
+			   		
+			   		 if (iplist.size()!=0) { //stop list not set
+			   			 
+			   			if (!iplist.contains(ra)) {
+			   				System.out.println("unathorized attempt to put:"+ra);
+			   				return Response.status(403).build();		
+			   			}
+			   		 }
+			   		 else {
+			   			System.out.println("ip list not configured");
+			   		 }
+			   		 
+			   	
+			   		
+			   		
+			   		
+			Memento m = new Memento();
+			
+			
+			m.setUrl(url);
+			m.setReqUrl(url);
+			
+			setClientInfo(cutHeaders(input),  m);
+			setServerInfo(cutHeaders (input), m);
+			
+			System.out.println("Code:"+code);
+			
+			if (!verb.equals("GET")) {
+				System.out.println("attempt to record :"+ code );
+				return Response.status(403).build();
+			}
+			
+			
+			
+			if (code.equals("302") || code.equals("303")) 
+			{
+                
+                //calculation of message digest over location 
+				System.out.println ( "recording 302"+ code);
+                           byte[] defaultBytes = location.getBytes();
+                        
+                                     MessageDigest algorithm = MessageDigest.getInstance("SHA1");
+                                                   algorithm.reset();
+                                                   algorithm.update(defaultBytes);
+                                            byte messageDigest[] = algorithm.digest();
+                                            String rdigest =  new String (Base32.encode( messageDigest));
+                                                    m.setDigest(rdigest);
+                                
+              
+                                        m.setLength(0);
+                                        String ruuid = UUID.randomUUID().toString();
+                                        m.setDupId(ruuid);
+                                        m.setCode(code);
+                                       idx.add(m);
+                
+               
+                 InputStream ris = new ByteArrayInputStream(m.getReqheaders().getBytes("UTF-8"));
+                 wr.write(ruuid,ris,"req");
+                 
+                 InputStream rin = new ByteArrayInputStream(m.getResheaders().getBytes("UTF-8"));
+                 wr.write(ruuid,rin,"res");
+                 if (m.getIp()!=null) {
+                 InputStream rinp = new ByteArrayInputStream(m.getIp().getBytes("UTF-8"));
+                 wr.write(ruuid, rinp, "ip");
+                 }
+                   return Response.status(204).build();
+              }
+
+			if (!code.equals("200")) {
+				System.out.println("attempt to put http code:"+ code);
+				return Response.status(403).build();
+   			 
+   		    }
+			
+			
+			MessageDigest hash = MessageDigest.getInstance("SHA1");
+			
+			 DigestInputStream digestInputStream = null;
+			
+			 InputStream inc = null;
+			 InputStream inz = null; 
+		      
+			 //stream not arriving chunked even if header set "chunked"
+			// if (chunked) {
+		       	//System.out.println("chunked");
+		    	//	 inc = new ChunkedInputStream(new BufferedInputStream(input));
+		    		 
+		    		     if (compress.equals("gzip")||compress.equals("x-gzip")) {
+		    		    	 //overwrite compression
+		    		    	 m.setCompress("");
+		    			  // System.out.println("compressed and chunked");
+		    			   inz = new BufferedInputStream(new GZIPInputStream(input));
+		    			  // inz = new GZIPInputStream(input);
+		    			   digestInputStream = new DigestInputStream(inz, hash);
+		    			 
+		    		       }
+		    		     else if (compress.equals("compress")||compress.equals("x-compress")) {
+		    		    	 m.setCompress("");
+		    		    	  inz = new BufferedInputStream(new ZipInputStream(input));
+		    		    	  digestInputStream = new DigestInputStream(inz, hash);
+		    		     }
+		    		     else if (compress.equals("deflate")) {
+		    		    	 m.setCompress("");
+		    		    	 System.out.println("compressed and chunked");
+		    		    	 inz = new BufferedInputStream (new InflaterInputStream(input));
+		    		    	 digestInputStream = new DigestInputStream(inz, hash);
+		    		    	 
+		    		     }
+		    		      else {
+		    		    	  m.setCompress(compress); // if it still "" fine too
+		    		    	  //not encoded but If compress!=null I need to save this content encording in db to serve correct one.
+		    		    	  //chunked
+		    		    	  //System.out.println("chunked");
+		    		    	  
+		    		       digestInputStream = new DigestInputStream(input, hash);
+		    		       }
+		        	
+		    		// inc.close();
+		        //}
+		    		     /*
+		        else {
+		        	       if (compress.equals("gzip")) {
+		        	    	   System.out.println("compressed");
+		    			     //compressed
+		    			      digestInputStream = new DigestInputStream( new GZIPInputStream(new BufferedInputStream(input)), hash);
+		    		         }
+		        	       
+		        	       else if (compress.equals("deflate")) {
+		        	    	   System.out.println("compressed");
+		        	    	   digestInputStream = new DigestInputStream( new InflaterInputStream(new BufferedInputStream(input)), hash);
+		        	       }
+		        	       
+		    		        else {
+		    		        	 System.out.println("not compressed and not chunked");
+		    		        	//not chunked and not compressed
+		    		          digestInputStream = new DigestInputStream(input, hash);
+		    		          }
+		        	 
+		        	
+		        	
+		        }
+			 
+			
+			 */
+			/* 
+			  if (compress.equals("gzip")||compress.equals("x-compress")||compress.equals("x-gzip")) {
+			    	 InputStream in = new GZIPInputStream(input);
+			    	
+			    	   digestInputStream = new DigestInputStream(in, hash);
+			    	 
+			      }
+			      else {
+			    	  if (chunked) {
+			    		  //just chunked
+			    		System.out.println("chunked");
+			    		InputStream in = new ChunkedInputStream(input);
+			    		digestInputStream = new DigestInputStream(in, hash);
+			    	  }
+			    	  else {
+			    		  //not gzipped not chunked
+			    	  digestInputStream = new DigestInputStream(input, hash);
+			    	  }
+			      }
+			*/
+			
+				// DigestInputStream digestInputStream = new DigestInputStream(input, hash);
+				 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+				 int ch;
+				    while ((ch = digestInputStream.read()) >= 0) {
+				      byteArrayOutputStream.write(ch);
+				    }
+				 
+				    digestInputStream.close();
+				  //  if (inc!=null) inc.close();
+				   // if (inz!=null) inz.close();
+				    
+			   String digest =  new String (Base32.encode(digestInputStream.getMessageDigest().digest()));
+			   System.out.println("digest:"+digest);
+			   m.setDigest(digest);
+			   byte[] newInput = byteArrayOutputStream.toByteArray();
+			   int length = newInput.length;
+			   m.setLength(length);
+			   System.out.println("length:" + length);
+			   UUID id = UUID.randomUUID();
+			   m.setDupId(id.toString());
+			   
+			   boolean check = idx.add(m);
+			   
+			   
+			   if (check) {
+				   // new record
+				   System.out.println("new record");
+				   String uuid = m.getId();
+				   System.out.println("uuid"+uuid);
+				   ByteArrayInputStream bis = new ByteArrayInputStream(newInput);
+				   wr.write(uuid, bis,"body");
+				   InputStream is = new ByteArrayInputStream(m.getReqheaders().getBytes("UTF-8"));
+				   wr.write(uuid,is,"req");
+				   
+				   InputStream in = new ByteArrayInputStream(m.getResheaders().getBytes("UTF-8"));
+				   wr.write(uuid,in,"res");
+				   if (m.getIp()!=null) {
+				   InputStream inp = new ByteArrayInputStream(m.getIp().getBytes("UTF-8"));
+				   wr.write(uuid, inp, "ip");
+				   }
+			   }
+			   else {
+				   // old record record only headers
+				   String uuid = m.getDupId();
+				   InputStream is = new ByteArrayInputStream(m.getReqheaders().getBytes("UTF-8"));
+				   wr.write(uuid,is,"req");
+				   
+				   InputStream in = new ByteArrayInputStream(m.getResheaders().getBytes("UTF-8"));
+				   wr.write(uuid,in,"res");
+				   if (m.getIp()!=null) {
+				   InputStream inp = new ByteArrayInputStream(m.getIp().getBytes("UTF-8"));
+				   wr.write(uuid, inp, "ip");
+				
+				   }
+				   
+			   }
+			   
+	         
+			   
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		return Response.status(204).build();
+		
+		
+	}
+
+	
+ public  synchronized void   setClientInfo(String headers, Memento m) {
+	 
+	 System.out.println("clientheaders:"+headers);
+	 
+	   String ip="";
+       StringBuffer sb = new StringBuffer();
+       StringTokenizer stc = new StringTokenizer(headers,"\r\n");
+   while (stc.hasMoreTokens()) {
+           String linec =  stc.nextToken();
+           if (linec.indexOf(":")>0) {
+           String name = linec.substring(0,linec.indexOf(":"));
+                       if (name.equals("X-Client-IP")) {
+                    m.setIp(linec.substring(linec.indexOf(":")+1));    
+                }
+                       else {
+                           sb.append(linec);
+                           sb.append("\r\n");
+                       }
+           }
+           else {
+        	   //need to exclude HEAD
+        	   StringTokenizer st = new StringTokenizer(linec," ");
+        	   verb =  st.nextToken();
+        	    
+           }
+           
+   }
+         String cheaders = sb.toString();
+         long lh = cheaders.length();
+         m.setReqheaderslength(lh);
+         m.setReqheaders(cheaders);
+	   
+	 
+	 
+ }
+	
+     public synchronized void   setServerInfo(String headers, Memento m) {
+    	 System.out.println("serverheaders:"+headers);
+    	 long lh= headers.length();
+    	  m.setResheaders(headers);
+    	  m.setResheaderslength(lh);
+    	  StringTokenizer st = new StringTokenizer(headers,"\r\n");
+    	  
+	      while (st.hasMoreTokens()) {
+	              String line =  st.nextToken();
+	            
+	              if (line.indexOf(":")>0) {
+	              String name = line.substring(0,line.indexOf(":"));
+	                         if (name.equals("Date")) {
+	                           String  datefromheaders=(line.substring(line.indexOf(":")+1)).trim();
+	                           System.out.println("datefrom headers"+datefromheaders);
+	                           Date d = null;
+							           try {
+								             d = hformatter.parse(datefromheaders);
+								            
+								             m.setAccessdate(d);
+								            // System.out.println("year"+d.getYear());
+				                             String date =  hformatter.format(m.getAccessdate());
+				                             System.out.println("after try"+date);
+							                } catch (ParseException e) {
+								            // TODO Auto-generated catch block
+								             e.printStackTrace();
+							                }
+							               
+	                           
+	                         }
+	                         if (name.equals("Content-Type")) {
+	                           String  mimetype=line.substring(line.indexOf(":")+1);
+	                             m.setMimetype(mimetype);
+	                         }
+	                         
+	                         if (name.equals("Content-Length")) {
+	                            String clength=(line.substring(line.indexOf(":")+1)).trim();
+	                            System.out.println("clength"+clength+"/");
+	                            long l = Long.parseLong(clength);
+	                              m.setLength(l);
+	                         }
+	                         
+	                         if (name.equals("Transfer-Encoding")) {
+	                        	  chunked = true;
+		                           
+		                         }
+	                         
+	                         if (name.equals("Content-Encoding")) {
+	                        	  compress = (line.substring(line.indexOf(":")+1)).trim();
+	                        	
+	                        		
+	                        	
+	                         }
+	                         if (name.equals("Content-Language")) {
+	                        	  m.setLang ((line.substring(line.indexOf(":")+1)).trim());
+	                        		                        		
+	                        	
+	                         }
+	                         if (name.equals("Location")) {
+                                 location= ((line.substring(line.indexOf(":")+1)).trim());
+                                                                               
+                               
+                             }
+
+	                         
+	                         /*
+	                         if (name.equals("Last-Modified")) {
+	                           String  last_modified=(line.substring(line.indexOf(":")+1)).trim();
+	                           
+	                             try {
+	                            	 System.out.println ("lastmodified"+last_modified);
+	                            	 Date lm = hformatter.parse(last_modified);
+									         m.setLastmodified(lm);
+								} catch (ParseException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+	                         }
+	                         */
+	                         
+	              }
+	              else {
+	              System.out.println("line"+line);
+	            	  code = line.substring(9,12).trim();
+	              }
+	        }	 
+     }
+	
+	 public String cutHeaders (InputStream in)  {
+		 StringBuffer sb = new StringBuffer("");
+		  try {
+		   int _ch = -1;  
+		   boolean endofheaders =false;
+		      int pos=0;
+		      while (!endofheaders) {
+			  
+			  
+				_ch = in.read();
+			 
+			 // System.out.println(_ch);
+			  //if  (_ch != _CR && _ch != _LF)  
+			    //  {  
+			         sb.append((char) _ch);  
+			        
+			      //} 
+			if (sb.length()>5) {
+			  if (sb.charAt(pos-3) == _CR && sb.charAt(pos-2)==_LF &&sb.charAt(pos-1) == _CR&&sb.charAt(pos)==_LF) {
+			      endofheaders = true; 
+			  }
+			} 
+			 pos++;
+		      }
+		  
+		  
+	     } catch (IOException e) {
+			// TODO Auto-generated catch block
+	    	 System.out.println("input stream"+sb.toString());
+			 e.printStackTrace();
+			 throw new RuntimeException(e);
+		} 
+		     // System.out.println("headers"+sb.toString());
+		      return sb.toString();
+	   }
+	   
+	
+	
+	
+}

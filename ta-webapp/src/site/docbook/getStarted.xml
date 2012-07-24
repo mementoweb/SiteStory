@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD Simplified DocBook XML V1.0//EN" "http://www.oasis-open.org/docbook/xml/simple/1.0/sdocbook.dtd">
+<article id="ta_GettStartedGuide">
+  <title> ResourceDepot Transactional Web Archive Getting Started Guide</title>
+
+ <articleinfo>
+    <legalnotice>
+     <para>Unless required by applicable law or agreed to in writing,
+      software distributed under the License is distributed on an "AS IS"
+      BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied. See the License for the specific language governing permissions
+      and limitations under the License.</para>
+
+    </legalnotice>
+
+    <abstract>
+      <para>This guide contains detailed information about adding transactional archiving to your content server
+      with mod_ta  filter and  ResourceDepot server. It discusses the basic
+      operations ResourceDepot supports, and how these can be used to navigate to the past with memento protocol.
+      </para>
+    </abstract>
+ </articleinfo>
+<section id="ch_GettingStarted">
+    <title>Getting Started: Adding Transactional Archiving to your Apache  Web Server. </title>
+
+    <para>This document contains information to get you started quickly with
+    ResourceDepot Transactional Archive. It is aimed primarily at developers hoping to try it out, and
+    contains simple installation instructions of mod_ta filter extension to your Apache server and  a single ResourceDepot server, and
+    few commands to verify that it is running. There are a few sections regarding long term archiving set up involving data distribution between  ResourceDepot and IA Wayback  archives. Finally, as a convenience, for those who wants to check it out with minimal efforts, a cloud base TheResorceDepot can be used with only requerement to install mod_ta filter at your Apache server  see  <ulink  url="http://www.theresourcedepot.com/overview/">TheResourceDepot Guide</ulink>.</para>
+
+    <section id="sc_Prerequisites">
+        <title>Pre-requisites</title>
+       <section id="sc_supportedPlatforms">
+        <title>Supported Platforms</title>
+         <itemizedlist>
+          <listitem>
+            <para>GNU/Linux is supported as a development and production
+              platform for both mod_ta and ResourceDepot.</para>
+          </listitem>
+               <listitem>
+               <para> all other platforms has not been tested, if  <ulink url ="getStarted.html#sc_requiredSoftware"> required software </ulink> runs on your platform, then it is possible that   mod_ta and ResourceDepot will run too.</para>
+	 </listitem>
+           </itemizedlist>
+      </section>
+       <section id="sc_requiredSoftware">
+        <title>Required Software </title>
+          <itemizedlist>
+       <listitem>
+       <para>mod_ta requires the Apache Web Server, version 2.2 or higher, to be the primary web server that is serving the content to be archived. In addition to that  Apache Extension Tool (apxs) needs to be installed.<ulink url="http://httpd.apache.org/">Apache website</ulink>, has detailed instructions on how to install both the web server and the extension tool.  </para>
+     </listitem>
+       <listitem>
+      <para>ResourceDepot runs in Java, version 1.6  or greater (JDK 6 or greater). It runs as application under Tomcat 6 or greater </para>
+       </listitem>
+	 </itemizedlist> 
+ </section>
+    </section>
+     <section id="sc_Download">
+      <title>Download</title>
+      <para>To get a Transaction Web Archive distribution, download a recent
+        <ulink url="http://somehost/releases.html">
+          stable</ulink> release from one of the Apache Download
+        Mirrors.</para>
+       </section>
+
+        <section id="sc_InstallingMod_ta">
+        <title>Installation of mod_ta</title>
+       <para>  Pushing data from your Apache webserver to the ResourceDepot is done by installing special filter to the Apache we call mod_ta.  
+	<ulink url="http://www.theresourcedepot.com/overview/mod_ta.xhtml">
+          More info on Apache filters and mod_ta can be found here.</ulink> The hands on example of mod_ta.c installation may be found here: for fedora core <ulink url ="http://www.theresourcedepot.com/overview/How_to_install_mod_ta_on_Fedora_Core_Linux.xhtml">  fedora core linux</ulink> and <ulink url="http://www.theresourcedepot.com/overview/ubuntu_mod_ta.xhtml">ubuntu</ulink> linux.
+  Installation of  the mod_ta filter consist of execution of  the following command:<emphasis role="bold">sudo /usr/sbin/apxs -c -i –a mod_ta.c </emphasis>  and editing Apache configuration file.  Add the following lines to the apache configuration file: </para>
+<programlisting><![CDATA[ <IfModule ta_module>
+    EnableArchiving On
+    ArchiveHost www.myarchivename.com
+    ArchivePort 80
+    ArchivePath /[appname]/put/
+    EnableIP On  
+    Excluded /search /test 
+ <IfModule>
+]]>
+</programlisting>
+        <para> Here are the meanings                                                                                                                    
+      for each of the fields:       
+       </para>
+
+ <variablelist>
+ <varlistentry>
+          <term><emphasis role="bold">EnableArchiving</emphasis></term>
+
+          <listitem>
+            <para>On/Off toggles transactional archiving on or off.   </para>
+          </listitem>
+ </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold">ArchiveHost</emphasis></term>
+
+          <listitem>
+            <para>the host name of the transactional archive.  </para>
+          </listitem>
+        </varlistentry>
+         <varlistentry>
+          <term><emphasis role="bold">ArchivePort</emphasis></term>
+
+          <listitem>
+            <para>the port number of the transactional archive.  </para>
+          </listitem>
+	 </varlistentry>
+            <varlistentry>
+          <term><emphasis role="bold">ArchivePath</emphasis></term>
+
+          <listitem>
+            <para> the path to the put interface of archive,since the put interface of transactional archive constructed as http://[archivehost]:[port]/[appname]/put   </para>
+          </listitem>
+	    </varlistentry>
+          <varlistentry>
+          <term><emphasis role="bold">EnableIP</emphasis></term>
+
+          <listitem>
+            <para> On/Off enables or disables recording of client’s request IP address   </para>
+          </listitem>
+	  </varlistentry>
+            <varlistentry>
+          <term><emphasis role="bold">Excluded</emphasis></term>
+          <listitem>
+            <para> list of directories excluded from archiving. Optional parameter. For example if you want to exclude http://mycontenthost/search from archiving, specify  as  Excluded /search.
+ Please note, that all content of the listed directories, including their child directories will be excluded.  </para>
+          </listitem>
+	    </varlistentry>
+          </variablelist>
+<para>Please note, that only HTTP GET requests are archived with Response codes 200,302,303 </para>
+	</section>
+           <section id="sc_InstallingUnderTomcat">
+            <title>Installation of ResourceDepot under Tomcat </title>
+            <para>
+                  Setting up a ResourceDepot server under Tomcat is
+                  straightforward. The server is contained in a single WAR file,
+                  so installation consists of editing  a configuration file.
+             </para>
+            <para>
+                 Ones you copied WAR file into [TOMCAT-HOME]/webapps directory, you can find ta.properties file
+                 in [TOMCAT-HOME]/webapps/[YOURAPP]/WEB-INF/classes directory.  </para>
+<programlisting>                 
+#rest.min.grizzly.threads=7
+#rest.max.grizzly.threads=128
+#warcfiles.unload.dir=/mnt/backup/ta
+#ta.warcwriterpool.maxwait=20000
+ta.warcwriterpool.maxactive=3
+ta.index=gov.lanl.archive.index.bdb.IndexImplB
+#ta.storage.basedir=/smnt/ttt_data3/ta
+ta.storage.basedir=/mnt/backup/ta/db/000010
+#ta.index.basedir=/home/ludab/bdbindex
+#put.ip.1=204.121.6.37
+#put.ip.2=209.131.41.49
+</programlisting>
+            <para>
+             Change the
+      value of <emphasis role="bold">ta.storage.basedir</emphasis> to specify an
+      existing (empty to start with) directory.  Here are the meanings
+      for each of the fields:</para>
+                 <variablelist>
+        <varlistentry>
+          <term><emphasis role="bold">ta.storage.basedir</emphasis></term>
+
+          <listitem>
+            <para>This is directory for the storage of HTTP response stream files. By default Berkeley db indexes will be created here as well unless ta.index.basedir specifyed. </para>
+          </listitem>
+        </varlistentry>
+		 </variablelist>
+
+      <variablelist>
+        <varlistentry>
+          <term><emphasis role="bold">ta.index.basedir</emphasis></term>
+
+          <listitem>
+            <para>the location to store Berkeley db indexes, the transaction log of every page access of the content Apache server.</para>
+          </listitem>
+        </varlistentry>
+            <varlistentry>
+          <term><emphasis role="bold">warcfiles.unload.dir</emphasis></term>
+
+          <listitem>
+            <para>the directory to unload data in WARC format to migrate to Wayback archive </para>
+          </listitem>
+	    </varlistentry>
+          <varlistentry>
+          <term><emphasis role="bold">put.ip.1</emphasis></term>
+
+          <listitem>
+            <para>IP address of the Apache  content server, to restrict any other servers to put content to your archive. List of IPs can be specifyed if needed. </para>
+          </listitem>
+          </varlistentry>
+           <varlistentry>
+          <term><emphasis role="bold">ta.index</emphasis></term>
+
+          <listitem>
+            <para>Class file of implementation of index store. Curently only one implementation exist based on Berkeley Db. </para>
+          </listitem>
+	   </varlistentry>
+          <varlistentry>
+             <term><emphasis role="bold">ta.warcwriterpool.maxactive</emphasis></term>
+
+          <listitem>
+            <para>Parameter for WarcWriter of InternetArchive. Specify how many parallel WARCWriters to run  </para>
+          </listitem>
+      </varlistentry>
+          <varlistentry>
+             <term><emphasis role="bold">ta.warcwriterpool.maxwait</emphasis></term>
+
+          <listitem>
+            <para>Parameter for WarcWriter of InternetArchive. Specify how long to wait on  WARCWriter from the pool  of  WARWriters  </para>
+          </listitem>
+	  </varlistentry>
+           <varlistentry>
+             <term><emphasis role="bold">rest.min.grizzly.threads</emphasis></term>
+
+          <listitem>
+            <para>Minimum threads number for standalone installation as grizzly server. Not used under Tomcat installation</para>
+          </listitem>
+ </varlistentry>    
+              <varlistentry>
+             <term><emphasis role="bold">rest.max.grizzly.threads</emphasis></term>
+
+          <listitem>
+            <para>Maximum threads number for standalone installation as grizzly server. Not used under Tomcat installation</para>
+          </listitem>
+	      </varlistentry>
+       </variablelist>
+        <para> Reboot Tomcat server. You can access some page of you content Apache server and look in to ResourceDepot Tomcat logs to check if PUT service is working. Also you can check that directories structure has been created at ta.storage.basedir </para>
+<programlisting>                                                                                                                                                                          
+[luda@host db]$ pwd                                                                                                                                                                       
+/mnt/backup/ta/db/000010                                                                                                                                                                  
+[luda@host 000010]$ ls                                                                                                                                                                    
+bdbindex  storage                                                                                                                                                                         
+[luda@host 000010]$ cd bdbindex                                                                                                                                                           
+[luda@host bdbindex]$ ls                                                                                                                                                                  
+00000005.jdb  00000006.jdb  je.info.0  je.info.0.1  je.info.0.lck  je.lck  je.properties                                                                                                  
+[luda@host bdbindex]$ cd /mnt/backup/ta/db/000010/storage                                                                                                                                 
+[luda@host storage]$ ls                                                                                                                                                                   
+00  06  0c  12  18  1e  24  2a  30  36  3c  42  48  4e  54  5a  60  66  6c  72  78  7e  84  8a  90  96  9c  a2  a8  ae  b4  ba  c0  c6  cc  d2  d8  de  e4  ea  f0  f6  fc                
+01  07  0d  13  19  1f  25  2b  31  37  3d  43  49  4f  55  5b  61  67  6d  73  79  7f  85  8b  91  97  9d  a3  a9  af  b5  bb  c1  c7  cd  d3  d9  df  e5  eb  f1  f7  fd                
+02  08  0e  14  1a  20  26  2c  32  38  3e  44  4a  50  56  5c  62  68  6e  74  7a  80  86  8c  92  98  9e  a4  aa  b0  b6  bc  c2  c8  ce  d4  da  e0  e6  ec  f2  f8  fe                
+03  09  0f  15  1b  21  27  2d  33  39  3f  45  4b  51  57  5d  63  69  6f  75  7b  81  87  8d  93  99  9f  a5  ab  b1  b7  bd  c3  c9  cf  d5  db  e1  e7  ed  f3  f9  ff                
+04  0a  10  16  1c  22  28  2e  34  3a  40  46  4c  52  58  5e  64  6a  70  76  7c  82  88  8e  94  9a  a0  a6  ac  b2  b8  be  c4  ca  d0  d6  dc  e2  e8  ee  f4  fa                    
+05  0b  11  17  1d  23  29  2f  35  3b  41  47  4d  53  59  5f  65  6b  71  77  7d  83  89  8f  95  9b  a1  a7  ad  b3  b9  bf  c5  cb  d1  d7  dd  e3  e9  ef  f5  fb                    
+[luda@host storage]$ cd 00                                                                                                                                                                
+[luda@host 00]$ ls                                                                                                                                                                        
+01  0c  12  17  1d  25  2d  35  42  49  51  58  5e  62  66  74  7a  84  88  8c  91  98  9e  a2  ad  b1  b7  be  c3  c9  cf  d3  d8  e2  e7  f0  f9                                        
+04  0d  13  1a  1e  26  30  37  45  4c  53  5b  5f  64  67  75  7e  85  8a  8d  95  9a  a0  a9  ae  b4  ba  c1  c4  ca  d1  d5  dc  e4  e9  f2  fa                                        
+05  0e  14  1c  21  2b  31  3b  48  4f  57  5c  60  65  69  76  81  87  8b  8f  97  9d  a1  aa  af  b5  bc  c2  c7  ce  d2  d7  e1  e5  ed  f3  fc                                        
+[luda@host]$ cd 01                                                                                                                                                                        
+[luda@host]$ ls                                                                                                                                                                           
+3da4-350d-4896-8fa8-9772c63a914d.body                                                                                                                                                     
+</programlisting>
+
+          </section>
+ <section id="Sc_Memnto">
+       <title>Memento Interface to ResourceDepot</title>
+  <para> ResourceDepot provides REST - style services to access and manage content at ResourceDepot. 
+  To let Memento clients, access archived content in ResourceDepot, 
+  the following services are provided. Please refer to the <ulink url='http://mementoweb.org'>Memento protocol</ulink> for additional information.</para>
+ <variablelist>
+ <varlistentry>
+ <term><emphasis role="bold">TimeGate</emphasis></term>
+ <listitem><para>To access the TimeGate at ResourceDepot for the resource with URI [original_url] that is served by the Content Server:</para>
+     <programlisting>curl -D headers.txt -H Accept-Datetime:'Wed, 29 Sep 2008 12:00:04 GMT’ \
+http://[host]:[port]/[appname]/timegate/[original_url] 
+     </programlisting>
+ </listitem>
+ </varlistentry>
+ <varlistentry>
+ <term><emphasis role="bold">Memento</emphasis></term>
+
+  <listitem><para> To retrieve a Memento (archived version of a resource) from Resourcedepot 
+                                                for the resource with URI [original_url] that is served by the Content Server: </para>
+
+                                                        
+ <programlisting>curl -D headers.txt \
+http://[host]:[port]/[appname]/memento/20110311000508/[original_url] </programlisting> <para>  
+In this URI, 20110311000508 represents the archival date/time of the resource with the URI [original_url] expressed in the form YYYYMMDDHHMMSS.
+</para>
+  </listitem>
+ </varlistentry>
+  <varlistentry>
+ <term><emphasis role="bold">TimeMap</emphasis></term>
+ <listitem><para>To retrieve a <ulink url="http://www.mementoweb.org/guide/rfc/ID/#timemap">link-value formatted</ulink>
+ TimeMap from ResourceDepot for the resource with URI [original_url] that is served by the Content Server: </para>
+                                                        
+ <programlisting>curl \
+http://[host]:[port]/[appname]/timemap/link/[original_url]
+</programlisting>
+</listitem>
+</varlistentry>
+ <varlistentry>
+ <term><emphasis role="bold">TimeBundle</emphasis></term>
+ <listitem><para>To retrieve the TimeBundle of a resource: </para>
+ <programlisting>curl  -H Accept:”application/rdf+xml” \
+http://[host]:[port]/[appname]/timebundle/[original_url]
+ </programlisting>
+ </listitem>
+ </varlistentry>
+</variablelist>
+<para>To make <ulink url="https://addons.mozilla.org/en-US/firefox/addon/mementofox/" > Memento client</ulink> capable of finding you new  transactional archive of you Apache content server, add  HTTP Link header to a TimeGate on an Content Server, see <ulink url="getStarted.html#sc_addingTG">Configuring Apache Content Server to Add TimeGate Link Header</ulink> </para>
+</section>
+<section id="sc_addingTG">
+<title>Configuring Apache Content Server to Add TimeGate Link Header</title>
+<para>
+For Apache servers, the following configuration can be used to add the HTTP Link header to a TimeGate on an archival server. It uses mod_rewrite and mod_header which are typically available in the standard distribution, and hence does not require compiling or installing any code. It adds the Link header for all pages on all responses, regardless of whether the Accept-Datetime header is present or not. This means that the response can be cached. For example if you timegate url is "http://myarchive.org/appname/timegate", the directives to add are: </para>
+  <programlisting><![CDATA[<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{IS_SUBREQ} false
+RewriteRule ^/(.*) - [E=ORIGURI:%{HTTP_HOST}/$1]
+RewriteRule ^/(.*) - [E=ORIGQRY:]
+RewriteCond %{QUERY_STRING} .+
+RewriteRule ^/(.*) - [E=ORIGQRY:?%{QUERY_STRING}]
+RewriteRule ^/(.*) - [E=ORIGPROTO:http]
+RewriteCond %{HTTPS} on
+RewriteRule ^/(.*) - [E=ORIGPROTO:https]
+
+Header always set Link 
+"<http://myarchive.org/appname/timegate/%{ORIGPROTO}e://%{ORIGURI}e%{ORIGQRY}e>;rel=timegate"
+</IfModule>
+]]>
+</programlisting>
+<para>
+ For detailed information on this, please refer to
+ <ulink url='http://mementoweb.org/tools/apache/'>http://mementoweb.org/tools/apache/</ulink>
+</para>
+</section>
+<section id="sc_unloadWARC">
+<title> Exporting and Deleting services of ResourceDepot</title>
+<para>  The ResourceDepot provides service to unload HTTP request/response data to <ulink url="http://archive-access.sourceforge.net/warc/warc_file_format-0.16.html"> WARC file format</ulink>.This procedure can be long-term data managing tool to offload data to Wayback archives. 
+</para> 
+<variablelist>
+ <varlistentry>
+ <term><emphasis role="bold">WARCUnload</emphasis></term>
+<listitem>
+ <programlisting>curl \
+http://[archivehost]:[port]/[appname]/warcunload/20120329000508/* </programlisting> 
+<para>The archived data before 20120329000508 date will be recoded to the wayback files at the directory,specified by warcfiles.unload.dir in <ulink url="getStarted.html#sc_InstallingUnderTomcat">ta.properties</ulink>. We decided to omit the recording of revisit (by digest) records to WARC files to avoid stress to  the Wayback. To compensate, we  added special metadata records  with information on time interval  where recorded response bitstream was the same, based on digest calculation  over bitstream as well as number of page hits during that period, see sample of WARC file <ulink url="warcfile_example.html"> here</ulink> </para>
+</listitem>
+ </varlistentry>
+<varlistentry>
+ <term><emphasis role="bold">Delete</emphasis></term>
+<listitem>
+ <programlisting>curl \
+http://[archivehost]:[port]/[appname]/delete/20120410000508/*
+ </programlisting>
+<para>
+The archived data before 20120329000508 date will be deleted from ResourceDepot.
+</para>
+ <programlisting>curl \
+http://[archivehost]:[port]/[appname]/delete/20120410000508/http://myhost/test
+ </programlisting>
+<para>                                                                                                                                                                                The archived data with url="http://myhost/test"  before 20120329000508 date will be deleted from ResourceDepot.                                                                       </para>
+<programlisting>curl \
+http://[archivehost]:[port]/[appname]/delete/*/http://myhost/test
+</programlisting>
+<para>                                                                                                                                                               
+The archived data with url="http://myhost/test"   will be deleted from ResourceDepot.                                                                    
+</para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+
+</section>
+
+ <section id="sc_TG">
+<title>TimagateDirector Interface</title>
+<para>                                                                                                                                                                                 Long-term deployment of transactional archive will require more complex distributed set-up unless your have unlimited resources. 
+ For example, several ResourceDepot archives can be created on different machines.  Older data can be unloaded from ResourceDepot to the WARC file format and deployed as <ulink url ="http://archive-access.sourceforge.net/projects/wayback/downloads.html"> Wayback archive</ulink> and old data can be purged from the ResourceDepot instance.  WARC format provides more compact storage in relation to  total number of files in file system. For the webservers  with very dynamic pages,  total number of files in ResourceDepot vs inode disk parameter can be important indicator of need to offload data to Wayback archive or start new ResourceDepot archive at new disk. The archiving set up involving data distribution between  ResourceDepot and IA Wayback  archives is demonstrated here. Please note, that Wayback software supports Memento interface,<ulink url="" >see Wayback Memento install how-to</ulink>. To make Memento client work seamlessly with multiple achives, TimegateDirector  interface provided. TimegateDirector dispatches Memento client to correct timegate of archive,  depends on date requested.  Setting up a TimegateDirector server under Tomcat is straightforward. The server is contained in a single WAR file,  so installation consists of editing  a configuration file. Ones you copied WAR file into [TOMCAT-HOME]/webapps directory, you can find timegates.xml file   in [TOMCAT-HOME]/webapps/[YOURAPP]/WEB-INF/classes directory. 
+From example below we can see that archived data is distributed between  wayback archive ( timegate:http://lanlproto.santafe.edu:8080/memento/timegate/) and ResourceDepot (timegate : http://www.theresourcedepot.com/000010/timegate/).
+</para>
+<programlisting>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<timegates>
+          <timegate uri="http://lanlproto.santafe.edu:8080/memento/timegate/">
+          <start>Tue\, 27 Mar 2012 22:08:10 GMT</start>
+          <end>Mon\, 09 Apr 2012 23:35:02 GMT</end>
+          </timegate>
+          <timegate uri="http://www.theresourcedepot.com/000010/timegate/">
+          <start>Mon\, 09 Apr 2012 23:35:03 GMT</start>
+          <end>Tue\, 19 Apr 2031 12:00:02 GMT</end>
+          </timegate>
+</timegates>
+]]>
+</programlisting>
+<para>IF you have multiple archives installed with TimegateDirector, you also will need to change Timegate Link Header at your Content Apache server <ulink url="getStarted.html#sc_addingTG">see more details here</ulink>.
+For example if TimegateDirector is installed at http://www.theresourcedepot.com/000010D, then mod_rewrite LinkHeader need to point to that url:  </para>
+<programlisting>
+<![CDATA[                                                                                                                                                                               <IfModule mod_rewrite.c>
+   RewriteEngine on
+   RewriteCond %{IS_SUBREQ} false
+   RewriteRule ^/(.*) - [E=ORIGURI:%{HTTP_HOST}/$1]
+   RewriteRule ^/(.*) - [E=ORIGQRY:]
+   RewriteCond %{QUERY_STRING} .+
+   RewriteRule ^/(.*) - [E=ORIGQRY:?%{QUERY_STRING}]
+   RewriteRule ^/(.*) - [E=ORIGPROTO:http]
+   RewriteCond %{HTTPS} on
+   RewriteRule ^/(.*) - [E=ORIGPROTO:https]
+
+   Header always set Link "<http://theresourcedepot.org/000010D/%{ORIGPROTO}e://%{ORIGURI}e%{ORIGQRY}e>;rel=timegate"
+ </IfModule>
+]]>
+</programlisting>
+
+ </section>
+<section id="sc_optimization" >
+<title>Optimization</title>
+<variablelist>
+ <varlistentry>
+ <term><emphasis role="bold">connectionTimeout of Tomcat</emphasis></term>
+ <listitem><para>If your Apache Content server cointains some pages which requere long time to load,                                                                                    we recommend to change connectionTimeout of Tomcat in server.xml for   longer value, for example </para>
+     <programlisting>
+       <![CDATA[ <Connector port="8080" protocol="HTTP/1.1"
+               connectionTimeout="60000" maxKeepAliveRequests="15" maxThreads="300"
+               redirectPort="8443" />  
+       ]]>
+     </programlisting>
+ <para>Too low value of timeout parameter may  effect completion of  the HTTP PUT requests to ResourceDepot (used by mod_ta filter)  </para>
+ </listitem>
+
+ </varlistentry>
+<varlistentry>
+ <term><emphasis role="bold">je.properties</emphasis></term>
+ <listitem><para></para>
+ </listitem>
+
+</varlistentry>
+ 
+</variablelist>
+</section>
+</section>
+      </article>
+

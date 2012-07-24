@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<context-param>
+    <description>This is a context parameter example</description>
+    <param-name>ContextParam</param-name>
+    <param-value>ContextParam value</param-value>
+  </context-param>
+<!-- <listener>
+        <listener-class>com.mycila.jdk.logging.ContextualLogManagerWebappListener</listener-class>
+    </listener>  -->
+ <listener>
+  <listener-class>gov.lanl.archive.resource.MyServletContextListener</listener-class>
+  </listener>   
+    <servlet>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>gov.lanl.archive</param-value>
+        </init-param>
+          <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    <!-- <filter>
+                <filter-name>monitoring</filter-name>
+                <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+        </filter>
+        <filter-mapping>
+                <filter-name>monitoring</filter-name>
+                <url-pattern>/*</url-pattern>
+        </filter-mapping>
+        <listener>
+                <listener-class>net.bull.javamelody.SessionListener</listener-class>
+        </listener>  -->
+</web-app>

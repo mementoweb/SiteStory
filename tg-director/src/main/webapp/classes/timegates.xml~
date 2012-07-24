@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<timegates>
+          <timegate uri="http://mementoarchive.lanl.gov/ta/timegate/">
+          <start>Tue, 29 Sep 2009 22:08:10 GMT</start>
+          <end>Tue, 31 Apr 2011 12:00:02 GMT</end>
+          </timegate>
+          <timegate uri="http://mementoarchive.lanl.gov/tr/timegate/">
+          <start>Tue, 31 Apr 2011 12:00:03 GMT</start>
+          <end>Tue, 19 Apr 2031 12:00:02 GMT</end>
+          </timegate>
+</timegates>

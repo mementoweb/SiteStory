@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+ <body>
+<section name="Wayback Memento interface">
+<p> This manual is for versions 1.6 and 1.7 of wayback.
+Download wayback.war  from 
+<a href="http://sourceforge.net/projects/archive-access/files/wayback/1.6.0/">Internet Archive </a>
+Follow <a href="http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html">installation guide </a>.
+To configure memento interface uncomment memento bean. Below is example of installation of wayback as ROOT under tomcat.
+<source>
+<![CDATA[
+  <import resource="MementoReplay.xml"/>
+  <bean name="8080:memento" parent="8080:wayback">
+    <property name="replayPrefix" value="http://lanlproto.santafe.edu:8080/memento/" />
+    <property name="queryPrefix" value="http://lanlproto.santafe.edu:8080/list/" />
+        <property name="configs">
+      <props>
+            <prop key="aggregationPrefix">http://lanlproto.santafe.edu:8080/list/</prop>
+      </props>
+        </property>
+
+    <property name="replay" ref="mementoreplay" />
+    <property name="query">
+      <bean class="org.archive.wayback.query.Renderer">
+        <property name="captureJsp" value="/WEB-INF/query/Memento.jsp" />
+      </bean>
+    </property>
+
+    <property name="uriConverter">
+      <bean class="org.archive.wayback.archivalurl.ArchivalUrlResultURIConverter">
+        <property name="replayURIPrefix" value="http://lanlproto.santafe.edu:8080/memento/"/>
+      </bean>
+    </property>
+    <property name="parser">
+      <bean class="org.archive.wayback.memento.MementoRequestParser">
+        <property name="maxRecords" value="10000" />
+        <property name="earliestTimestamp" value="1996" />
+      </bean>
+    </property>
+    <property name="exception">
+      <bean class="org.archive.wayback.exception.BaseExceptionRenderer">
+        <property name="errorJsp" value="/WEB-INF/exception/TimegateError.jsp" />
+      </bean>
+    </property>
+  </bean>
+  
+]]>
+</source>
+this bean will add following services to the wayback:
+<ul>
+ <li>
+  Timegate 
+ </li>
+ <source>http://lanlproto.santafe.edu:8080/memento/timegate/{url}</source>
+ <li>
+ Memento
+ </li>
+ <source>http://lanlproto.santafe.edu:8080/memento/20120328164435/{url} </source>
+ </ul>
+</p>
+<p>uncomment aggregation bean: </p>
+<source>
+<![CDATA[
+<bean name="8080:list" parent="8080:memento">
+    <property name="replayPrefix" value="http://lanlproto.santafe.edu:8080/memento/" />
+    <property name="queryPrefix" value="http://lanlproto.santafe.edu:8080/list/" />
+    <property name="staticPrefix" value="http://lanlproto.santafe.edu:8080/list/" />
+        <property name="configs">
+          <props>
+            
+            <prop key="Prefix">http://lanlproto.santafe.edu:8080/memento/</prop>
+
+          </props>
+        </property>
+
+    <property name="replay" ref="archivalurlreplay" />
+    <property name="query">
+      <bean class="org.archive.wayback.query.Renderer">
+        <property name="captureJsp" value="/WEB-INF/query/ORE.jsp" />
+      </bean>
+    </property>
+
+    <property name="uriConverter">
+      <bean class="org.archive.wayback.archivalurl.ArchivalUrlResultURIConverter">
+        <property name="replayURIPrefix" value="http://lanlproto.santafe.edu:8080/list/"/>
+      </bean>
+    </property>
+  </bean>
+
+]]>
+</source> 
+<p>This aggregation bean introduces two more services: </p>
+
+<ul>
+ <li>
+  TimeMap
+ </li>
+ <source>http://lanlproto.santafe.edu:8080/list/timemap/link/{url}</source>
+ <li>
+ TimeBundle
+ </li>
+ <source>http://lanlproto.santafe.edu:8080/list/timebundle/{url}</source>
+<li>
+Rdf Serialization of TimeBundle
+</li>
+<source>http://lanlproto.santafe.edu:8080/list/timemap/rdf/{url}</source>
+ </ul>
+</section>
+ </body>
+
+</document>

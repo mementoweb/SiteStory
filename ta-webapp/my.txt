@@ -1,0 +1,9 @@
+HTTP/1.1 302 Moved Temporarily
+Date: Thu, 29 Mar 2012 17:52:31 GMT
+Location: http://theresourcedepot.org/000010/memento/20120329171535/http://dans.knaw.nl/
+Vary: negotiate,accept-datetime
+Link: <http://dans.knaw.nl/>;rel="original", <http://theresourcedepot.org/000010/memento/20120329171535/http://dans.knaw.nl/>;rel="memento last"; datetime="Thu, 29 Mar 2012 17:15:35 GMT", <http://theresourcedepot.org/000010/memento/20120328164435/http://dans.knaw.nl/>;rel="memento first"; datetime="Wed, 28 Mar 2012 16:44:35 GMT", <http://theresourcedepot.org/000010/memento/20120329171124/http://dans.knaw.nl/>;rel="memento prev"; datetime="Thu, 29 Mar 2012 17:11:24 GMT" , <http://theresourcedepot.org/000010/timemap/link/http://dans.knaw.nl/>;rel="timemap"; type="application/link-format" , <http://theresourcedepot.org/000010/timebundle/http://dans.knaw.nl/>;rel="timebundle"
+Content-Length: 0
+Connection: close
+Content-Type: text/plain; charset=UTF-8
+
