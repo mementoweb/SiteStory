@@ -58,8 +58,8 @@ For more information about this option see <ulink  url="http://www.theresourcede
      <section id="sc_Download">
       <title>Download</title>
       <para>To get the lasted version of the ResourceDepot software, download the stable release
-        <ulink url="http://somehost/releases.html">
-          here</ulink>.</para>
+        <ulink url="http://luda171.github.com/twa/repository/gov/lanl/archive/twa/1.0/">
+          here</ulink>. For the mod_ta.c see <ulink url="http://github.com/Luda171/twa">source repository</ulink></para>
        </section>
 
         <section id="sc_InstallingMod_ta">

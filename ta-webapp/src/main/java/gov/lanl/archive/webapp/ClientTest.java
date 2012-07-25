@@ -5,11 +5,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
@@ -35,13 +32,23 @@ public class ClientTest {
 	 HttpClient mClient = new HttpClient();
 	 String bodyonly =   "<html><title>Hello World!</title><body><p><font size=\"14\">Hello World! Page created at  Sun, 30 Jul 2009 </font></p></body></html>"; 
 	 int size = bodyonly.length();
-	 String header ="Date: Mon, 30 Jul 2009 14:29:09 GMT\r\nServer: Apache\r\nContent-Length:"+size+ "\r\nConnection: close\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n";
-         String body=header+"\r\n\r\n"+header+ bodyonly;
+	 String header1 ="GET /misc/jquery.js?R HTTP/1.1\r\n"+
+			 "User-Agent:Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Media Center PC 6.0; InfoPath.2)\r\n" +
+			 "Referer:http://www.dans.knaw.nl/en/content/geospatial-sciences-data-collection\r\n" +
+			 "Accept:*/*\r\n"+
+			 "Accept-Language:en-US,nl;q=0.5\r\n"+
+			 "Accept-Encoding:gzip, deflate\r\n" +
+			 "Cookie:SESS4a0091108fb271e05f34da7cf77c975f=uo73nsi3ugit1gr4ptpq6ofas3; has_js=1\r\n"+
+			 "Connection:keep-alive\r\n" +
+			 "Host:www.test.knaw.nl\r\n";
+
+	 String header ="HTTP/1.1 200 OK\r\nDate: Mon, 30 Jul 2009 14:29:09 GMT\r\nServer: Apache\r\nContent-Length:"+size+ "\r\nConnection: close\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n";
+         String body=header1+"\r\n\r\n"+header+ bodyonly;
 	 
 	 //String header ="HTTP/1.1 200 OK\r\nDate: Tue, 28 Jun 2009 16:31:39 GMT\r\nServer: Apache\r\nContent-Location: index.html.en\r\nVary: negotiate,accept-language,accept-charset\r\nTCN: choice\r\nLast-Modified: Fri, 10 Oct 2008 04:46:12 GMT\r\nETag: \"f0b0-5b0-458ded424ad00\"\r\nAccept-Ranges: bytes\r\nContent-Length: 1456\r\nContent-Type: text/html\r\nContent-Language: en\r\n\r\n";
 		// String body=header +"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<title>Test Page for Apache Installation5</title>\n</head>\n<!-- Background white, links blue (unvisited), navy (visited), red\n(active) -->\n<body bgcolor=\"#FFFFFF\" text=\"#000000\" link=\"#0000FF\"\nvlink=\"#000080\" alink=\"#FF0000\">\n<p>  If you can see this, it means that the installation of the <a\nhref=\"http://www.apache.org/foundation/preFAQ.html\">Apache  web\nserver</a> software on this system was successful. You may now add\ncontent to this directory and replace this page!</p>\n\n<hr width=\"50%\" size=\"8\" />\n<h2 align=\"center\">Seeing this instead of the website you\nexpected??</h2>\n\n<p>This page is here because the site administrator has changed the\nconfiguration of this web server. da! Please <strong>contact the person\nresponsible for maintaining this server with questions.</strong>\nThe Apache Software Foundation, which wrote the web server software\nthis site administrator is using, has nothing to do with\nmaintaining this site and cannot help resolve configuration\nissues.</p>\n\n<hr width=\"50%\" size=\"8\" />\n<p>The Apache <a href=\"manual/\">documentation</a> has been included\nwith this distribution.</p>\n\n<p>You are free to use the image below on an Apache-powered web\nserver. Thanks for using Apache!!!!!!!!????</p>\n\n<div align=\"center\"><img src=\"apache_pb.gif\" alt=\"\" /></div>\n</body>\n</html>\n\n";
 		     //  PutMethod mPut = new PutMethod("http://memento.lanl.gov/tomcat/ta/http://wayback.lanl.gov/hello");
-		       PutMethod mPut = new PutMethod("http://localhost:9999/put/http://test.com/hello");
+		       PutMethod mPut = new PutMethod("http://www.theresourcedepot.org:8080/hari/put/http://test.com/hello");
 		       // mPut.setRequestHeader("Content-Type","text/html;charset=UTF-8");
 		       //mPut.setRequestHeader("Date","Tue, 29 Jun 2009 16:31:39 GMT");
 			      

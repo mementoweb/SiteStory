@@ -58,8 +58,8 @@ For more information about this option see <ulink  url="http://www.theresourcede
      <section id="sc_Download">
       <title>Download</title>
       <para>To get the lasted version of the ResourceDepot software, download the stable release
-        <ulink url="http://somehost/releases.html">
-          here</ulink>.</para>
+        <ulink url="http://luda171.github.com/twa/repository/gov/lanl/archive/twa/1.0/">
+          here</ulink>. For the mod_ta.c see <ulink url="https://github.com/Luda171/twa">source repository</ulink></para>
        </section>
 
         <section id="sc_InstallingMod_ta">
@@ -313,7 +313,7 @@ http://[host]:[port]/twa/timebundle/[original_url]
 <listitem>
  <programlisting>curl \
 http://[archivehost]:[port]/twa/warcunload/20120329000508/* </programlisting> 
-<para>The archived data before the 20120329000508 date will be recoded to the wayback files at the directory, specified by <emphasis role="bold">warcfiles.unload.dir</emphasis> in ta.properties. We decided to omit the recording of revisit (by digest) records to WARC files to avoid stress to  the Wayback. To compensate, we  added special metadata records  with information on time interval  where the recorded response body bitstream was the same, based on digest calculation  over bitstream as well as number of page hits during that period, see a sample of WARC file <ulink url="warcfile_example.html"> here</ulink> </para>
+<para>The archived data before the 20120329000508 date will be recoded to the wayback files at the directory, specified by <emphasis role="bold">warcfiles.unload.dir</emphasis> in ta.properties. We decided to omit the recording of revisit (by digest) records to WARC files to avoid stress to  the Wayback. To compensate, we  added special metadata records  with information on time interval  where the recorded response body bitstream was the same, based on digest calculation  over bitstream as well as number of page hits during that period, see a sample of WARC file <ulink url="warcfile_example.html"> here</ulink> </para>.
 </listitem>
  </varlistentry>
 <varlistentry>
@@ -367,7 +367,7 @@ From the example below we can see that archived data is distributed between  way
 ]]>
 </programlisting>
 <para>IF you have multiple archives installed with TimegateDirector, you also will need to change the Timegate Link Header at your Content Apache server mod_ta module config section.
-For example, if TimegateDirector is installed at http://www.theresourcedepot.com/000010D (war file was renamed as 000010D.war), then the <emphasis role="bold">ArchiveTimeGate parameter</emphasis> needs to point to that URL.<br></br> Example output from TimegateDirector: </para>
+For example, if TimegateDirector is installed at http://www.theresourcedepot.com/000010D (war file was renamed as 000010D.war), then the <emphasis role="bold">ArchiveTimeGate </emphasis> parameter  needs to point to that URL.<br></br> Example output from TimegateDirector: </para>
 <programlisting><![CDATA[
 curl -D my.txt -I  -H "Accept-datetime: Sun, 25 June 2010 12:00:00 GMT" \
 http://theresourcedepot.org/000010D/http://www.dans.knaw.nl

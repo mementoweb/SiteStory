@@ -215,7 +215,7 @@
        <dependency>
        <groupId>org.archive.wayback</groupId>
        <artifactId>wayback-core</artifactId>
-       <version>1.6.0</version>
+       <version>1.7.0</version>
        <exclusions>
        <exclusion>
        <groupId>org.springframework</groupId>

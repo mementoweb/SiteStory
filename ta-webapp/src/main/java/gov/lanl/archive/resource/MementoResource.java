@@ -297,6 +297,7 @@ public class MementoResource {
 			     List<Element> headElements = source.getAllElements(HTMLElementName.HEAD);
 			    	                     if (headElements.isEmpty()) {
 			    		                  System.out.println("page does not have head element");
+			    		                  htmlres = outputDocument.toString();
 			    	                     }
 			    	                     else {
 			    		                  //for (Element element : headElements) {
@@ -332,7 +333,8 @@ public class MementoResource {
 		 if (htmlres.length()>0) {
 			 r = Response.ok(htmlres,m.getMimetype());
 		 }
-		 else {    r=Response.ok(in,m.getMimetype());}
+		 else {   
+			 r=Response.ok(in,m.getMimetype());}
 		 if (!m.getCompress().equals("")) {
 			r.header("Content-Encoding",m.getCompress());	
 			//not acceptable 406? or just put headers?
