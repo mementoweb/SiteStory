@@ -20,21 +20,17 @@
     </license>
   </licenses>
   <organization>
-    <name>LANL, RL Proto Team </name>
+    <name>Los Alamos National Security, LLC, Research Library Proto Team </name>
     <url>http://library.lanl.gov/</url>
   </organization>
    <mailingLists>
     <mailingList>
       <name>TWA  Discussion List</name>
       <subscribe>
-        http://lists.sourceforge.net/lists/listinfo/dummy
+      http://groups.google.com/d/forum/twa--discussion
       </subscribe>
-      <unsubscribe>
-        http://lists.sourceforge.net/lists/listinfo/dummy
-      </unsubscribe>
-      <post>archive-access-discuss</post>
       <archive>
-        http://sourceforge.net/mailarchive/forum.php?forum_name=twa
+         http://groups.google.com/forum/#!forum/twa--discussion
       </archive>
     </mailingList>
     </mailingLists>
@@ -49,6 +45,12 @@
       <timezone>-7</timezone>
     </developer>
   </developers>
+
+<scm>
+        <connection>scm:git:https:@github.com:mementoweb/twa.git</connection>
+        <url>https://github.com/mementoweb/twa</url>
+        <developerConnection>scm:git:https@github.com:mementoweb/twa.git</developerConnection>
+</scm>
 
  <reporting>
     <plugins>
@@ -67,11 +69,11 @@
         <reportSets>
           <reportSet>
             <reports>
-              <report>dependencies</report>
+              <!--<report>dependencies</report>-->
               <report>project-team</report>
               <report>mailing-list</report>
               <!--<report>cim</report>-->
-              <report>issue-tracking</report>
+             <!--<report>issue-tracking</report>-->
               <report>license</report>
                <!--<report>scm</report>-->
             </reports>
@@ -126,6 +128,24 @@
 
 <build>
  <plugins>
+<plugin>
+ <groupId>com.github.github</groupId>
+    <artifactId>site-maven-plugin</artifactId>
+    <version>0.5</version>
+    <executions>
+        <execution>
+ <goals>
+ <goal>site</goal>
+ </goals>
+<phase>site-deploy</phase>
+<configuration>
+<path>${project.version}</path>
+ <merge>true</merge>
+ </configuration>
+ </execution>
+ </executions>
+ </plugin>
+
   <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-dependency-plugin</artifactId>
@@ -173,7 +193,7 @@
          </execution>
         </executions>
          <configuration>
-          <mainClass>gov.lanl.archive.webapp.Main</mainClass>
+          <mainClass>gov.lanl.archive.webapp.ClientTest</mainClass>
         </configuration>
       </plugin>
 
