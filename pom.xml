@@ -47,9 +47,9 @@
   </developers>
 
 <scm>
-        <connection>scm:git:https:@github.com:Luda171/twa.git</connection>
-        <url>https://github.com/Luda171/twa</url>
-        <developerConnection>scm:git:https@github.com:Luda171/twa.git</developerConnection>
+        <connection>scm:git:https:@github.com:mementoweb/twa.git</connection>
+        <url>https://github.com/mementoweb/twa</url>
+        <developerConnection>scm:git:https@github.com:mementoweb/twa.git</developerConnection>
 </scm>
 
  <reporting>
@@ -69,11 +69,11 @@
         <reportSets>
           <reportSet>
             <reports>
-              <report>dependencies</report>
+              <!--<report>dependencies</report>-->
               <report>project-team</report>
               <report>mailing-list</report>
               <!--<report>cim</report>-->
-              <report>issue-tracking</report>
+             <!--<report>issue-tracking</report>-->
               <report>license</report>
                <!--<report>scm</report>-->
             </reports>

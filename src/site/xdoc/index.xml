@@ -19,8 +19,8 @@
             <p>The Transactional Web Archive  provides the following opportunities:</p>
             <ul>
                 <li>Dynamic Archiving of your Apache Web Content Server</li>
-                <li>Comforms to Memento Framework </li>
-                <li>Compatible with  data offload to Wayback</li>
+                <li>Comforms to the Memento Framework </li>
+                <li>Compatible with  data offload to the Internet Archive's Wayback software</li>
             </ul>
         </section>
         <section name="Architecture Overview">

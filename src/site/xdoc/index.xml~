@@ -23,5 +23,9 @@
                 <li>Compatible with  data offload to Wayback</li>
             </ul>
         </section>
+        <section name="Architecture Overview">
+            <p><img id="" class="figure" alt="Figure 1" src="images/twa_new.png" title="Overview"/>
+            </p>
+        </section> 
     </body>
 </document>

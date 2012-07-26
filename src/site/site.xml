@@ -5,7 +5,7 @@
     <bannerLeft>
         <name>Transactional Web Archive </name>
         <src>images/twa_logo2.png</src>
-        <href>https://github.com/Luda171/twa</href>
+        <href>http://mementoweb.github.com/twa/</href>
     </bannerLeft>
 <!--
     <bannerRight>
@@ -27,7 +27,7 @@
             <item name="Geting Started" href="getStarted.html"/>
             <item name="API"  href="apidocs/index.html"/>
             <item name="Demo" href="demo.html"/>
-            <item name="Download" href="http://luda171.github.com/twa/repository/gov/lanl/archive/twa/1.0/"/>
+            <item name="Download" href="http://mementoweb.github.com/twa/repository/gov/lanl/archive/twa/1.0/"/>
             <!--item name="Usage" href="usage.html"/>
             <item name="FAQ" href="faq.html"/-->
         </menu>

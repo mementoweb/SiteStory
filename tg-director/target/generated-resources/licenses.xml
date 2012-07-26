@@ -477,9 +477,13 @@
     <dependency>
       <groupId>org.archive.wayback</groupId>
       <artifactId>wayback-core</artifactId>
-      <version>1.6.0</version>
+      <version>1.7.0</version>
       <licenses>
-        <!--No license information available. -->
+        <license>
+          <name>Apache License, Version 2.0</name>
+          <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+          <distribution>repo</distribution>
+        </license>
       </licenses>
     </dependency>
     <dependency>

@@ -5,10 +5,10 @@
  <body>
 <section name="DANS Archive example">
 <p>
-We have several examples of Transactional Web Archives installed. 
-The DANS ( http://www.dans.knaw.nl/ )  has TWA archive distributed between TWA at 
-http://theresourcedepot.org/000010/timegate/{anyuri} and  wayback installation (http://lanlproto.santafe.edu:8080/memento/timegate/{anyuri}) populated from data unloaded from TWA in WARC file format. The TimegateDirector installed at  http://theresourcedepot.org/000010D/{anyuri}.
- Let check that all components of  Memento Framework in place: </p>
+We have several instances of Transactional Web Archives installed. 
+The <a  href="http://www.dans.knaw.nl/"> DANS institute </a>  has its archive distributed between the TWA at 
+http://theresourcedepot.org/000010/timegate/{uri} and the Wayback installation (http://lanlproto.santafe.edu:8080/memento/timegate/{anyuri}) populated from data unloaded from TWA in WARC file format. The TimegateDirector is installed at  http://theresourcedepot.org/000010D/{uri}.
+ Let us check that all components of the  Memento Framework are in place: </p>
 <ul>
  <li> DANS Content server has Link header, which points to TimegateDirector. </li>
 <source> <![CDATA[
@@ -41,7 +41,7 @@ Content-Type: text/plain; charset=UTF-8
 Content-Language: nl
 ]]>
 </source>
-<p>Note discovery  link to index timemap</p>
+<p>Note the discovery  link to the index timemap.</p>
 <li>
 Timegate redirects to appropriate Memento:
 </li>
@@ -65,19 +65,19 @@ Content-Language: nl
 </source>
 </section>
 <section name="LANL Archive example">
-<p> We are archiving several web servers : http://mementoweb.org/ see 
-<a  href="http://mementoweb.org/depot/native/mementoweb/"> for more detals</a>,
-http://lanlsource.lanl.gov/hello  <a href="http://www.mementoweb.org/demo/"> see more info here</a>,
-and http://www.shared-canvas.org/ . All mentioned websites get archived to the Transactional Web Archive at  
-http://mementoarchive.lanl.gov. As described in  <a href="http://www.mementoweb.org/guide/rfc/ID/#rfc.figure.28">Memento Framework Discovery Specifications</a>  we have host-meta document at <a href="http://mementoarchive.lanl.gov/.well-known/host-meta">http://mementoarchive.lanl.gov/.well-known/host-meta</a> supporting TimeGate and TimeMap discovery.
+<p> We are archiving several web servers : <ul><li>http://mementoweb.org/ see 
+<a  href="http://mementoweb.org/depot/native/mementoweb/"> for more detals</a></li>
+<li>http://lanlsource.lanl.gov/hello  <a href="http://www.mementoweb.org/demo/"> see more info here</a></li>
+<li>http://www.shared-canvas.org/</li></ul>. All mentioned websites get archived to the Transactional Web Archive at  
+http://mementoarchive.lanl.gov. As described in the <a href="http://www.mementoweb.org/guide/rfc/ID/#rfc.figure.28">Memento Framework Discovery Specifications</a>  we have a host-meta document at <a href="http://mementoarchive.lanl.gov/.well-known/host-meta">http://mementoarchive.lanl.gov/.well-known/host-meta</a> supporting TimeGate and TimeMap discovery.
 </p>
+</section>
 <section name="End-User Interfaces to  Archive">
 <p> 
-To get smooth "Time Travel" experience download the MementoFox plugin.
+To get a smooth "Time Travel" experience download the MementoFox plugin.
 To install the plugin, drag and drop this XPI file over any open Firefox window, which will invoke the Add-on installation window.
-After closing and restarting the FireFox go to Tools ->Add-ons->Extentions to check that you have MementoFox extension listed. 
+After closing and restarting  FireFox go to Tools ->Add-ons->Extentions to check that you have the MementoFox extension listed. 
 </p>
 </section>
  </body>
-
 </document>

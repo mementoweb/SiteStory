@@ -7,7 +7,7 @@
     <packaging>war</packaging>
     <parent>
     <groupId>gov.lanl.archive</groupId>
-    <artifactId>ta</artifactId>
+    <artifactId>ta-projects</artifactId>
     <version>1.0</version>
    </parent>
    <!-- <profiles>
@@ -191,6 +191,11 @@
             <url>http://download.java.net/maven/glassfish/</url>
             <layout>default</layout>
         </repository>
+        <repository>
+        <id>thirdparty-uploads</id>
+        <name>JBoss Thirdparty Uploads</name>
+        <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-uploads</url>
+       </repository>
          <repository>
             <id>maven2-repository.dev.java.net</id>
             <name>Java.net Maven 2 Repository</name>

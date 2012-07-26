@@ -495,7 +495,7 @@ public class PutResource {
      }
 	
 	 public String cutHeaders (InputStream in)  {
-		 StringBuffer sb = new StringBuffer("");
+		 StringBuffer sb = new StringBuffer();
 		  try {
 		   int _ch = -1;  
 		   boolean endofheaders =false;
@@ -527,7 +527,8 @@ public class PutResource {
 			 throw new RuntimeException(e);
 		} 
 		     // System.out.println("headers"+sb.toString());
-		      return sb.toString();
+		     return new String( sb.toString() );
+		      //return sb.toString();
 	   }
 	   
 	
