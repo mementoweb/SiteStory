@@ -68,7 +68,7 @@ Content-Language: nl
 <p> We are archiving several web servers : <ul><li>http://mementoweb.org/ see 
 <a  href="http://mementoweb.org/depot/native/mementoweb/"> for more detals</a></li>
 <li>http://lanlsource.lanl.gov/hello  <a href="http://www.mementoweb.org/demo/"> see more info here</a></li>
-<li>http://www.shared-canvas.org/</li></ul>. All mentioned websites get archived to the Transactional Web Archive at  
+<li>http://www.shared-canvas.org/</li></ul> All mentioned websites get archived to the Transactional Web Archive at  
 http://mementoarchive.lanl.gov. As described in the <a href="http://www.mementoweb.org/guide/rfc/ID/#rfc.figure.28">Memento Framework Discovery Specifications</a>  we have a host-meta document at <a href="http://mementoarchive.lanl.gov/.well-known/host-meta">http://mementoarchive.lanl.gov/.well-known/host-meta</a> supporting TimeGate and TimeMap discovery.
 </p>
 </section>

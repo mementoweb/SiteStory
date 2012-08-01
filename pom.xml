@@ -45,13 +45,11 @@
       <timezone>-7</timezone>
     </developer>
   </developers>
-
 <scm>
         <connection>scm:git:https:@github.com:mementoweb/twa.git</connection>
         <url>https://github.com/mementoweb/twa</url>
         <developerConnection>scm:git:https@github.com:mementoweb/twa.git</developerConnection>
 </scm>
-
  <reporting>
     <plugins>
       <plugin>
@@ -83,10 +81,10 @@
     </plugins>
   </reporting>
  <distributionManagement> 
-  <site> 
+  <!-- <site> 
     <id> website</id> 
-    <url>scp://megalodon.lanl.gov/home/web/htdocs/TWA/</url> 
-   </site> 
+    <url>file:///megalodon.lanl.gov/home/web/htdocs/TWA/</url> 
+   </site> --> 
     <repository>
     <id>gh-pages</id>
     <url>file:///home/ludab/workspace/twa_pages/repository/</url>
@@ -145,13 +143,10 @@
  </execution>
  </executions>
  </plugin>
-
-  <plugin>
+ <!-- <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-dependency-plugin</artifactId>
-    <!-- set the version explicitly-->
     <version>2.0</version>
-
     <executions>
           <execution>
             <id>copy-dependencies</id>
@@ -166,8 +161,7 @@
             </configuration>
           </execution>
         </executions>
-
-  </plugin>
+  </plugin> -->
    <!-- Setup the build for JAVA 1.6  -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -266,7 +260,7 @@
          </executions>
         </plugin>
  -->
-          <plugin>
+         <!-- <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>license-maven-plugin</artifactId>
         <version>1.0</version>
@@ -278,7 +272,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin> -->
     <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>

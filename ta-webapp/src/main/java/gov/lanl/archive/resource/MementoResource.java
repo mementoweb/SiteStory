@@ -38,6 +38,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import com.sleepycat.je.Transaction;
+
 //import org.htmlparser.Parser;
 
 import net.htmlparser.jericho.*;
@@ -150,7 +152,8 @@ public class MementoResource {
 		}
 	    
 		String locationid = m.getId();
-		System.out.println("digest:" + m.getDigest());
+		//System.out.println("digest:" + m.getDigest());
+		System.out.println("id:" + m.getId());
 		PairReader reader = new PairReader();
 		
 		String code = m.getCode();
@@ -225,18 +228,22 @@ public class MementoResource {
 		 links = sb.toString();
 		 
 			if (code.equals("302")||code.equals("303")) {
-				InputStream in = reader.read(locationid,"res");
+				//ups forgot to change that:
+				// I am not keping headers in file system any more
+			//	InputStream in = reader.read(locationid,"res");
 				
-				byte[] bytes;
-				try {
-					bytes = new byte[in.available()];
-					in.read(bytes);
-					String s = new String(bytes);
+				//byte[] bytes;
+				//try {
+					//bytes = new byte[in.available()];
+					//in.read(bytes);
+				    //using headers for location 
+					String s = m.getResheaders();
+					//String s = new String(bytes);
 					parseServerInfo(s);
-				} catch (IOException ignore) {
+				//} catch (IOException ignore) {
 					// TODO Auto-generated catch block
-					ignore.printStackTrace();
-				}
+					//ignore.printStackTrace();
+				//}
 				//nuzno get code -String to int
 			 	         int icode = Integer.parseInt(code);
 				 ResponseBuilder r = Response.status(icode);

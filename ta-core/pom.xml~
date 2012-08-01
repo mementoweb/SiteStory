@@ -56,7 +56,7 @@
         <target>1.6</target>
        </configuration>
        </plugin>
-       <plugin>
+<!--       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>license-maven-plugin</artifactId>
         <version>1.0</version>
@@ -68,7 +68,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+-->     </plugin>
        </plugins>
        </build>
       <profiles><profile>
@@ -215,7 +215,7 @@
        <dependency>
        <groupId>org.archive.wayback</groupId>
        <artifactId>wayback-core</artifactId>
-       <version>1.6.0</version>
+       <version>1.7.0</version>
        <exclusions>
        <exclusion>
        <groupId>org.springframework</groupId>

@@ -1026,6 +1026,7 @@ return null;
 	    		  // Memento mem = new Memento();
 	    		 log.finest("one record");
 	    		  setMemento( m,  fdate, url, fdate,ldate);
+	    		  addHeaders(m,null); 
 	    		  return m;
 	    	 }
 	   
@@ -1036,7 +1037,7 @@ return null;
 	        	  //out of range so you do not need to look for memento
 	        	  //make momento the lastdate ; 
 	        	   setMemento( m,  ldate, url, fdate,ldate);
-	        	   
+	        	   addHeaders(m,null);
 		    	   //may be I can find prev (before last).
 		    	   return m;
 	          }                                
@@ -1046,7 +1047,7 @@ return null;
 	        	  //out of range so you do not need to look for memento
 	        	  //make momento the lastdate ; 
 	        	   setMemento( m,  fdate, url, fdate,ldate);
-	        	   
+	        	   addHeaders(m,null);
 		    	   //may be I can find next (after last).
 		    	   return m;
 	          }  
@@ -1080,6 +1081,7 @@ return null;
 	             			 
 	                 		    nextmemento.setAccessdate(keyToDate(next2,url));
 	                 		    m.setNextMemento(nextmemento);
+	                 		    
 	               		        log.finest( "next:"+keyToDate(next2,url));
 	               	          }	  
 	             		     if(cursor.getPrevDup(key, data, LockMode.DEFAULT) == 
@@ -1111,7 +1113,7 @@ return null;
 	           		   String mementostr = new String(data.getData(), "UTF-8");
 	           		  String memento = mementostr.substring((url+"|").length());
 	           		   setMemento( m,  memento, url, fdate,ldate);
-	         		  
+	           		 //  addHeaders(m,null);
 	         		    log.finest( "Mememnto second case:"+new Date(Long.parseLong(memento)));
 	         		    isprev=true;
 	         	       }
@@ -1120,6 +1122,7 @@ return null;
           		    String prev = new String(data.getData(), "UTF-8");
           		    Memento prevmemento = new Memento();
           		    prevmemento.setAccessdate(keyToDate(prev,url));
+          		   
           		    m.setPrevMemento(prevmemento);
         		    log.finest( "Prev:"+keyToDate(prev,url));
         	      }
@@ -1132,10 +1135,11 @@ return null;
         	  else {
         		  //memento hits first record
         		  setMemento( m,  strdate, url, fdate,ldate); //foundData not correct string
-        		  
+        		  //addHeaders(m,null);
         	  }
         	  }
-            	
+	                  //just here ??
+	                  addHeaders(m,null);
            return m;   
         }
 		     } catch (UnsupportedEncodingException e) {

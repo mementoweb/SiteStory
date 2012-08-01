@@ -30,17 +30,12 @@ import java.util.zip.ZipInputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 /*
 @author Lyudmila Balakireva
@@ -76,7 +71,7 @@ public class PutResource {
 		
 	
 	@PUT
-	 public   Response put_data (InputStream input, @PathParam("id") String url,@Context HttpServletRequest req) {
+	 public   Response put_data (InputStream iinput, @PathParam("id") String url,@Context HttpServletRequest req) {
 				
 		   
 			   	   // log.info("from put id:" +url);
@@ -118,7 +113,7 @@ public class PutResource {
 			Memento m = new Memento();
 			
 			
-			
+			BufferedInputStream	input = new BufferedInputStream(iinput);
 			setClientInfo(cutHeaders(input),  m,localvalues);
 			setServerInfo(cutHeaders (input), m,localvalues);
 			
@@ -520,9 +515,10 @@ public class PutResource {
 		      }
 		  
 		  
-	     } catch (IOException e) {
+	     } catch (Exception e) {
 			// TODO Auto-generated catch block
-	    	 log.info("input stream"+sb.toString());
+	    	// log.info("input stream"+sb.toString());
+	    	  System.out.println("headers"+sb.toString());
 			 e.printStackTrace();
 			 throw new RuntimeException(e);
 		} 

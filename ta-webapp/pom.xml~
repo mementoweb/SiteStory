@@ -191,6 +191,11 @@
             <url>http://download.java.net/maven/glassfish/</url>
             <layout>default</layout>
         </repository>
+         <repository>
+          <id>archive</id>
+          <name>archive.org</name>
+           <url>http://builds.archive.org:8080/maven2</url>
+          </repository>
         <repository>
         <id>thirdparty-uploads</id>
         <name>JBoss Thirdparty Uploads</name>
