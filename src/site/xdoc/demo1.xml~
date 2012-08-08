@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+ <body>
+<section name="LANL Hello Archive example">
+<p>
+Starting November 2009, subtly changing "pictures of the day" are
+being published that depict a member of the Memento team posing next
+to a flip chart. The changes are in the shirt, the timestamp, and the
+BBC content superimposed on the flip charts. At any moment in time,
+the current picture of the day is served from http://lanlsource.lanl.gov/pics/picoftheday.png. On a daily basis,
+these images are archived using a transactional archive approach. As a
+result, old versions of these pictures become available at URIs like
+http://mementoarchive.lanl.gov/ta/20100320180023/http://lanlsource.lanl.gov/pics/picoftheday.png
+(version of March 20th 2010). All old versions are accessible via the
+Memento protocol. </p>
+<p> Here are actually several archives each with 
+their own temporal span and each with their own TimeGate. </p>
+<ul>
+<li>From  29 Sep 2009 -  31 Apr 2011 ,   timegate uri: http://mementoarchive.lanl.gov/ta/timegate/ 
+</li>
+<li>From 31 Apr 2011 - 22 May 2012,    timegate uri: http://mementoarchive.lanl.gov/tr/timegate/
+</li>
+<li>From  22 May 2012 - until now  timegate uri: http://mementoarchive.lanl.gov/twa/timegate/
+</li>
+</ul>
+<p>
+Please note, that the  first two archives in the list  are legacy archives and 
+they implementations are slightly differ then current  opensource twa installed at "http://mementoarchive.lanl.gov/twa".</p>
+<p> As described in the <a href="http://www.mementoweb.org/guide/rfc/ID/#rfc.figure.28">Memento Framework Discovery Specifications</a>  we have a  <a href="http://tools.ietf.org/html/rfc6415">host-meta document</a> at <a href="http://mementoarchive.lanl.gov/.well-known/host-meta">http://mementoarchive.lanl.gov/.well-known/host-meta</a> supporting TimeGate and TimeMap discovery.
+TimeGate Redirector  is in charge of
+pointing a client at a TimeGate at an archive that is appropriate for
+the datetime it is looking for. 
+<br></br> Let us check that all components of the  Memento Framework are in place using <a href="http://lanlsource.lanl.gov/hello"> http://lanlsource.lanl.gov/hello</a> example: </p>
+<ul>
+ <li>  Content server has Link header, which points to TimeGate Redirector. </li>
+<source> <![CDATA[
+curl -D my.txt -I http://lanlsource.lanl.gov/hello
+HTTP/1.1 200 OK
+Date: Tue, 31 Jul 2012 19:39:30 GMT
+Server: Apache
+Link: <http://mementoarchive.lanl.gov/tg/http://lanlsource.lanl.gov/hello>;rel=timegate
+Last-Modified: Tue, 31 Jul 2012 12:00:01 GMT
+ETag: "15ea09-12fe-eb02f240"
+Accept-Ranges: bytes
+Content-Length: 4862
+Vary: Accept-Encoding,User-Agent
+Content-Type: text/html; charset=UTF-8
+
+]]>
+</source>
+<li>
+TimeGate Redirector redirects to appropriate archive:
+</li>
+<source> <![CDATA[
+ curl -D my.txt -I http://mementoarchive.lanl.gov/tg/http://lanlsource.lanl.gov/hello
+HTTP/1.1 302 Moved Temporarily
+Date: Tue, 31 Jul 2012 19:43:44 GMT
+Location: http://mementoarchive.lanl.gov/twa/timegate/http://lanlsource.lanl.gov/hello
+Link: <http://mementoarchive.lanl.gov/tg/timemap/http://lanlsource.lanl.gov/hello>;rel="timemap index"; type="application/link-format"
+Content-Type: text/plain; charset=UTF-8
+
+]]>
+</source>
+<p>Note the discovery  link to the index timemap.</p>
+<li>
+TimeGate redirects to appropriate Memento:
+</li>
+<source><![CDATA[ 
+curl -D my.txt -I http://mementoarchive.lanl.gov/twa/timegate/http://lanlsource.lanl.gov/hello
+HTTP/1.1 302 Moved Temporarily
+Date: Tue, 31 Jul 2012 19:45:59 GMT
+Location: http://mementoarchive.lanl.gov/twa/memento/20120731120002/http://lanlsource.lanl.gov/hello
+Vary: negotiate,accept-datetime
+Link: <http://lanlsource.lanl.gov/hello>;rel="original", <http://mementoarchive.lanl.gov/twa/memento/20120731120002/http://lanlsource.lanl.gov/hello>;rel="memento last"; datetime="Tue, 31 Jul 2012 12:00:02 GMT", <http://mementoarchive.lanl.gov/twa/memento/20120522174322/http://lanlsource.lanl.gov/hello>;rel="memento first"; datetime="Tue, 22 May 2012 17:43:22 GMT", <http://mementoarchive.lanl.gov/twa/memento/20120731000002/http://lanlsource.lanl.gov/hello>;rel="memento prev"; datetime="Tue, 31 Jul 2012 00:00:02 GMT" , <http://mementoarchive.lanl.gov/twa/timemap/link/http://lanlsource.lanl.gov/hello>;rel="timemap"; type="application/link-format" , <http://mementoarchive.lanl.gov/twa/timebundle/http://lanlsource.lanl.gov/hello>;rel="timebundle"
+Content-Type: text/plain; charset=UTF-8
+
+]]>
+</source>
+</ul>
+<p>
+
+</p>
+<source>
+</source>
+</section>
+<section name="End-User Interfaces to  Archive">
+<p> 
+To get a smooth "Time Travel" experience download the <a href="http://addons.mozilla.org/en-US/firefox/addon/mementofox/"> MementoFox plugin </a>.
+To install the plugin, drag and drop this XPI file over any open Firefox window, which will invoke the Add-on installation window.
+After closing and restarting  FireFox go to Tools ->Add-ons->Extentions to check that you have the MementoFox extension listed. 
+</p>
+</section>
+ </body>
+</document>

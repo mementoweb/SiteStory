@@ -4,17 +4,17 @@
   xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
     <bannerLeft>
         <name>Transactional Web Archive </name>
-        <src>images/twa_logo2.png</src>
+        <src>images/sitestory_logo.png</src>
         <href>http://mementoweb.github.com/twa/</href>
     </bannerLeft>
-<!--
     <bannerRight>
        <name>The Prototyping Team of the Research Library of the Los Alamos National Laboratory</name>
-       <src>images/proto1.png</src>
-        <title>The Prototyping Team of the Research Library of the Los Alamos National Laboratory</title>
-        <height>30</height>
+       <src>images/mementologo.png</src>
+          <href>http://www.mementoweb.org/</href>
+        <width>100</width>
+        <height>100</height>
     </bannerRight>
- -->
+ 
   <googleAnalyticsAccountId>UA-33797706-1</googleAnalyticsAccountId>
     <body>
 <!-- <breadcrumbs>
@@ -69,7 +69,7 @@
 <custom>
  <fluidoSkin>
  <sideBarEnabled>true</sideBarEnabled>
-  <topBarEnabled>true</topBarEnabled>
+  <topBarEnabled>false</topBarEnabled>
 </fluidoSkin>
 </custom>
 

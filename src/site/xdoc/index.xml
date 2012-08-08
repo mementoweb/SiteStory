@@ -4,27 +4,28 @@
   xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
     <properties>
         <author>Lyudmila Balakireva</author>
-        <title>Transactional Web Archive</title>
+        <title>SiteStory Transactional Web Archive</title>
     </properties>
  <head>
-    <meta name="keyword" content="transactional web archive, java"/>
+    <meta name="keyword" content="transactional web archive, java, sitestory"/>
 </head>
     <body>
         <section name="Idea and Concept">
             <p>
              Transactional Archiving consists of selectively capturing and storing transactions that take place  between a web client (browser) and a web server.  </p>
-             <p>Most existing web archives recurrently send out bots to crawl the content of web servers. This results in observations of a server's content at the time of crawling. Since the crawling frequency is generally not aligned with the change rate of a server's resources, this approach is typically not able to capture all versions of a server's resource. The resulting archive may provide an acceptable overview of a server's evolution over time, but it will not provide an accurate representation of the server's entire history. A Transactional Web Archive, however, captures every version of a resource as it is being requested by a browser.  The resulting archive is effectively representative of a server's entire history, although versions of resources that are never requested by a browser will also never be archived. </p>
+             <p>Most existing web archives recurrently send out bots to crawl the content of web servers. This results in observations of a server's content at the time of crawling. Since the crawling frequency is generally not aligned with the change rate of a server's resources, this approach is typically not able to capture all versions of a server's resource. The resulting archive may provide an acceptable overview of a server's evolution over time, but it will not provide an accurate representation of the server's entire history. A SiteStory Archive, however, captures every version of a resource as it is being requested by a browser.  The resulting archive is effectively representative of a server's entire history, although versions of resources that are never requested by a browser will also never be archived. </p>
 
 
-            <p>The Transactional Web Archive  provides the following opportunities:</p>
+            <p>The SiteStory Archive  provides the following opportunities:</p>
             <ul>
                 <li>Dynamic Archiving of your Apache Web Content Server</li>
-                <li>Comforms to the Memento Framework </li>
-                <li>Compatible with  data offload to the Internet Archive's Wayback software</li>
+                <li>Archive accessible via the Memento protocol </li>
+                <li>Archival data can be offloaded to WARC files</li>
+                <li>Archival data can be uploaded into an instance of the Internet Archive's Wayback software</li>
             </ul>
         </section>
         <section name="Architecture Overview">
-            <p><img id="" class="figure" alt="Figure 1" src="images/twa_new.png" title="Overview"/>
+            <p><img id="" class="figure" alt="Figure 1" src="images/site_story_pic2.png" title="Overview"/>
             </p>
         </section> 
     </body>

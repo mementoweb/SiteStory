@@ -3,14 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>gov.lanl.archive</groupId>
   <version>1.0</version>
-  <artifactId>ta-projects</artifactId>
+  <artifactId>sitestory-projects</artifactId>
   <packaging>pom</packaging>
- <name>ResourceDepot Transactional Web Archive</name>
-<description>Open source implementation of the ResourceDepot Transactional Web Archive</description>
+ <name>SiteStory  Web Archive</name>
+<description>Open source implementation of the SiteStory  Web Archive</description>
   <modules>
-    <module>ta-core</module>
-    <module>ta-webapp</module>
-    <module>tg-director</module> 
+    <module>sitestory-core</module>
+    <module>sitestory-webapp</module>
+    <module>tg-redirector</module> 
   </modules>
     <licenses>
     <license>
@@ -25,12 +25,12 @@
   </organization>
    <mailingLists>
     <mailingList>
-      <name>TWA  Discussion List</name>
+      <name>SiteStory Archive  Discussion List</name>
       <subscribe>
-      http://groups.google.com/d/forum/twa--discussion
+      http://groups.google.com/d/forum/sitestory
       </subscribe>
       <archive>
-         http://groups.google.com/forum/#!forum/twa--discussion
+         http://groups.google.com/forum/#!forum/sitestory
       </archive>
     </mailingList>
     </mailingLists>
@@ -112,12 +112,12 @@
     <dependencies>
       <dependency>
         <groupId>gov.lanl.archive</groupId>
-        <artifactId>ta-core</artifactId>
+        <artifactId>sitestore-core</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>gov.lanl.archive</groupId>
-        <artifactId>ta-webapp</artifactId>
+        <artifactId>sitestore-webapp</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>
@@ -201,7 +201,7 @@
              <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.0</version>
+                    <version>3.1</version>
                     <configuration>
                         <chmod>true</chmod>
                         <inputEncoding>UTF-8</inputEncoding>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+    <bannerLeft>
+        <name>Transactional Web Archive </name>
+        <src>images/twa_logo2.png</src>
+        <href>http://luda171.github.com/twa/</href>
+    </bannerLeft>
+<!--
+    <bannerRight>
+       <name>The Prototyping Team of the Research Library of the Los Alamos National Laboratory</name>
+       <src>images/proto1.png</src>
+        <title>The Prototyping Team of the Research Library of the Los Alamos National Laboratory</title>
+    </bannerRight>
+ -->
+    <body>
+        <links>
+            <item name="Memento" href="http://www.mementoweb.org/" />
+             <item name="Apache Filters" href="http://httpd.apache.org/docs/2.2/filter.html" />
+             <item name="Wayback" href="http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html" />
+             <item name="MementoFox" href="http://addons.mozilla.org/en-US/firefox/addon/mementofox/" />
+             <item name="Memento Validator" href="http://www.mementoweb.org/tools/validator/" /> 
+        </links>
+        <menu name="Overview">
+            <item name="Description and Usage" href="index.html"/>
+            <item name="Geting Started" href="getStarted.html"/>
+            <item name="API"  href="apidocs/index.html"/>
+            <item name="Demo" href="demo.html"/>
+            <item name="Download" href="http://luda171.github.com/twa/repository/gov/lanl/archive/twa/1.0/"/>
+            <!--item name="Usage" href="usage.html"/>
+            <item name="FAQ" href="faq.html"/-->
+        </menu>
+        <menu ref="reports"/>
+    <footer>Copyright (c) 2012, Los Alamos National Security, LLC All rights reserved.
+    </footer>
+   
+    </body>
+        <!--
+     <skin>
+     <groupId>org.apache.maven.skins</groupId>
+     <artifactId>maven-stylus-skin</artifactId>
+     <version>1.4</version>
+    </skin>
+       -->
+    <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.2.1</version>
+     </skin>
+
+<custom>
+ <fluidoSkin>
+<sideBarEnabled>true</sideBarEnabled>
+</fluidoSkin>
+</custom>
+
+     
+</project>

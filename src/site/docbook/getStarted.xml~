@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD Simplified DocBook XML V1.0//EN" "http://www.oasis-open.org/docbook/xml/simple/1.0/sdocbook.dtd">
 <article id="ta_GettStartedGuide">
-  <title> ResourceDepot Transactional Web Archive Getting Started Guide</title>
+  <title> SiteStory Transactional Web Archive Getting Started Guide</title>
 
  <articleinfo>
     <legalnotice>
      <para>Unless required by applicable law or agreed to in writing,
-      software distributed under the License is distributed on an "AS IS"
+      software distributed under the BSD License is distributed on an "AS IS"
       BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
       implied. See the License for the specific language governing permissions
       and limitations under the License.</para>
-
     </legalnotice>
 
     <abstract>
       <para>This guide contains detailed information about adding transactional archiving to your content server
-      with mod_ta  filter and  ResourceDepot server. It discusses the basic
+      with mod_ta  filter and  SiteStory server. It discusses the basic
       operations ResourceDepot supports, and how these can be used to navigate to the past with memento protocol.
       </para>
     </abstract>
@@ -23,11 +22,10 @@
 <section id="ch_GettingStarted">
     <title>Getting Started: Adding Transactional Archiving to your Apache  Web Server. </title>
 
-    <para>This document contains information to get you started  with "ResourceDepot" our 
+    <para>This document contains information to get you started  with "SiteStory Archive" our 
      Transactional Web Archive software. It is aimed primarily at developers  and
-    contains simple installation instructions of the mod_ta filter extension to your Apache Web Server and  a single ResourceDepot server, and
-    few commands to verify that it is running. There are a few sections regarding long term archiving set up involving data distribution between  ResourceDepot and IA Wayback  archives. Finally, as a convenience, for those who want to check it out with minimal effort, a cloud based installation of Resourcedepot is available. The only requirement here is the mod_ta filter to be installed at the Apache Web Server. 
-For more information about this option see <ulink  url="http://www.theresourcedepot.com/overview/"> TheResourceDepot Guide. </ulink>.</para>
+    contains simple installation instructions of the mod_sitestory filter extension to your Apache Web Server and  a single SiteStory Archive server, and
+    few commands to verify that it is running. There are a few sections regarding long term archiving set up involving data distribution between  SiteStory and IA Wayback  archives. 
 
     <section id="sc_Prerequisites">
         <title>Prerequisites</title>
@@ -36,10 +34,10 @@ For more information about this option see <ulink  url="http://www.theresourcede
          <itemizedlist>
           <listitem>
             <para>GNU/Linux is supported as a development and production
-              platform for both mod_ta and ResourceDepot.</para>
+              platform for both mod_sitestory and SiteStory Archive.</para>
           </listitem>
                <listitem>
-               <para> All other platforms have not been tested, but if  required software (see below) runs on your platform, then it is possible that   mod_ta and ResourceDepot will run too.</para>
+               <para> All other platforms have not been tested, but if  required software (see below) runs on your platform, then it is possible that   mod_sitestory and SiteStory Archive will run too.</para>
 	 </listitem>
            </itemizedlist>
       </section>
@@ -47,27 +45,27 @@ For more information about this option see <ulink  url="http://www.theresourcede
         <title>Required Software </title>
           <itemizedlist>
        <listitem>
-       <para>mod_ta requires the Apache Web Server, version 2.2 or higher, to be the primary web server that is serving the content to be archived. In addition, Apache Extension Tool (apxs) needs to be installed. <ulink url="http://httpd.apache.org/">The Apache website</ulink> has detailed instructions on how to install both the web server and the extension tool.  </para>
+       <para>mod_sitestory requires the Apache Web Server, version 2.2 or higher, to be the primary web server that is serving the content to be archived. In addition, Apache Extension Tool (apxs) needs to be installed. <ulink url="http://httpd.apache.org/">The Apache website</ulink> has detailed instructions on how to install both the web server and the extension tool.  </para>
      </listitem>
        <listitem>
-      <para>ResourceDepot runs in Java, version 1.6  or greater (JDK 6 or greater). It runs as an application under Tomcat 6 or greater. </para>
+      <para>SiteStory Archive runs in Java, version 1.6  or greater (JDK 6 or greater). It runs as an application under Tomcat 6 or greater. </para>
        </listitem>
 	 </itemizedlist> 
  </section>
     </section>
      <section id="sc_Download">
       <title>Download</title>
-      <para>To get the lasted version of the ResourceDepot software, download the stable release
-        <ulink url="http://luda171.github.com/twa/repository/gov/lanl/archive/twa/1.0/">
-          here</ulink>. For the mod_ta.c see <ulink url="http://github.com/Luda171/twa">source repository</ulink></para>
+      <para>To get the lasted version of the SiteStore Archive software, download the stable release
+        <ulink url="http://mementoweb.github.com/twa/repository/gov/lanl/archive/twa/1.0/">
+          here</ulink>. For the mod_sitestory.c see <ulink url="http://github.com/mementoweb/twa">source repository</ulink></para>
        </section>
 
         <section id="sc_InstallingMod_ta">
         <title>Installation of mod_ta</title>
        <para>  Pushing data from your Apache Web Server to the ResourceDepot is done by installing a special filter to  Apache which we call mod_ta.  
-	More information on Apache filters and mod_ta can be found <ulink url="mod_ta.xhtml"> here.</ulink> The hands on example of the  mod_ta.c installation can be found here: for  <ulink url ="How_to_install_mod_ta_on_Fedora_Core_Linux.xhtml">  Fedora Core </ulink> and <ulink url="ubuntu_mod_ta.xhtml">Ubuntu</ulink> Linux.
-  Installation of  the mod_ta filter consists of executing of  the following command:<emphasis role="bold">sudo /usr/sbin/apxs -c -i –a mod_ta.c </emphasis>  and editing the Apache configuration file.  Add the following lines to the Apache configuration file: </para>
-<programlisting><![CDATA[ <IfModule ta_module>
+	More information on Apache filters and mod_sitestory can be found <ulink url="mod_ta.xhtml"> here.</ulink> The hands on example of the  mod_sitestory.c installation can be found here: for  <ulink url ="How_to_install_mod_ta_on_Fedora_Core_Linux.xhtml">  Fedora Core </ulink> and <ulink url="ubuntu_mod_ta.xhtml">Ubuntu</ulink> Linux.
+  Installation of  the mod_sitestory filter consists of executing of  the following command:<emphasis role="bold">sudo /usr/sbin/apxs -c -i –a mod_sitestory.c </emphasis>  and editing the Apache configuration file.  Add the following lines to the Apache configuration file: </para>
+<programlisting><![CDATA[ <IfModule sitestory_module>
     EnableArchiving On
     ArchiveHost www.myarchivename.com
     ArchivePort 8080
@@ -135,15 +133,15 @@ For more information about this option see <ulink  url="http://www.theresourcede
 <para>Please note, that only HTTP GET requests are archived with Response codes 200,302,303 </para>
 	</section>
            <section id="sc_InstallingUnderTomcat">
-            <title>Installation of ResourceDepot under Tomcat </title>
+            <title>Installation of SiteStory Archive under Tomcat </title>
             <para>
-                  Setting up a ResourceDepot server under Tomcat is
-                  straightforward. The server is contained in a single WAR file named 'twa.war'. The
-installation therefore only consists of editing a configuration file. You can rename the twa.war to your  [appname].war if you want. 
+                  Setting up a SiteStory Archive server under Tomcat is
+                  straightforward. The server is contained in a single WAR file named 'sitestory.war'. The
+installation therefore only consists of editing a configuration file. You can rename the sitestory.war to your  [appname].war if you want. 
              </para>
             <para>
                  Once you copied the WAR file into the [TOMCAT-HOME]/webapps directory, you can find the ta.properties file
-                 in the [TOMCAT-HOME]/webapps/twa/WEB-INF/classes directory.  </para>
+                 in the [TOMCAT-HOME]/webapps/sitestory/WEB-INF/classes directory.  </para>
 <programlisting>                 
 #rest.min.grizzly.threads=7
 #rest.max.grizzly.threads=128
@@ -257,16 +255,16 @@ bdbindex  storage
 
           </section>
  <section id="Sc_Memnto">
-       <title>Memento Interface to ResourceDepot</title>
-  <para> ResourceDepot provides REST - style services to access and manage content. 
-  To let Memento clients  access archived content from ResourceDepot, 
+       <title>Memento Interface to SiteStory Archive</title>
+  <para> SiteStory Archive provides REST - style services to access and manage content. 
+  To let Memento clients  access archived content from SiteStory Archive, 
   the following services are provided.    Please refer to the <ulink url='http://mementoweb.org'>Memento protocol</ulink> for additional information.</para>
  <variablelist>
  <varlistentry>
  <term><emphasis role="bold">TimeGate</emphasis></term>
- <listitem><para>To access the TimeGate from ResourceDepot (installed as twa.war) for the resource with URI [original_url] that is served by the Content Server:</para>
+ <listitem><para>To access the TimeGate from SiteStory Archive (installed as sitestory.war) for the resource with URI [original_url] that is served by the Content Server:</para>
      <programlisting>curl -D headers.txt -H Accept-Datetime:'Wed, 29 Sep 2008 12:00:04 GMT’ \
-http://[host]:[port]/twa/timegate/[original_url] 
+http://[host]:[port]/sitestory/timegate/[original_url] 
      </programlisting>
  </listitem>
  </varlistentry>
@@ -278,7 +276,7 @@ http://[host]:[port]/twa/timegate/[original_url]
 
                                                         
  <programlisting>curl -D headers.txt \
-http://[host]:[port]/twa/memento/20110311000508/[original_url] </programlisting> <para>  
+http://[host]:[port]/sitestory/memento/20110311000508/[original_url] </programlisting> <para>  
 In this URI, 20110311000508 represents the archival date/time of the resource with the URI [original_url] expressed in the form YYYYMMDDHHMMSS.
 </para>
   </listitem>
@@ -289,7 +287,7 @@ In this URI, 20110311000508 represents the archival date/time of the resource wi
  TimeMap from ResourceDepot for the resource with URI [original_url] that is served by the Content Server: </para>
                                                         
  <programlisting>curl \
-http://[host]:[port]/twa/timemap/link/[original_url]
+http://[host]:[port]/sitestory/timemap/link/[original_url]
 </programlisting>
 </listitem>
 </varlistentry>
@@ -297,22 +295,22 @@ http://[host]:[port]/twa/timemap/link/[original_url]
  <term><emphasis role="bold">TimeBundle</emphasis></term>
  <listitem><para>To retrieve the TimeBundle of a resource: </para>
  <programlisting>curl  -H Accept:”application/rdf+xml” \
-http://[host]:[port]/twa/timebundle/[original_url]
+http://[host]:[port]/sitestory/timebundle/[original_url]
  </programlisting>
  </listitem>
  </varlistentry>
 </variablelist>
 </section>
 <section id="sc_unloadWARC">
-<title> Exporting and Deleting services of ResourceDepot</title>
-<para>  The ResourceDepot provides a service to unload HTTP request/response data to <ulink url="http://archive-access.sourceforge.net/warc/warc_file_format-0.16.html"> WARC file format</ulink>. This procedure can be a long-term data managing tool to offload data to Wayback archives. 
+<title> Exporting and Deleting services of SiteStory Archive</title>
+<para>  The SiteStory Archive provides a service to unload HTTP request/response data to <ulink url="http://archive-access.sourceforge.net/warc/warc_file_format-0.16.html"> WARC file format</ulink>. This procedure can be a long-term data managing tool to offload data to Wayback archives. 
 </para> 
 <variablelist>
  <varlistentry>
  <term><emphasis role="bold">WARCUnload</emphasis></term>
 <listitem>
  <programlisting>curl \
-http://[archivehost]:[port]/twa/warcunload/20120329000508/* </programlisting> 
+http://[archivehost]:[port]/sitestory/warcunload/20120329000508/* </programlisting> 
 <para>The archived data before the 20120329000508 date will be recoded to the wayback files at the directory, specified by <emphasis role="bold">warcfiles.unload.dir</emphasis> in ta.properties. We decided to omit the recording of revisit (by digest) records to WARC files to avoid stress to  the Wayback. To compensate, we  added special metadata records  with information on time interval  where the recorded response body bitstream was the same, based on digest calculation  over bitstream as well as number of page hits during that period, see a sample of WARC file <ulink url="warcfile_example.html"> here</ulink> </para>.
 </listitem>
  </varlistentry>
@@ -320,17 +318,17 @@ http://[archivehost]:[port]/twa/warcunload/20120329000508/* </programlisting>
  <term><emphasis role="bold">Delete</emphasis></term>
 <listitem>
  <programlisting>curl \
-http://[archivehost]:[port]/twa/delete/20120410000508/*
+http://[archivehost]:[port]/sitestory/delete/20120410000508/*
  </programlisting>
 <para>
 The archived data before the 20120329000508 date will be deleted from ResourceDepot.
 </para>
  <programlisting>curl \
-http://[archivehost]:[port]/twa/delete/20120410000508/http://myhost/test
+http://[archivehost]:[port]/sitestory/delete/20120410000508/http://myhost/test
  </programlisting>
 <para>                                                                                                                                                                                The archived data with url="http://myhost/test"  before the 20120329000508 date will be deleted from ResourceDepot.                                                                       </para>
 <programlisting>curl \
-http://[archivehost]:[port]/twa/delete/*/http://myhost/test
+http://[archivehost]:[port]/sitestory/delete/*/http://myhost/test
 </programlisting>
 <para>                                                                                                                                                               
 The archived data with url="http://myhost/test"   will be deleted from ResourceDepot.                                                                    
@@ -343,10 +341,10 @@ The archived data with url="http://myhost/test"   will be deleted from ResourceD
 </section>
 
  <section id="sc_TG">
-<title>TimegateDirector Interface</title>
+<title>TimeGate Redirector Interface</title>
 <para>                                                                                                                                                                                 Long-term deployment of a transactional archive will require a more complex distributed set-up. 
- For example, several ResourceDepot archives can be created on different machines.  Older data can be unloaded from ResourceDepot to the WARC file format and deployed as <ulink url ="http://archive-access.sourceforge.net/projects/wayback/downloads.html"> Wayback archive</ulink> and old data can be purged from the ResourceDepot instance. The WARC format provides more compact storage in relation to  total number of files in the file system. For the web servers  with very dynamic pages,  total number of files in ResourceDepot vs inode disk parameter can be an important indicator of the need to offload data to a Wayback archive or start a new ResourceDepot archive at a new disk. The archiving set up involving data distribution between  ResourceDepot and IA Wayback  archives is demonstrated here. Please note, that Wayback software supports the Memento interface, see <ulink url="wayback_memento.html" > Wayback Memento install how-to</ulink>.</para> <para> To make a Memento client work seamlessly with multiple archives, TimegateDirector   interface is provided. TimegateDirector dispatches a Memento client to the correct timegate,  depending on the date requested in the  Accept-datetime link header.</para>
-  <para> <p>Setting up a TimegateDirector server under Tomcat is straightforward. The server is contained in a single WAR file named "tg-redirector.war". The installation therefore only consists of  editing  a configuration file. Ones you copied the WAR file into the [TOMCAT-HOME]/webapps directory, you can find the timegates.xml file   in [TOMCAT-HOME]/webapps/tg-redirector/WEB-INF/classes directory. Restart Tomcat after editing the timegates.xml file.  </p>
+ For example, several SiteStory  archives can be created on different machines.  Older data can be unloaded from SiteStory to the WARC file format and deployed as <ulink url ="http://archive-access.sourceforge.net/projects/wayback/downloads.html"> Wayback archive</ulink> and old data can be purged from the SiteStory Archive instance. The WARC format provides more compact storage in relation to  total number of files in the file system. For the web servers  with very dynamic pages,  total number of files in SiteStory Archive vs inode disk parameter can be an important indicator of the need to offload data to a Wayback archive or start a new SiteStory Archive at a new disk. The archiving set up involving data distribution between  SiteStory and IA Wayback  archives is demonstrated here. Please note, that Wayback software supports the Memento interface, see <ulink url="wayback_memento.html" > Wayback Memento install how-to</ulink>.</para> <para> To make a Memento client work seamlessly with multiple archives, TimeGate Redirector   interface is provided. TimeGate Redirector dispatches a Memento client to the correct timegate,  depending on the date requested in the  Accept-datetime link header.</para>
+  <para> <p>Setting up a TimeGate Redirector server under Tomcat is straightforward. The server is contained in a single WAR file named "tg-redirector.war". The installation therefore only consists of  editing  a configuration file. Ones you copied the WAR file into the [TOMCAT-HOME]/webapps directory, you can find the timegates.xml file   in [TOMCAT-HOME]/webapps/tg-redirector/WEB-INF/classes directory. Restart Tomcat after editing the timegates.xml file.  </p>
 From the example below we can see that archived data is distributed between  wayback archive ( timegate:http://lanlproto.santafe.edu:8080/memento/timegate/) and ResourceDepot (timegate : http://www.theresourcedepot.com/000010/timegate/).
 </para>
 <programlisting>
@@ -366,8 +364,8 @@ From the example below we can see that archived data is distributed between  way
 </timegates>
 ]]>
 </programlisting>
-<para>IF you have multiple archives installed with TimegateDirector, you also will need to change the Timegate Link Header at your Content Apache server mod_ta module config section.
-For example, if TimegateDirector is installed at http://www.theresourcedepot.com/000010D (war file was renamed as 000010D.war), then the <emphasis role="bold">ArchiveTimeGate </emphasis> parameter  needs to point to that URL.<br></br> Example output from TimegateDirector: </para>
+<para>IF you have multiple archives installed with TimeGate Redirector, you also will need to change the TimeGate Link Header at your Content Apache server mod_sitestory module config section.
+For example, if TimeGate Redirector is installed at http://www.theresourcedepot.com/000010D (war file was renamed as 000010D.war), then the <emphasis role="bold">ArchiveTimeGate </emphasis> parameter  needs to point to that URL.<br></br> Example output from TimeGate Redirector: </para>
 <programlisting><![CDATA[
 curl -D my.txt -I  -H "Accept-datetime: Sun, 25 June 2010 12:00:00 GMT" \
 http://theresourcedepot.org/000010D/http://www.dans.knaw.nl
@@ -380,7 +378,7 @@ Content-Type: text/plain; charset=UTF-8
 Content-Language: nl
 ]]>
 </programlisting>
-<para>To facilitate  discovery of multiple archives by clients we also provide timemap index service with this application.  Example output from index timemap service:  </para>
+<para>To facilitate  discovery of multiple archives by clients we also provide timemap index service with this application.  Example output from Index TimeMap service:  </para>
 <programlisting>
 <![CDATA[
 curl \
@@ -391,7 +389,7 @@ curl \
  <http://www.theresourcedepot.com/000010/timemap/link/http://www.dans.knaw.nl>;rel="timemap last"; type="application/link-format"
 ]]>
 </programlisting>
-<para>The index timemap is constructed from the timemap entries of the timegates.xml config file.   </para>
+<para>The Index TimeMap is constructed from the timemap entries of the timegates.xml config file.   </para>
  </section>
 <section id="sc_optimization" >
 <title>Optimization</title>
