@@ -27,7 +27,7 @@ their own temporal span and each with their own TimeGate. </p>
 </ul>
 <p>
 Please note, that the  first two archives in the list  are legacy archives and 
-they implementations are slightly differ then current  opensource SiteStory Archive installed at "http://mementoarchive.lanl.gov/twa".</p>
+they implementations are slightly differ then current  opensource SiteStory Web Archive installed at "http://mementoarchive.lanl.gov/twa".</p>
 <p> As described in the <a href="http://www.mementoweb.org/guide/rfc/ID/#rfc.figure.28">Memento Framework Discovery Specifications</a>  we have a  <a href="http://tools.ietf.org/html/rfc6415">host-meta document</a> at <a href="http://mementoarchive.lanl.gov/.well-known/host-meta">http://mementoarchive.lanl.gov/.well-known/host-meta</a> supporting TimeGate and TimeMap discovery.
 TimeGate Redirector  is in charge of
 pointing a client at a TimeGate at an archive that is appropriate for

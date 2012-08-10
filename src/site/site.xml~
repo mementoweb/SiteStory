@@ -4,8 +4,8 @@
   xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
     <bannerLeft>
         <name>Transactional Web Archive </name>
-        <src>images/sitestory_logo.png</src>
-        <href>http://mementoweb.github.com/twa/</href>
+        <src>images/twa_logo2.png</src>
+        <href>http://mementoweb.github.com/SiteStory/</href>
     </bannerLeft>
     <bannerRight>
        <name>The Prototyping Team of the Research Library of the Los Alamos National Laboratory</name>
@@ -34,7 +34,7 @@
             <item name="Geting Started" href="getStarted.html"/>
             <item name="API"  href="apidocs/index.html"/>
             <item name="Demo" href="demo1.html"/>
-            <item name="Download" href="http://mementoweb.github.com/twa/repository/gov/lanl/archive/twa/1.0/"/>
+            <item name="Download" href="http://mementoweb.github.com/SiteStory/repository/gov/lanl/archive/twa/1.0/"/>
             <!--item name="Usage" href="usage.html"/>
             <item name="FAQ" href="faq.html"/-->
         </menu>
@@ -69,7 +69,7 @@
 <custom>
  <fluidoSkin>
  <sideBarEnabled>true</sideBarEnabled>
-  <topBarEnabled>false</topBarEnabled>
+  <topBarEnabled>true</topBarEnabled>
 </fluidoSkin>
 </custom>
 

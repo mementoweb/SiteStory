@@ -13,10 +13,10 @@
         <section name="Idea and Concept">
             <p>
              Transactional Archiving consists of selectively capturing and storing transactions that take place  between a web client (browser) and a web server.  </p>
-             <p>Most existing web archives recurrently send out bots to crawl the content of web servers. This results in observations of a server's content at the time of crawling. Since the crawling frequency is generally not aligned with the change rate of a server's resources, this approach is typically not able to capture all versions of a server's resource. The resulting archive may provide an acceptable overview of a server's evolution over time, but it will not provide an accurate representation of the server's entire history. A SiteStory Archive, however, captures every version of a resource as it is being requested by a browser.  The resulting archive is effectively representative of a server's entire history, although versions of resources that are never requested by a browser will also never be archived. </p>
+             <p>Most existing web archives recurrently send out bots to crawl the content of web servers. This results in observations of a server's content at the time of crawling. Since the crawling frequency is generally not aligned with the change rate of a server's resources, this approach is typically not able to capture all versions of a server's resource. The resulting archive may provide an acceptable overview of a server's evolution over time, but it will not provide an accurate representation of the server's entire history. A SiteStory Web Archive, however, captures every version of a resource as it is being requested by a browser.  The resulting archive is effectively representative of a server's entire history, although versions of resources that are never requested by a browser will also never be archived. </p>
 
 
-            <p>The SiteStory Archive  provides the following opportunities:</p>
+            <p>The SiteStory Web Archive  provides the following opportunities:</p>
             <ul>
                 <li>Dynamic Archiving of your Apache Web Content Server</li>
                 <li>Archive accessible via the Memento protocol </li>
@@ -25,7 +25,7 @@
             </ul>
         </section>
         <section name="Architecture Overview">
-            <p><img id="" class="figure" alt="Figure 1" src="images/twa_new.png" title="Overview"/>
+            <p><img id="" class="figure" alt="Figure 1" src="images/site_story_pic2.png" title="Overview"/>
             </p>
         </section> 
     </body>

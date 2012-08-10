@@ -2,9 +2,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>gov.lanl.archive</groupId>
-    <artifactId>sitestory-webapp</artifactId>
-    <!-- <packaging>jar</packaging>-->
-    <packaging>war</packaging>
+    <artifactId>sitestory</artifactId>
+    <packaging>jar</packaging>
     <parent>
     <groupId>gov.lanl.archive</groupId>
     <artifactId>sitestory-projects</artifactId>
@@ -27,7 +26,7 @@
     </profiles>
     -->
     <version>1.0</version>
-    <name>TWA Webapp</name>
+    <name>SiteStory Archive Webapp</name>
     <build>
         <finalName>sitestory</finalName>
         <plugins>
