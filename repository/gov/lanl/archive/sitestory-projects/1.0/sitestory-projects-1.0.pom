@@ -117,7 +117,7 @@
       </dependency>
       <dependency>
         <groupId>gov.lanl.archive</groupId>
-        <artifactId>sitestore-webapp</artifactId>
+        <artifactId>sitestore</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>

@@ -1,0 +1,239 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>gov.lanl.archive</groupId>
+    <artifactId>sitestory</artifactId>
+    <packaging>war</packaging>
+    <parent>
+    <groupId>gov.lanl.archive</groupId>
+    <artifactId>sitestory-projects</artifactId>
+    <version>1.0</version>
+   </parent>
+   <!-- <profiles>
+        <profile>
+            <id>jdk-1.5</id>
+            <activation>
+                <jdk>1.5</jdk>
+            </activation>
+            <dependencies>
+                <dependency> 
+                    <groupId>com.sun.xml.bind</groupId>
+                    <artifactId>jaxb-impl</artifactId>
+                    <version>2.1.12</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+    -->
+    <version>1.0</version>
+    <name>SiteStory Archive Webapp</name>
+    <build>
+        <finalName>sitestory</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+           <!--  <plugin>
+                <groupId>org.glassfish</groupId>
+                <artifactId>maven-glassfish-plugin</artifactId>
+            </plugin>  -->
+           <!--  <plugin>
+             <groupId>com.mycila.maven-license-plugin</groupId>
+             <artifactId>maven-license-plugin</artifactId>
+             <configuration>
+                <header>src/etc/header.txt</header>
+             </configuration>
+            </plugin> -->
+         <!-- <plugin>
+         <groupId>org.codehaus.mojo</groupId>
+         <artifactId>license-maven-plugin</artifactId>
+         <version>1.0</version>
+         <executions>
+          <execution>
+            <id>download-licenses</id>
+            <goals>
+              <goal>download-licenses</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin> -->
+            </plugins>
+    </build>
+    <dependencies>
+      <dependency>
+      <groupId>gov.lanl.archive</groupId>
+      <artifactId>sitestory-core</artifactId>
+      <version>1.0</version>
+        </dependency>
+ <!-- javamelody-core -->
+        <dependency>
+        <groupId>net.bull.javamelody</groupId>
+         <artifactId>javamelody-core</artifactId>
+         <version>1.31.0</version>
+        </dependency>
+      <!--  <dependency>
+        <groupId>fastutil</groupId>
+        <artifactId>fastutil</artifactId>
+        <version>5.0.9</version>
+        </dependency>  -->
+        <dependency>
+       <groupId>commons-lang</groupId>
+       <artifactId>commons-lang</artifactId>
+       <version>2.3</version>
+       </dependency>
+        <dependency>
+         <groupId>com.hp.hpl.jena</groupId>
+        <artifactId>jena</artifactId>
+        <version>2.5.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hp.hpl.jena</groupId>
+        <artifactId>arq</artifactId>
+        <version>2.2</version>
+        <scope>runtime</scope>
+        </dependency>
+        <dependency> 
+        <groupId>apache-xerces</groupId>
+        <artifactId>xercesImpl</artifactId>
+        <version>2.9.1</version>
+        </dependency>
+         <dependency>
+         <groupId>com.hp.hpl.jena</groupId>
+         <artifactId>iri</artifactId>
+          <version>0.8</version>
+         </dependency>
+        <!--   <dependency>
+         <groupId>com.ibm.icu</groupId>
+         <artifactId>icu4j</artifactId>
+          <version>3.4.4</version>
+         </dependency>  -->
+         <!--  <dependency>
+           <groupId>joda-time</groupId>
+           <artifactId>joda-time</artifactId>
+           <version>1.6</version>
+       </dependency> -->
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>${jersey-version}</version>
+        </dependency>
+           <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-atom</artifactId>
+            <version>${jersey-version}</version>
+        </dependency>
+        <!-- <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-json</artifactId>
+            <version>${jersey-version}</version>
+        </dependency> -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jersey-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- <dependency>
+            <groupId>org.glassfish.distributions</groupId>
+            <artifactId>web-all</artifactId>
+            <version>10.0-build-20080430</version>
+            <scope>test</scope>
+        </dependency>
+        -->
+         <!--   <dependency> 
+            <groupId>org.glassfish.embedded</groupId> 
+            <artifactId>glassfish-embedded-all</artifactId> 
+            <version>3.0</version> 
+            <scope>test</scope> 
+        </dependency> --> 
+        <!-- <dependency>
+            <groupId>org.glassfish.embedded</groupId>
+            <artifactId>gf-embedded-api</artifactId>
+            <version>1.0-alpha-4</version>
+            <scope>test</scope>
+        </dependency> -->
+         <dependency>
+            <groupId>com.sun.grizzly</groupId>
+            <artifactId>grizzly-servlet-webserver</artifactId>
+            <version>1.9.8</version>
+        </dependency>
+         <dependency>
+    	<groupId>org.dspace</groupId>
+    	<artifactId>foresite</artifactId>
+    	<version>SNAPSHOT</version>
+         </dependency>
+         <dependency>
+         <groupId>net.htmlparser.jericho</groupId>
+         <artifactId>jericho-html</artifactId>
+         <version>3.1</version>
+         </dependency>
+    </dependencies>
+    <properties>
+        <jersey-version>1.1.5.1</jersey-version>
+    </properties>
+    <repositories>
+        <repository>
+            <id>glassfish-maven2-repository.dev.java.net</id>
+            <name>Java.net Maven 2 Repository for GlassFish</name>
+            <url>http://download.java.net/maven/glassfish/</url>
+            <layout>default</layout>
+        </repository>
+         <repository>
+          <id>archive</id>
+          <name>archive.org</name>
+           <url>http://builds.archive.org:8080/maven2</url>
+          </repository>
+        <repository>
+        <id>thirdparty-uploads</id>
+        <name>JBoss Thirdparty Uploads</name>
+        <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-uploads</url>
+       </repository>
+         <repository>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net Maven 2 Repository</name>
+            <url>http://download.java.net/maven/2/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>maven-repository.dev.java.net</id>
+            <name>Java.net Maven 1 Repository (legacy)</name>
+            <url>http://download.java.net/maven/1</url>
+            <layout>legacy</layout>
+        </repository>
+           <repository>
+            <id>jena</id>
+             <name>Jena  Maven 1 Repository (legacy)</name>
+             <url>http://openjena.org/repo/</url>
+           </repository>
+          <!--  <repository>
+             <id>ibiblio.org</id>
+             <url>http://mirrors.ibiblio.org/pub/mirrors/maven2/</url>
+          </repository> --> 
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net Repository for Maven</name>
+            <url>http://download.java.net/maven/2/</url>
+            <layout>default</layout>
+        </pluginRepository>
+        <pluginRepository>
+            <id>maven-repository.dev.java.net</id>
+            <name>Java.net Maven 1 Repository (legacy)</name>
+            <url>http://download.java.net/maven/1</url>
+            <layout>legacy</layout>
+        </pluginRepository>
+    </pluginRepositories>
+</project>
