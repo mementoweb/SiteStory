@@ -144,8 +144,8 @@
                           <a href="http://mementoweb.github.com/SiteStory/repository/gov/lanl/archive/sitestory/1.0/" class="externalLink" title="Download">Download</a>
             </li>
                   <li class="none">
-                          <a href="Acknowledgments.html" title="Acknowledgments">Acknowledgments</a>
-            </li>
+            <strong>Acknowledgments</strong>
+          </li>
           </ul>
                         <h3>Project Documentation</h3>
                   <ul>
@@ -176,83 +176,22 @@
                                   
             
  
-<div class="section"><h2>DANS Archive example<a name="DANS_Archive_example"></a></h2>
-<p>
-We have several instances of Transactional Web Archives installed. 
-The <a class="externalLink" href="http://www.dans.knaw.nl/"> DANS institute </a>  has its archive distributed between the TWA at 
-http://theresourcedepot.org/000010/timegate/{uri} and the Wayback installation (http://lanlproto.santafe.edu:8080/memento/timegate/{anyuri}) populated from data unloaded from TWA in WARC file format. The TimegateDirector is installed at  http://theresourcedepot.org/000010D/{uri}.
- Let us check that all components of the  Memento Framework are in place: </p>
+The development of SiteStory was a significant endeavor, and
+acknowledgment of the following contributors is appropriate:
 <ul>
- <li> DANS Content server has Link header, which points to TimegateDirector. </li>
-<div class="source"><pre class="prettyprint"> 
-curl -D my.txt -I http://www.dans.knaw.nl/
-HTTP/1.1 200 OK
-Date: Thu, 24 May 2012 16:56:29 GMT
-Server: Apache/2.2.3 (Red Hat)
-Link: &lt;http://theresourcedepot.org/000010D/http://www.dans.knaw.nl/&gt;;rel=timegate
-X-Powered-By: PHP/5.1.6
-Set-Cookie: SESS4a0091108fb271e05f34da7cf77c975f=j7bc90c1hte9k9sarpkts3h092; expires=Sat, 16 Jun 2012 20:29:49 GMT; path=/
-Expires: Sun, 19 Nov 1978 05:00:00 GMT
-Last-Modified: Thu, 24 May 2012 16:56:29 GMT
-Cache-Control: store, no-cache, must-revalidate
-Cache-Control: post-check=0, pre-check=0
-Connection: close
-Content-Type: text/html; charset=utf-8
-
-</pre></div>
-<li>
-TimegateDirector redirects to appropriate archive:
-</li>
-<div class="source"><pre class="prettyprint"> 
-curl -D my.txt -I http://theresourcedepot.org/000010D/http://www.dans.knaw.nl
-HTTP/1.1 302 Moved Temporarily
-Date: Thu, 24 May 2012 17:19:34 GMT
-Location: http://www.theresourcedepot.com/000010/timegate/http://www.dans.knaw.nl
-Link: &lt;http://theresourcedepot.org/000010D/timemap/http://www.dans.knaw.nl&gt;;rel=&quot;timemap index&quot;; type=&quot;application/link-format&quot;
-Connection: close
-Content-Type: text/plain; charset=UTF-8
-Content-Language: nl
-
-</pre></div>
-<p>Note the discovery  link to the index timemap.</p>
-<li>
-Timegate redirects to appropriate Memento:
-</li>
-<div class="source"><pre class="prettyprint"> 
-curl -D my.txt -I http://www.theresourcedepot.com/000010/timegate/http://www.dans.knaw.nl
-HTTP/1.1 302 Moved Temporarily
-Date: Thu, 24 May 2012 17:21:14 GMT
-Location: http://www.theresourcedepot.com/000010/memento/20120524171632/http://www.dans.knaw.nl
-Vary: negotiate,accept-datetime
-Link: &lt;http://www.dans.knaw.nl&gt;;rel=&quot;original&quot;, &lt;http://www.theresourcedepot.com/000010/memento/20120524171632/http://www.dans.knaw.nl&gt;;rel=&quot;memento last&quot;; datetime=&quot;Thu, 24 May 2012 17:16:32 GMT&quot;, &lt;http://www.theresourcedepot.com/000010/memento/20120410001726/http://www.dans.knaw.nl&gt;;rel=&quot;memento first&quot;; datetime=&quot;Tue, 10 Apr 2012 00:17:26 GMT&quot;, &lt;http://www.theresourcedepot.com/000010/memento/20120524165933/http://www.dans.knaw.nl&gt;;rel=&quot;memento prev&quot;; datetime=&quot;Thu, 24 May 2012 16:59:33 GMT&quot; , &lt;http://www.theresourcedepot.com/000010/timemap/link/http://www.dans.knaw.nl&gt;;rel=&quot;timemap&quot;; type=&quot;application/link-format&quot; , &lt;http://www.theresourcedepot.com/000010/timebundle/http://www.dans.knaw.nl&gt;;rel=&quot;timebundle&quot;
-Connection: close
-Content-Type: text/plain; charset=UTF-8
-Content-Language: nl
-
-</pre></div>
+<li> Lyudmila Balakireva of the Prototyping Team of the LANL Research
+Library for the actual SiteStory development;</li>
+<li> Robert Sanderson, Harihar Shankar, Martin Klein, and Herbert Van
+de Sompel of the Prototyping Team of the LANL Research Library for
+architectural guidance;</li>
+<li> Michael L. Nelson and Justin Brunelle of the Web Science and
+Digital Library Research Group at Old Dominion University for input
+and early testing;</li>
+<li> Patrick Hochstenbach of the Ghent University Library and Dirk
+Roorda of DANS for early testing;</li>
+<li> The Library of Congress for supporting the development.</li>
 </ul>
-<p>
 
-</p>
-<div class="source"><pre class="prettyprint">
-</pre></div>
-</div>
-<div class="section"><h2>LANL Archive example<a name="LANL_Archive_example"></a></h2>
-<p> We are archiving several web servers : </p><ul><li>http://mementoweb.org/ see 
-<a class="externalLink" href="http://mementoweb.org/depot/native/mementoweb/"> for more detals</a></li>
-<li>http://lanlsource.lanl.gov/hello  <a class="externalLink" href="http://www.mementoweb.org/demo/"> see more info here</a></li>
-<li>http://www.shared-canvas.org/</li></ul> All mentioned websites get archived to the Transactional Web Archive at  
-http://mementoarchive.lanl.gov. As described in the <a class="externalLink" href="http://www.mementoweb.org/guide/rfc/ID/#rfc.figure.28">Memento Framework Discovery Specifications</a>  we have a host-meta document at <a class="externalLink" href="http://mementoarchive.lanl.gov/.well-known/host-meta">http://mementoarchive.lanl.gov/.well-known/host-meta</a> supporting TimeGate and TimeMap discovery.
-
-</div>
-<div class="section"><h2>End-User Interfaces to  Archive<a name="End-User_Interfaces_to__Archive"></a></h2>
-<p> 
-To get a smooth &quot;Time Travel&quot; experience download the MementoFox plugin.
-To install the plugin, drag and drop this XPI file over any open Firefox window, which will invoke the Add-on installation window.
-After closing and restarting  FireFox go to Tools -&gt;Add-ons-&gt;Extentions to check that you have the MementoFox extension listed. 
-</p>
-</div>
- 
 
                   </div>
             </div>
