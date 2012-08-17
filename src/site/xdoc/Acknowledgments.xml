@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+ <body>
+The development of SiteStory was a significant endeavor, and
+acknowledgment of the following contributors is appropriate:
+<ul>
+<li> Lyudmila Balakireva of the Prototyping Team of the LANL Research
+Library for the  SiteStory design and development;</li>
+<li> Robert Sanderson, Harihar Shankar, Martin Klein, and Herbert Van
+de Sompel of the Prototyping Team of the LANL Research Library for
+architectural guidance;</li>
+<li> Michael L. Nelson and Justin Brunelle of the Web Science and
+Digital Library Research Group at Old Dominion University for input
+and early testing;</li>
+<li> Patrick Hochstenbach of the Ghent University Library and Dirk
+Roorda of DANS for early testing;</li>
+<li> The Library of Congress for supporting the development.</li>
+</ul>
+</body>
+</document>

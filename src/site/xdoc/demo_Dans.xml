@@ -5,7 +5,7 @@
  <body>
 <section name="DANS Archive example">
 <p>
-We have several instances of Transactional Web How_to_install_mod_ta_on_Fedora_Core_Linux.xhtmlArchives installed. 
+We have several instances of Transactional Web Archives installed. 
 The <a  href="http://www.dans.knaw.nl/"> DANS institute </a>  has its archive distributed between the TWA at 
 http://theresourcedepot.org/000010/timegate/{uri} and the Wayback installation (http://lanlproto.santafe.edu:8080/memento/timegate/{anyuri}) populated from data unloaded from TWA in WARC file format. The TimegateDirector is installed at  http://theresourcedepot.org/000010D/{uri}.
  Let us check that all components of the  Memento Framework are in place: </p>

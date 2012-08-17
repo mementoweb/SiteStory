@@ -3,58 +3,79 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
  <body>
-<section name="DANS Archive example">
+<section name="LANL Hello Archive example">
 <p>
-We have several instances of Transactional Web Archives installed. 
-The <a  href="http://www.dans.knaw.nl/"> DANS institute </a>  has its archive distributed between the TWA at 
-http://theresourcedepot.org/000010/timegate/{uri} and the Wayback installation (http://lanlproto.santafe.edu:8080/memento/timegate/{anyuri}) populated from data unloaded from TWA in WARC file format. The TimegateDirector is installed at  http://theresourcedepot.org/000010D/{uri}.
- Let us check that all components of the  Memento Framework are in place: </p>
+Starting November 2009, subtly changing "pictures of the day" are
+being published that depict a member of the Memento team posing next
+to a flip chart. The changes are in the shirt, the timestamp, and the
+BBC content superimposed on the flip charts. At any moment in time,
+the current picture of the day is served from http://lanlsource.lanl.gov/pics/picoftheday.png. On a daily basis,
+these images are archived using a transactional archive approach. As a
+result, old versions of these pictures become available at URIs like
+http://mementoarchive.lanl.gov/ta/20100320180023/http://lanlsource.lanl.gov/pics/picoftheday.png
+(version of March 20th 2010). All old versions are accessible via the
+Memento protocol. </p>
+<p> Here are actually several archives each with 
+their own temporal span and each with their own TimeGate. </p>
 <ul>
- <li> DANS Content server has Link header, which points to TimegateDirector. </li>
+<li>From  29 Sep 2009 -  31 Apr 2011 ,   timegate uri: http://mementoarchive.lanl.gov/ta/timegate/ 
+</li>
+<li>From 31 Apr 2011 - 22 May 2012,    timegate uri: http://mementoarchive.lanl.gov/tr/timegate/
+</li>
+<li>From  22 May 2012 - until now  timegate uri: http://mementoarchive.lanl.gov/twa/timegate/
+</li>
+</ul>
+<p>
+Please note, that the  first two archives in the list  are legacy archives and 
+they implementations are slightly differ then current  opensource SiteStory Web Archive installed at "http://mementoarchive.lanl.gov/twa".</p>
+<p> As described in the <a href="http://www.mementoweb.org/guide/rfc/ID/#rfc.figure.28">Memento Framework Discovery Specifications</a>  we have a  <a href="http://tools.ietf.org/html/rfc6415">host-meta document</a> at <a href="http://mementoarchive.lanl.gov/.well-known/host-meta">http://mementoarchive.lanl.gov/.well-known/host-meta</a> supporting TimeGate and TimeMap discovery.
+TimeGate Redirector  is in charge of
+pointing a client at a TimeGate at an archive that is appropriate for
+the datetime it is looking for. 
+<br></br> Let us check that all components of the  Memento Framework are in place using <a href="http://lanlsource.lanl.gov/hello"> http://lanlsource.lanl.gov/hello</a> example: </p>
+<ul>
+ <li>  Content server has Link header, which points to TimeGate Redirector. </li>
 <source> <![CDATA[
-curl -D my.txt -I http://www.dans.knaw.nl/
+curl -D my.txt -I http://lanlsource.lanl.gov/hello
 HTTP/1.1 200 OK
-Date: Thu, 24 May 2012 16:56:29 GMT
-Server: Apache/2.2.3 (Red Hat)
-Link: <http://theresourcedepot.org/000010D/http://www.dans.knaw.nl/>;rel=timegate
-X-Powered-By: PHP/5.1.6
-Set-Cookie: SESS4a0091108fb271e05f34da7cf77c975f=j7bc90c1hte9k9sarpkts3h092; expires=Sat, 16 Jun 2012 20:29:49 GMT; path=/
-Expires: Sun, 19 Nov 1978 05:00:00 GMT
-Last-Modified: Thu, 24 May 2012 16:56:29 GMT
-Cache-Control: store, no-cache, must-revalidate
-Cache-Control: post-check=0, pre-check=0
-Connection: close
-Content-Type: text/html; charset=utf-8
+Date: Tue, 31 Jul 2012 19:39:30 GMT
+Server: Apache
+Link: <http://mementoarchive.lanl.gov/tg/http://lanlsource.lanl.gov/hello>;rel=timegate
+Last-Modified: Tue, 31 Jul 2012 12:00:01 GMT
+ETag: "15ea09-12fe-eb02f240"
+Accept-Ranges: bytes
+Content-Length: 4862
+Vary: Accept-Encoding,User-Agent
+Content-Type: text/html; charset=UTF-8
+
 ]]>
 </source>
 <li>
-TimegateDirector redirects to appropriate archive:
+TimeGate Redirector redirects to appropriate archive:
 </li>
 <source> <![CDATA[
-curl -D my.txt -I http://theresourcedepot.org/000010D/http://www.dans.knaw.nl
+ curl -D my.txt -I http://mementoarchive.lanl.gov/tg/http://lanlsource.lanl.gov/hello
 HTTP/1.1 302 Moved Temporarily
-Date: Thu, 24 May 2012 17:19:34 GMT
-Location: http://www.theresourcedepot.com/000010/timegate/http://www.dans.knaw.nl
-Link: <http://theresourcedepot.org/000010D/timemap/http://www.dans.knaw.nl>;rel="timemap index"; type="application/link-format"
-Connection: close
+Date: Tue, 31 Jul 2012 19:43:44 GMT
+Location: http://mementoarchive.lanl.gov/twa/timegate/http://lanlsource.lanl.gov/hello
+Link: <http://mementoarchive.lanl.gov/tg/timemap/http://lanlsource.lanl.gov/hello>;rel="timemap index"; type="application/link-format"
 Content-Type: text/plain; charset=UTF-8
-Content-Language: nl
+
 ]]>
 </source>
 <p>Note the discovery  link to the index timemap.</p>
 <li>
-Timegate redirects to appropriate Memento:
+TimeGate redirects to appropriate Memento:
 </li>
 <source><![CDATA[ 
-curl -D my.txt -I http://www.theresourcedepot.com/000010/timegate/http://www.dans.knaw.nl
+curl -D my.txt -I http://mementoarchive.lanl.gov/twa/timegate/http://lanlsource.lanl.gov/hello
 HTTP/1.1 302 Moved Temporarily
-Date: Thu, 24 May 2012 17:21:14 GMT
-Location: http://www.theresourcedepot.com/000010/memento/20120524171632/http://www.dans.knaw.nl
+Date: Tue, 31 Jul 2012 19:45:59 GMT
+Location: http://mementoarchive.lanl.gov/twa/memento/20120731120002/http://lanlsource.lanl.gov/hello
 Vary: negotiate,accept-datetime
-Link: <http://www.dans.knaw.nl>;rel="original", <http://www.theresourcedepot.com/000010/memento/20120524171632/http://www.dans.knaw.nl>;rel="memento last"; datetime="Thu, 24 May 2012 17:16:32 GMT", <http://www.theresourcedepot.com/000010/memento/20120410001726/http://www.dans.knaw.nl>;rel="memento first"; datetime="Tue, 10 Apr 2012 00:17:26 GMT", <http://www.theresourcedepot.com/000010/memento/20120524165933/http://www.dans.knaw.nl>;rel="memento prev"; datetime="Thu, 24 May 2012 16:59:33 GMT" , <http://www.theresourcedepot.com/000010/timemap/link/http://www.dans.knaw.nl>;rel="timemap"; type="application/link-format" , <http://www.theresourcedepot.com/000010/timebundle/http://www.dans.knaw.nl>;rel="timebundle"
-Connection: close
+Link: <http://lanlsource.lanl.gov/hello>;rel="original", <http://mementoarchive.lanl.gov/twa/memento/20120731120002/http://lanlsource.lanl.gov/hello>;rel="memento last"; datetime="Tue, 31 Jul 2012 12:00:02 GMT", <http://mementoarchive.lanl.gov/twa/memento/20120522174322/http://lanlsource.lanl.gov/hello>;rel="memento first"; datetime="Tue, 22 May 2012 17:43:22 GMT", <http://mementoarchive.lanl.gov/twa/memento/20120731000002/http://lanlsource.lanl.gov/hello>;rel="memento prev"; datetime="Tue, 31 Jul 2012 00:00:02 GMT" , <http://mementoarchive.lanl.gov/twa/timemap/link/http://lanlsource.lanl.gov/hello>;rel="timemap"; type="application/link-format" , <http://mementoarchive.lanl.gov/twa/timebundle/http://lanlsource.lanl.gov/hello>;rel="timebundle"
 Content-Type: text/plain; charset=UTF-8
-Content-Language: nl
+
 ]]>
 </source>
 </ul>
@@ -64,17 +85,9 @@ Content-Language: nl
 <source>
 </source>
 </section>
-<section name="LANL Archive example">
-<p> We are archiving several web servers : <ul><li>http://mementoweb.org/ see 
-<a  href="http://mementoweb.org/depot/native/mementoweb/"> for more detals</a></li>
-<li>http://lanlsource.lanl.gov/hello  <a href="http://www.mementoweb.org/demo/"> see more info here</a></li>
-<li>http://www.shared-canvas.org/</li></ul> All mentioned websites get archived to the Transactional Web Archive at  
-http://mementoarchive.lanl.gov. As described in the <a href="http://www.mementoweb.org/guide/rfc/ID/#rfc.figure.28">Memento Framework Discovery Specifications</a>  we have a host-meta document at <a href="http://mementoarchive.lanl.gov/.well-known/host-meta">http://mementoarchive.lanl.gov/.well-known/host-meta</a> supporting TimeGate and TimeMap discovery.
-</p>
-</section>
 <section name="End-User Interfaces to  Archive">
 <p> 
-To get a smooth "Time Travel" experience download the MementoFox plugin.
+To get a smooth "Time Travel" experience download the <a href="http://addons.mozilla.org/en-US/firefox/addon/mementofox/"> MementoFox plugin </a>.
 To install the plugin, drag and drop this XPI file over any open Firefox window, which will invoke the Add-on installation window.
 After closing and restarting  FireFox go to Tools ->Add-ons->Extentions to check that you have the MementoFox extension listed. 
 </p>

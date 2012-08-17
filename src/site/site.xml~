@@ -4,7 +4,9 @@
   xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
     <bannerLeft>
         <name>Transactional Web Archive </name>
-        <src>images/twa_logo2.png</src>
+        <src>images/SiteStory_test-1.png</src>
+        <width>100</width>
+        <height>100</height>
         <href>http://mementoweb.github.com/SiteStory/</href>
     </bannerLeft>
     <bannerRight>
@@ -34,9 +36,9 @@
             <item name="Geting Started" href="getStarted.html"/>
             <item name="API"  href="apidocs/index.html"/>
             <item name="Demo" href="demo1.html"/>
-            <item name="Download" href="http://mementoweb.github.com/SiteStory/repository/gov/lanl/archive/twa/1.0/"/>
-            <!--item name="Usage" href="usage.html"/>
-            <item name="FAQ" href="faq.html"/-->
+            <item name="Download" href="http://mementoweb.github.com/SiteStory/repository/gov/lanl/archive/sitestory/1.0/"/>
+            <item name="Acknowledgments" href="Acknowledgments.html"/>
+             <!-- <item name="FAQ" href="faq.html"/-->
         </menu>
         <menu ref="reports"/>
     <footer>Copyright (c) 2012, Los Alamos National Security, LLC All rights reserved.

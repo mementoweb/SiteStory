@@ -18,7 +18,7 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD Simplified DocBook XML V1.0//EN"
 "http://www.oasis-open.org/docbook/xml/simple/1.0/sdocbook.dtd">
 <article id="bk_OtherInfo">
-  <title>WARC file example</title>
+  <title>WARC File example</title>
 
   <articleinfo>
     <legalnotice>
@@ -35,8 +35,8 @@
   </articleinfo>
 
   <section id="ch_warcfile">
-    <title>WARC file</title>
-    <para>We are using request,response and metadata WARC types. In metadata section we convey additional information about memento response, such as  period when digest of the page bitestream was the same (start, end),number of hits during that period. As you can see WARC-Concurrent-To: parameter used to connect response record with corresponding metadata record.  </para>
+    <title>WARC File</title>
+    <para>We are using request, response and metadata WARC types. In the metadata section we convey additional information about the Memento response, such as the period when the digest of the page bitestream was the same (start, end) and number of hits during that period. As you can see below,the WARC-Concurrent-To: parameter is used to connect the response record with the corresponding metadata record.  </para>
     <programlisting><![CDATA[
 WARC/1.0
 WARC-Type: warcinfo
@@ -114,6 +114,6 @@ Content-Type: application/rss+xml; charset=utf-8
 ...
 ]]> 
  </programlisting>
-    <para> currently empty </para>
+ 
   </section>
 </article>

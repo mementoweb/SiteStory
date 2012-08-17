@@ -4,11 +4,11 @@
   xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
  <body>
 <section name="Wayback Memento interface">
-<p> This manual is for versions 1.6 and 1.7 of wayback.
-Download wayback.war  from 
+<p> This manual is for versions 1.6 and 1.7 of the IA's  Wayback software.
+First, download the wayback.war file  from the 
 <a href="http://sourceforge.net/projects/archive-access/files/wayback/1.6.0/">Internet Archive </a>
 Follow <a href="http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html">installation guide </a>.
-To configure memento interface uncomment memento bean. Below is example of installation of wayback as ROOT under tomcat.
+To configure memento interface uncomment the memento bean. Below is an example of installation of wayback.war as ROOT.war under Tomcat.
 <source>
 <![CDATA[
   <import resource="MementoReplay.xml"/>

@@ -20,13 +20,16 @@
     </abstract>
  </articleinfo>
 <section id="ch_GettingStarted">
-    <title>Getting Started: Adding Transactional Archiving to your Apache  Web Server. </title>
+    <title>Adding Transactional Archiving to your Apache  Web Server. </title>
     <para>This document contains information to get you started  with "SiteStory Web Archive" our 
-     Transactional Web Archive software. It is aimed primarily at developers  and
-    contains simple installation instructions of a SiteStory Apache Module   and  a single SiteStory Web Archive server, and
-    few commands to verify that it is running. There are a few sections regarding long term archiving set up involving data distribution between  SiteStory and IA Wayback  archives. </para>
-
-    <section id="sc_Prerequisites">
+     Transactional Web Archive software.
+     It is aimed primarily at developers and contains simple installation instructions for: </para>
+     <itemizedlist>
+      <listitem> "mod_sitestory", our SiteStory Apache Module and </listitem>
+      <listitem> - a single SiteStory Web Archive server. </listitem>
+      <itemizedlist>
+<para>This document also contains a few commands to verify that the software is running as well as a few sections regarding the setup for long term archiving, which involves data distribution between SiteStory and Internet Archive (IA) Wayback archives.</para>
+     <section id="sc_Prerequisites">
         <title>Prerequisites</title>
        <section id="sc_supportedPlatforms">
         <title>Supported Platforms</title>
@@ -55,8 +58,8 @@
      <section id="sc_Download">
       <title>Download</title>
       <para>To get the lasted version of the SiteStore Web Archive software, download the stable release
-        <ulink url="http://mementoweb.github.com/SiteStory/repository/gov/lanl/archive/twa/1.0/">
-          here</ulink>. For the mod_sitestory.c see <ulink url="http://github.com/mementoweb/SiteStory">source repository</ulink></para>
+        <ulink url="http://mementoweb.github.com/SiteStory/repository/gov/lanl/archive/sitestory/1.0/">
+          here</ulink>. For the mod_sitestory.c see <ulink url="http://github.com/mementoweb/SiteStory/tree/master/sitestory-apache">source repository</ulink></para>
        </section>
 
         <section id="sc_InstallingMod_ta">
@@ -402,7 +405,7 @@ curl \
                redirectPort="8443" />  
        ]]>
      </programlisting>
- <para>A  value too low  for the timeout parameter may  effect the completion of  the HTTP PUT requests to the ResourceDepot (used by mod_ta filter)  </para>
+ <para>A  value too low  for the timeout parameter may  effect the completion of  the HTTP PUT requests to the SiteStory Web Archive (used by mod_sitestory filter)  </para>
  </listitem>
 
  </varlistentry>

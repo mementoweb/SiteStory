@@ -7,7 +7,7 @@
 <p> This manual is for versions 1.6 and 1.7 of wayback.
 Download wayback.war  from 
 <a href="http://sourceforge.net/projects/archive-access/files/wayback/1.6.0/">Internet Archive </a>
-Follow <a href="http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html">installation gide </a>.
+Follow <a href="http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html">installation guide </a>.
 To configure memento interface uncomment memento bean. Below is example of installation of wayback as ROOT under tomcat.
 <source>
 <![CDATA[

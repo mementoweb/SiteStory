@@ -919,6 +919,7 @@ public class IndexImplB implements Index{
           	         return lastdate;
             	   }
              }
+                  
              
      }	
      
@@ -1012,14 +1013,23 @@ return null;
 		     String fdate = getFirst(url);
 		     
 		     String ldate = getLast(url);
+		    // System.out.println("first date:"+StringtoDate(fdate));
+		   //  System.out.println("last date:"+StringtoDate(ldate));
+		  
 		    // log.finest("last:"+StringtoDate(ldate));
 		     
 		     //log.finest("first:"+StringtoDate(fdate));
 		      if (fdate==null) {
+		    	  System.out.println("first date null");
 		    	 m.setStatuscode(404);
 		    	 return m;
 		      }
-		      
+		      if (ldate==null) {
+		    	  System.out.println("first date:"+StringtoDate(fdate));
+		    	  //m.setStatuscode(404);
+		    	  //return m;
+		    	  ldate = fdate;
+		      }
 		  	if (fdate.equals(ldate)) {
 	    		//then just one record and this is memento so 
 	    		//need just get records from dbrecord
@@ -1031,16 +1041,7 @@ return null;
 	    	 }
 	   
 		    Long datereq =  date.getTime();
-	          long l = Long.parseLong(ldate);
-	          if (datereq.longValue()>l ) {
-	        	  log.finest("outside last");
-	        	  //out of range so you do not need to look for memento
-	        	  //make momento the lastdate ; 
-	        	   setMemento( m,  ldate, url, fdate,ldate);
-	        	   addHeaders(m,null);
-		    	   //may be I can find prev (before last).
-		    	   return m;
-	          }                                
+	                                      
 	          long f = Long.parseLong(fdate);
 	          if (datereq.longValue() < f ) {
 	        	  log.finest("outside first");
@@ -1051,6 +1052,17 @@ return null;
 		    	   //may be I can find next (after last).
 		    	   return m;
 	          }  
+	          long l = Long.parseLong(ldate);
+	          if (datereq.longValue()>l ) {
+	        	  log.finest("outside last");
+	        	  //out of range so you do not need to look for memento
+	        	  //make momento the lastdate ; 
+	        	   setMemento( m,  ldate, url, fdate,ldate);
+	        	   addHeaders(m,null);
+		    	   //may be I can find prev (before last).
+		    	   return m;
+	          }       
+	          
 	          DatabaseEntry key = new DatabaseEntry(("1|"+url).getBytes("UTF-8"));
 	          String datakey =url+"|"+ Long.toString( date.getTime());
 	 	      DatabaseEntry data = new DatabaseEntry(datakey.getBytes("UTF-8"));
