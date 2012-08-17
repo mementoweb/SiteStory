@@ -19,10 +19,10 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  <organization>
+  <!-- <organization>
     <name>Los Alamos National Security, LLC, Research Library Proto Team </name>
     <url>http://library.lanl.gov/</url>
-  </organization>
+  </organization> -->
    <mailingLists>
     <mailingList>
       <name>SiteStory Archive  Discussion List</name>
