@@ -171,7 +171,7 @@ public class MementoResource {
 		//}
 		 String origlink ="<"+id+">;rel=\"original\"";
     	 String timemap = " , <"+baseUri.toString() +"timemap/link/" + id+">;rel=\"timemap\"; type=\"application/link-format\"";
-		 String timebundle = " , <"+baseUri.toString() +"timebundle/" + id+">;rel=\"timebundle\"";
+		// String timebundle = " , <"+baseUri.toString() +"timebundle/" + id+">;rel=\"timebundle\"";
 		 String timegate =" , <"+baseUri.toString() +"timegate/" + id+">;rel=\"timegate\" ";
 		 //if (indextimemap!=null) {
            //timemap=" , <"+indextimemap+ id+">;rel=\"timemap\"; type=\"application/link-format\"";           
@@ -251,7 +251,7 @@ public class MementoResource {
 				 
 				 r.header("Location", location);
 				 r.header("Memento-Datetime",httpformatter.format(m.getAccessdate()));
-			     r.header("Link",origlink+links +timemap+timebundle + timegate);
+			     r.header("Link",origlink+links +timemap + timegate);
 				return r.build();
 				         
 			}
@@ -350,7 +350,7 @@ public class MementoResource {
 			 r.header("Content-Language",m.getLang());	
 		 }
 	     r.header("Memento-Datetime",httpformatter.format(m.getAccessdate()));
-	     r.header("Link",origlink+links +timemap+timebundle + timegate);
+	     r.header("Link",origlink+links +timemap + timegate);
 	     return r.build();
 	     
 	    }
@@ -381,7 +381,7 @@ public  Response getHead(String id,String date) throws ParseException {
 		
 		 String origlink ="<"+id+">;rel=\"original\"";
     	 String timemap = " , <"+baseUri.toString() +"timemap/link/" + id+">;rel=\"timemap\"; type=\"application/link-format\"";
-		 String timebundle = " , <"+baseUri.toString() +"timebundle/" + id+">;rel=\"timebundle\"";
+		// String timebundle = " , <"+baseUri.toString() +"timebundle/" + id+">;rel=\"timebundle\"";
 		 String timegate =" , <"+baseUri.toString() +"timegate/" + id+">;rel=\"timegate\" ";
 		// if (indextimemap!=null) {
 	      //     timemap=" , <"+indextimemap+ id+">;rel=\"timemap\"; type=\"application/link-format\"";           
@@ -434,7 +434,7 @@ public  Response getHead(String id,String date) throws ParseException {
 			 }
 		 
 	     r.header("Memento-Datetime",httpformatter.format(m.getAccessdate()));
-	     r.header("Link",origlink+links +timemap+timebundle + timegate);
+	     r.header("Link",origlink+links +timemap + timegate);
 	     return r.build();
 	     
 	    }

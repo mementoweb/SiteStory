@@ -24,17 +24,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import org.dspace.foresite.Aggregation;
-import org.dspace.foresite.ResourceMap;
-import org.dspace.foresite.OREFactory;
-import org.dspace.foresite.Agent;
-import org.dspace.foresite.AggregatedResource;
-import org.dspace.foresite.ORESerialiser;
-import org.dspace.foresite.ORESerialiserFactory;
-import org.dspace.foresite.ResourceMapDocument;
-import org.dspace.foresite.Triple;
-import org.dspace.foresite.jena.TripleJena;
-import org.dspace.foresite.Predicate;
+//import org.dspace.foresite.Aggregation;
+//import org.dspace.foresite.ResourceMap;
+//import org.dspace.foresite.OREFactory;
+//import org.dspace.foresite.Agent;
+//import org.dspace.foresite.AggregatedResource;
+//import org.dspace.foresite.ORESerialiser;
+//import org.dspace.foresite.ORESerialiserFactory;
+//import org.dspace.foresite.ResourceMapDocument;
+//import org.dspace.foresite.Triple;
+//import org.dspace.foresite.jena.TripleJena;
+//import org.dspace.foresite.Predicate;
 
 /*
 @author Lyudmila Balakireva
@@ -75,8 +75,8 @@ public class TimeMapResource {
 		 Iterator it =  mset.iterator();
 		    StringBuffer sb = new StringBuffer("<"+id+">;rel=\"original\"\n");
 		    sb.append(" , <"+baseUri.toString() +"timegate/" + id+">;rel=\"timegate\" ");
-		    sb.append (" , <"+baseUri.toString() +"timebundle/" + id+">;rel=\"timebundle\"");
-		    sb.append (" , <"+baseUri.toString() +"timemap/link/" + id+">;rel=\"timemap self\"; type=\"application/link-format\"");
+		   // sb.append (" , <"+baseUri.toString() +"timebundle/" + id+">;rel=\"timebundle\"");
+		    sb.append (" , <"+baseUri.toString() +"timemap/link/" + id+">;rel=\"self\"; type=\"application/link-format\"");
 		                int count = 0;
 		                while (it.hasNext()) {
 		                	Memento m = (Memento) it.next();
@@ -109,7 +109,7 @@ public class TimeMapResource {
 		 		//return sb.toString();
 	}
 	
-	
+/*	
 	@GET
 	@Path("rdf/{id:.*}")
 	@Produces("application/rdf+xml" )
@@ -209,5 +209,5 @@ public class TimeMapResource {
            return  r.build();    
 		//return serialisation;
 	}
-	
+	*/
 }

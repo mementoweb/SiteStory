@@ -157,7 +157,7 @@ public class TimeGateResource {
 		 
 		 String origlink ="<"+id+">;rel=\"original\"";
       	 String timemap = " , <"+baseurl.toString() +"timemap/link/" + id+">;rel=\"timemap\"; type=\"application/link-format\"";
-		 String timebundle = " , <"+baseurl.toString() +"timebundle/" + id+">;rel=\"timebundle\"";
+		// String timebundle = " , <"+baseurl.toString() +"timebundle/" + id+">;rel=\"timebundle\"";
 		 //if (indextimemap!=null) {
 	       //    timemap=" , <"+indextimemap+ id+">;rel=\"timemap\"; type=\"application/link-format\"";           
 			// }
@@ -174,7 +174,7 @@ public class TimeGateResource {
 				          
 				           r.header("Vary","negotiate,accept-datetime");
                           // r.header("TCN", "list"); 
-                           r.header("Link",origlink  +timemap +timebundle+links);
+                           r.header("Link",origlink  +timemap +links);
 				          //bad not parsable date
 					        return r.build();
 			               }
@@ -193,7 +193,7 @@ public class TimeGateResource {
 				               String links = mc.composeLinkHeader(m.getAccessdate(),m.getLastMemento().getAccessdate(),m.getFirstMemento().getAccessdate(),id);
 				                ResponseBuilder r = Response.status(400);
 					           r.header("Vary","negotiate,accept-datetime");
-	                           r.header("Link",origlink  +timemap +timebundle+links);
+	                           r.header("Link",origlink  +timemap +links);
 					          //bad not parsable interval date
 						        return r.build();
 			            	  
@@ -252,7 +252,7 @@ public class TimeGateResource {
 					    				              if(  m.getNextMemento().getAccessdate().after(intdate2)){
 					    				                   ResponseBuilder r = Response.status(406);
 					    				                                   r.header("Vary","negotiate,accept-datetime");
-					    				                                   r.header("Link",origlink+ links +timemap +timebundle);
+					    				                                   r.header("Link",origlink+ links +timemap );
 	                                                                       return  r.build();
 					    				               }
 					    				                else {
@@ -274,7 +274,7 @@ public class TimeGateResource {
 					    					              chlinks=chsb.toString();
 					    					              r.header("Location",chlocation);
 					    					              r.header("Vary","negotiate,accept-datetime");
-					    					              r.header("Link",origlink+ chlinks +timemap +timebundle);
+					    					              r.header("Link",origlink+ chlinks +timemap );
 		                                                  return  r.build();
 				         	  
 					    				                 }
@@ -283,7 +283,7 @@ public class TimeGateResource {
 					    					 
 					    					  ResponseBuilder r = Response.status(406);
 			                                   r.header("Vary","negotiate,accept-datetime");
-			                                   r.header("Link",origlink+ links +timemap +timebundle);
+			                                   r.header("Link",origlink+ links +timemap );
 			 
                                               return  r.build();
 					    					 
@@ -302,7 +302,7 @@ public class TimeGateResource {
 	                                        r.header("Location",location);
 	                                        r.header("Vary","negotiate,accept-datetime");
                                           //  r.header("TCN", "choice"); 
-                                            r.header("Link",origlink+ links +timemap +timebundle);
+                                            r.header("Link",origlink+ links +timemap );
 	                                      return  r.build();
 			         
 		  
