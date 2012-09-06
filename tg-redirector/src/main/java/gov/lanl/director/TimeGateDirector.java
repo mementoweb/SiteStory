@@ -137,7 +137,7 @@ static String filename;
 		                         r.header("Link", timemap );
 	                                       r.header("Location",tgurl+url);
 	                                       
-	                                      //  r.header("Vary","negotiate,accept-datetime");
+	                                        r.header("Vary","negotiate,accept-datetime");
                                           //  r.header("TCN", "choice"); 
                                            // r.header("Link",origlink+ links +timemap +timebundle);
 	                                      return  r.build();
