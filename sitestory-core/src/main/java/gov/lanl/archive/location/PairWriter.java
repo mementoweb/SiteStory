@@ -3,6 +3,8 @@ package gov.lanl.archive.location;
 
 
 
+import gov.lanl.archive.ArchiveConfig;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -13,8 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PairWriter {
-	 public static final String DB_PATH =
-         System.getProperty( "ta.storage.basedir", "target/db" );
+	// public static final String DB_PATH = System.getProperty( "ta.storage.basedir", "target/db" );
+	  public static final String DB_PATH = ArchiveConfig.prop.get("ta.storage.basedir");
 	  private static Logger log= Logger.getLogger(PairWriter.class.getName());; 
 	 
 	 private static boolean write(InputStream src, File dest) {

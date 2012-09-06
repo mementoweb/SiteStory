@@ -31,7 +31,14 @@ public class ArchiveConfig {
 	    	  System.out.println("config");
 	    	   prop = loadConfigFile( );
 	    	   setIPlist();
-			  idx = (Index) Class.forName(System.getProperty( "ta.index", "gov.lanl.archive.index.bdb.IndexImplB")).newInstance();
+	    	   if( prop.containsKey("ta.index")) {
+			   //idx = (Index) Class.forName(System.getProperty( "ta.index", "gov.lanl.archive.index.bdb.IndexImplB")).newInstance();
+	    		   String idxname=prop.get("ta.index");
+	    		   idx = (Index) Class.forName(idxname).newInstance();
+	    	   }
+	    	   else {
+	    		   idx = (Index) Class.forName("gov.lanl.archive.index.bdb.IndexImplB").newInstance();
+	    	   }
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

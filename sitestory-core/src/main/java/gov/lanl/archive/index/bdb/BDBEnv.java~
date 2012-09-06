@@ -8,15 +8,13 @@ import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.je.SecondaryConfig;
 import com.sleepycat.je.SecondaryDatabase;
-import gov.lanl.archive.ArchiveConfig;
+
 
 public class BDBEnv {
 	
 	  protected static final String RESOURCE_DATABASE = "resource_record";
-             //public static final String DB_PATH = System.getProperty("ta.storage.basedir", "target/db" );
-	      public static final String DB_PATH = ArchiveConfig.prop.get("ta.storage.basedir"); 
-              //protected String databaseDirectory = System.getProperty("ta.index.basedir",  DB_PATH  + File.separator + "bdbindex" );
-               protected String databaseDirectory ;
+	  public static final String DB_PATH = System.getProperty("ta.storage.basedir", "target/db" ); 
+	  protected String databaseDirectory = System.getProperty("ta.index.basedir",  DB_PATH  + File.separator+"bdbindex" );
 	 // protected String databaseDirectory = System.getProperty("ta.index.basedir", "/Users/ludab/projects/bdbindextest" );
 	   // protected static Logger log = Logger.getLogger(BDBEnv.class.getName());
 	    protected Environment env;
@@ -38,12 +36,7 @@ public class BDBEnv {
 	    
 	    public BDBEnv(String dbDir, boolean readOnly) {
 		//  System.out.println("r100_" +dbDir);
-		  if (ArchiveConfig.prop.containsKey("ta.index.basedir")) {
-		    databaseDirectory= ArchiveConfig.prop.get("ta.index.basedir");
-		  }
-		  else {
-		    databaseDirectory = DB_PATH  + File.separator + "bdbindex";
-		  }
+	          
 	        openEnv(dbDir, readOnly);
 	        openDatabases(readOnly);
 	    }

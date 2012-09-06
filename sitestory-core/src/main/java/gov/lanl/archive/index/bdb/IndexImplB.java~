@@ -962,7 +962,7 @@ public String  getFirst(String url){
      	  String foundData = new String(data.getData(), "UTF-8"); 
      	   String strdate = foundData.substring((url+"|").length());
                	      log.finest("First in Str:"+strdate);
-		      if (strdate.equals(maxdate)) return null; 
+		      if (strdate.equals("maxdate")) return null; 
      	  // Date next = new Date(Long.parseLong(foundData));
            // System.out.println("First:"+next);
      	    return strdate;   

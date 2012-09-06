@@ -1,13 +1,15 @@
 package gov.lanl.archive.location;
 
+import gov.lanl.archive.ArchiveConfig;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class PairReader {
-	 public static final String DB_PATH =
-         System.getProperty( "ta.storage.basedir", "target/db" );
+	// public static final String DB_PATH = System.getProperty( "ta.storage.basedir", "target/db" );
+	  public static final String DB_PATH = ArchiveConfig.prop.get("ta.storage.basedir");
 	 
 public InputStream read (String uuid) {
 	  File f;
