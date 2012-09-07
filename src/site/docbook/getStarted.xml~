@@ -27,7 +27,7 @@
      <itemizedlist>
       <listitem> "mod_sitestory", our SiteStory Apache Module and </listitem>
       <listitem> - a single SiteStory Web Archive server. </listitem>
-      <itemizedlist>
+      </itemizedlist>
 <para>This document also contains a few commands to verify that the software is running as well as a few sections regarding the setup for long term archiving, which involves data distribution between SiteStory and Internet Archive (IA) Wayback archives.</para>
      <section id="sc_Prerequisites">
         <title>Prerequisites</title>

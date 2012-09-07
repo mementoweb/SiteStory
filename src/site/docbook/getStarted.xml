@@ -75,7 +75,7 @@
     ArchiveTimeGate http://www.myarchivename.com/[appname]/timegate/
     EnableIP On  
     Excluded /search /test 
- <IfModule>
+ </IfModule>
 ]]>
 </programlisting>
         <para> Here are the meanings                                                                                                                    
