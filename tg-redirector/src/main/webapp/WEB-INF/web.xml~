@@ -4,11 +4,10 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-  <context-param>
-    <description>This is a context parameter example</description>
+<!--  <context-param>
     <param-name>configpath</param-name>
-    <param-value>/home/ludab/glassfishv3/glassfish/domains/domain1/applications/tg-director/classes/timegates.xml</param-value>
-  </context-param>
+    <param-value>/home/ludab/glassfishv3/glassfish/domains/domain1/applications/tg-director/WEB-INF/classes/</param-value>
+  </context-param> -->
  <listener>
   <listener-class>gov.lanl.director.InitServletContextListener</listener-class>
   </listener>

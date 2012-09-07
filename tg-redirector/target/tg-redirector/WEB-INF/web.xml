@@ -4,13 +4,14 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-  <context-param>
+<!--  <context-param>
     <param-name>configpath</param-name>
     <param-value>/home/ludab/glassfishv3/glassfish/domains/domain1/applications/tg-director/WEB-INF/classes/</param-value>
-  </context-param>
+  </context-param> 
  <listener>
   <listener-class>gov.lanl.director.InitServletContextListener</listener-class>
   </listener>
+-->
   <servlet>
         <servlet-name>Jersey Web Application</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>

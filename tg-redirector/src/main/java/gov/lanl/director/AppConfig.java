@@ -47,7 +47,7 @@ public class AppConfig {
 	  }
 	 
 	   
-	public static void processConfig(String filename)  {
+	public static void processConfig()  {
 		 /*
 		  <timegates>
          <timegate uri=" base uri of timegate ">

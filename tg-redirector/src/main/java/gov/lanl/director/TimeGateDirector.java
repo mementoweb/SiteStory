@@ -36,14 +36,14 @@ public class TimeGateDirector {
  protected final URI baseUri;
  static DatatypeFactory dtf;
  static AppConfig config; 
-static String filename;
+//static String filename;
   
 	 static {
-		  InitServletContextListener cl= InitServletContextListener.getInstance();
-		   filename = cl.getAttribute("path");
-		    System.out.println("filename" +filename);
+		  //InitServletContextListener cl= InitServletContextListener.getInstance();
+		   //filename = cl.getAttribute("path");
+		    //System.out.println("filename" +filename);
 		    config = new AppConfig();
-	   	    config.processConfig(filename);
+	   	    config.processConfig();
 	 }
  
 	 public	TimeGateDirector( @Context UriInfo uriInfo )
@@ -97,6 +97,7 @@ static String filename;
 	    	  ResponseBuilder r = Response.status(302);
 	    	   r.header("Link", timemap );
                r.header("Location",tgurl+url);
+               r.header("Vary","negotiate,accept-datetime");
              return  r.build();
 	    	
 	    }
@@ -131,13 +132,14 @@ static String filename;
 	    	        tgurl=(String) map.get(map.lastKey());
 	              }
 	    }
-       				    		
-	    
+       				 		
+	    System.out.println("tg:vary added");
 		                         ResponseBuilder r = Response.status(302);
+		                         
 		                         r.header("Link", timemap );
+		                         r.header("Vary","negotiate,accept-datetime");
 	                                       r.header("Location",tgurl+url);
-	                                       
-	                                        r.header("Vary","negotiate,accept-datetime");
+	                                     
                                           //  r.header("TCN", "choice"); 
                                            // r.header("Link",origlink+ links +timemap +timebundle);
 	                                      return  r.build();
@@ -148,7 +150,7 @@ static String filename;
 		  
 	
 }
-	
+	/*
 	public boolean check_interval(String hdatetime,long reqtime, Map map) {
 		// Map map = new HashMap();
 		boolean intervalerror=false;
@@ -211,6 +213,6 @@ static String filename;
          }//if
          return intervalerror;
 	}
-	
+	*/
 	
 }

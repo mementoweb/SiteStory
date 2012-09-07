@@ -38,16 +38,16 @@ public class TimeMapIndex {
  protected final URI baseUri;
  static DatatypeFactory dtf;
  static AppConfig config; 
-static String filename;
+//static String filename;
 static SimpleDateFormat httpformat;
 	 static {
-		  InitServletContextListener cl= InitServletContextListener.getInstance();
-		   filename = cl.getAttribute("path");
-		    System.out.println("filename" +filename);
+		 // InitServletContextListener cl= InitServletContextListener.getInstance();
+		 //  filename = cl.getAttribute("path");
+		  //  System.out.println("filename" +filename);
 		    config = new AppConfig();
-	   	    config.processConfig(filename);
+	   	    config.processConfig();
 	   	    httpformat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
-	   	  TimeZone tzo = TimeZone.getTimeZone("GMT");
+	   	    TimeZone tzo = TimeZone.getTimeZone("GMT");
 	        httpformat.setTimeZone(tzo);
 	 }
  
@@ -71,11 +71,11 @@ static SimpleDateFormat httpformat;
 		// URI u = ui.getAbsolutePath();
 		// System.out.println("absolute path"+u.toString());
 		 URI ur = ui.getRequestUri(); 
-		 System.out.println("request url:"+ur.toString());
+		// System.out.println("request url:"+ur.toString());
 		 URI baseurl = ui.getBaseUri();
-		 System.out.println("baseurl"+baseurl.toString());
+		// System.out.println("baseurl"+baseurl.toString());
 		 String url = ur.toString().replaceFirst(baseurl.toString()+"timemap/", "");
-		 System.out.println("get into get:"+url);
+		// System.out.println("get into get:"+url);
 		
 		
 		           //config.processConfig();

@@ -10,7 +10,6 @@
           <string>WEB-INF/classes/gov/lanl/director/TimeMapIndex.class</string>
           <string>WEB-INF/classes/gov/lanl/director/TimeGateDirector.class</string>
           <string>WEB-INF/classes/gov/lanl/director/tgconfig.class</string>
-          <string>WEB-INF/classes/gov/lanl/director/InitServletContextListener.class</string>
           <string>WEB-INF/classes/gov/lanl/director/AppConfig.class</string>
           <string>WEB-INF/classes/gov/lanl/diagnostic/CustomAgent.class</string>
           <string>WEB-INF/classes/META-INF/MANIFEST.MF</string>
