@@ -1,4 +1,6 @@
 package gov.lanl.archive.index.bdb;
+import gov.lanl.archive.ArchiveConfig;
+
 import java.io.File;
 import com.sleepycat.je.CheckpointConfig;
 import com.sleepycat.je.Database;
@@ -8,15 +10,16 @@ import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.je.SecondaryConfig;
 import com.sleepycat.je.SecondaryDatabase;
-import gov.lanl.archive.ArchiveConfig;
+
 
 public class BDBEnv {
 	
 	  protected static final String RESOURCE_DATABASE = "resource_record";
-             //public static final String DB_PATH = System.getProperty("ta.storage.basedir", "target/db" );
-	      public static final String DB_PATH = ArchiveConfig.prop.get("ta.storage.basedir"); 
-              //protected String databaseDirectory = System.getProperty("ta.index.basedir",  DB_PATH  + File.separator + "bdbindex" );
-               protected String databaseDirectory ;
+	//  public static final String DB_PATH = System.getProperty("ta.storage.basedir", "target/db" ); 
+	  public static final String DB_PATH = ArchiveConfig.prop.get("ta.storage.basedir");
+	 // protected String databaseDirectory = System.getProperty("ta.index.basedir",  DB_PATH  + File.separator+"bdbindex" );
+	 
+	  protected String databaseDirectory ;
 	 // protected String databaseDirectory = System.getProperty("ta.index.basedir", "/Users/ludab/projects/bdbindextest" );
 	   // protected static Logger log = Logger.getLogger(BDBEnv.class.getName());
 	    protected Environment env;
@@ -30,20 +33,21 @@ public class BDBEnv {
 	    protected SecondaryDatabase UrlIndexDb = null;
 	    protected SecondaryDatabase IdIndexDb = null;
 	    protected  Database urlIndexPrime = null;
-	    protected Database  headersBlob =null;
-	    
+	    protected Database  headersBlob = null;
+	    protected Database archiveStats = null;
 	   // private StoredClassCatalog classCatalog;
 	  //  private Database classCatalogDb = null;
 	//    protected static TupleBinding resourceBinding = new ResourceBinding();
 	    
 	    public BDBEnv(String dbDir, boolean readOnly) {
 		//  System.out.println("r100_" +dbDir);
-		  if (ArchiveConfig.prop.containsKey("ta.index.basedir")) {
-		    databaseDirectory= ArchiveConfig.prop.get("ta.index.basedir");
-		  }
-		  else {
-		    databaseDirectory = DB_PATH  + File.separator + "bdbindex";
-		  }
+	          
+	    	if (ArchiveConfig.prop.containsKey("ta.index.basedir")) {
+	    		databaseDirectory= ArchiveConfig.prop.get("ta.index.basedir");
+	    	}
+	    	else {
+	    		databaseDirectory = DB_PATH  + File.separator + "bdbindex";
+	    	}
 	        openEnv(dbDir, readOnly);
 	        openDatabases(readOnly);
 	    }
@@ -158,6 +162,7 @@ public class BDBEnv {
 	            DateIndexDb =  env.openSecondaryDatabase(null,"acessdateindex", recDb,  mySecConfig);
 	            
 	            
+	            
 	          // DateIndexDb = new SecondaryDatabase(databaseDirectory + "/dateindex",null,recDb,mySecConfig);
 	         //   DigestKeyCreator dkc = new DigestKeyCreator(new ResourceBinding());
 	          //  SecondaryConfig mySecDConfig = new SecondaryConfig();
@@ -222,6 +227,14 @@ public class BDBEnv {
 			        headersBlob =  env.openDatabase(null, "headersblob", config);
 			}
 			
+			if (archiveStats==null) {
+				 DatabaseConfig config = new DatabaseConfig();
+			        config.setAllowCreate(true);
+			        config.setTransactional(true);
+			        config.setSortedDuplicates(false);
+			        archiveStats  =  env.openDatabase(null, "archivestats", config);
+			}
+			
 	/*	if (lastdateDb == null) {
 				
 				 DatabaseConfig config = new DatabaseConfig();
@@ -282,6 +295,7 @@ public class BDBEnv {
 	    public SecondaryDatabase getIndexIdDb() { return IdIndexDb; }
 	    public Database getPrimaryUrlIndex(){return urlIndexPrime;}
 	    public Database getHeadersBlob(){return headersBlob;}
+	    public Database getArchiveStats(){return archiveStats;}
 	    public void closeDatabases() throws Exception {
 	        try {
 	        	if (recDb != null){
@@ -305,7 +319,10 @@ public class BDBEnv {
 	            	 headersBlob.close();
 	            	 headersBlob = null;
 	            }
-	            
+	            if ( archiveStats != null) {
+	            	 archiveStats.close();
+	            	 archiveStats = null;
+	            }
 	         //   if (digestDb != null) {
 	        //	    digestDb.close();
 	               // digestDb = null;

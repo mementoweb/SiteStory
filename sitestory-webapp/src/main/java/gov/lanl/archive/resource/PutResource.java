@@ -91,6 +91,7 @@ public class PutResource {
 			   try {
 			   Map localvalues= new HashMap();
 			   		String ra = req.getRemoteAddr();
+			   		
 			   		//System.out.println("remote adress:"+ra);
 			   		
 			   		 if (iplist.size()!=0) { //stop list not set
@@ -111,7 +112,7 @@ public class PutResource {
 			   	//InputStream input =	req.getInputStream();
 			   		
 			Memento m = new Memento();
-			
+		            m.setSrvIP(ra);
 			
 			BufferedInputStream	input = new BufferedInputStream(iinput);
 			setClientInfo(cutHeaders(input),  m,localvalues);
@@ -143,7 +144,8 @@ public class PutResource {
 			
 			m.setUrl(orgurl);
 			m.setReqUrl(orgurl);
-			
+			m.setDomain(host);
+		
 			
 			//log.info("Code:"+code);
 			
@@ -174,6 +176,8 @@ public class PutResource {
                                 
               
                                         m.setLength(0);
+                                        m.set_num_bytes(0);
+                                        m.set_num_files(0);
                                         String ruuid = UUID.randomUUID().toString();
                                         m.setDupId(ruuid);
                                         m.setCode(code);
@@ -264,14 +268,16 @@ public class PutResource {
 			   m.setDigest(digest);
 			   byte[] newInput = byteArrayOutputStream.toByteArray();
 			   long length = newInput.length;
+			   m.set_num_bytes(length);
 			   m.setLength(length);
+			   m.set_num_files(0); //default value
 			   //if (log.isLoggable(Level.INFO)) {
 			   log.info("length:" + length +" from :" + url + "thread" + threadId);
 			   //}
 			   UUID id = UUID.randomUUID();
 			   log.info("uuid:" + id +" from :" + url + "thread" + threadId);
 			   m.setDupId(id.toString());
-			  
+			 
 			   boolean check = idx.add(m);
 			   if (check) {
 				   // new record

@@ -65,14 +65,17 @@ public class TimeMapResource {
 		 URI ur = ui.getRequestUri(); 
 		 System.out.println("request url:"+ur.toString());
 		 URI baseurl = ui.getBaseUri();
-		 System.out.println("baseurl"+baseurl.toString());
-		 String id = ur.toString().replaceFirst(baseurl.toString()+"timemap/link/", "");
+		// System.out.println("baseurl"+baseurl.toString());
+		 String id = ur.toString().replace(baseurl.toString()+"timemap/link/", "");
 		// System.out.println("get into get:"+id);
 		 
 		System.out.println("id"+id);
 		 List mset = idx.getMementos(id);
 		 System.out.println("Size:"+mset.size());
 		 Iterator it =  mset.iterator();
+		 if (mset.size()==0) {
+			 return Response.status(404).build(); 
+		 }
 		    StringBuffer sb = new StringBuffer("<"+id+">;rel=\"original\"\n");
 		    sb.append(" , <"+baseUri.toString() +"timegate/" + id+">;rel=\"timegate\" ");
 		   // sb.append (" , <"+baseUri.toString() +"timebundle/" + id+">;rel=\"timebundle\"");

@@ -9,7 +9,8 @@
   <groupId>gov.lanl.archive</groupId>
   <artifactId>sitestory-core</artifactId>
   <version>1.0</version>
-  <packaging>jar</packaging>  <name>ta-core</name>
+  <packaging>jar</packaging>
+  <name>sitestory-core</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

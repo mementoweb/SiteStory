@@ -40,9 +40,41 @@ int statuscode;
 String type;
 int otype;
 String dupid;
+//added for stats service
+String domain;
+String srv_ip;
+long num_files;
+long num_bytes; 
 
 public Memento () {
 	
+}
+
+public String getDomain() {
+    return this.domain;
+}
+public void setDomain(String domain) {
+	this.domain = domain;
+}
+
+public String getSrvIP() {
+    return this.srv_ip;
+}
+public void setSrvIP(String srv_ip) {
+	this.srv_ip = srv_ip;
+}
+
+public void set_num_files(long num) {
+	this.num_files = num;
+}
+public long get_num_files() {
+    return this.num_files;
+}
+public void set_num_bytes(long num) {
+	this.num_bytes = num;
+}
+public long get_num_bytes() {
+    return this.num_bytes;
 }
 
 

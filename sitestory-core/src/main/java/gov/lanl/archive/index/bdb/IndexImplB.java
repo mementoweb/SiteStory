@@ -3,12 +3,15 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.NavigableMap;
+import java.util.TreeMap;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import gov.lanl.archive.ArchiveConfig;
 import gov.lanl.archive.Index;
 import gov.lanl.archive.Memento;
 import com.sleepycat.je.*;
@@ -24,21 +27,23 @@ import gov.lanl.archive.ArchiveConfig;
 
 public class IndexImplB implements Index{
 	 protected BDBEnv bdbEnv;
-    //public static final String DB_PATH = System.getProperty("ta.storage.basedir", "target/db" ); 
-          public static final String DB_PATH = ArchiveConfig.prop.get("ta.storage.basedir");
-          protected String databaseDirectory;
-    //protected String databaseDirectory=System.getProperty("ta.index.basedir",  DB_PATH  + File.separator+"bdbindex" );
+	 public static final String DB_PATH = ArchiveConfig.prop.get("ta.storage.basedir");
+	 //public static final String DB_PATH = System.getProperty("ta.storage.basedir", "target/db" ); 
+	// protected String databaseDirectory=System.getProperty("ta.index.basedir",  DB_PATH  + File.separator+"bdbindex" );
+	  protected String databaseDirectory;
 	 protected boolean readOnly = false;
 	 final   Date mdate = new Date(32865621205000l);
 	 final String maxdate = Long.toString(32865621205000l);
 	  private static Logger log= Logger.getLogger(IndexImplB.class.getName());; 
 	 public IndexImplB() {
-	     if (ArchiveConfig.prop.containsKey("ta.index.basedir")) {
-		 databaseDirectory= ArchiveConfig.prop.get("ta.index.basedir");
-	     }
-	     else {
-		 databaseDirectory = DB_PATH  + File.separator + "bdbindex";
-	     }
+		   
+	    	if (ArchiveConfig.prop.containsKey("ta.index.basedir")) {
+	    		databaseDirectory= ArchiveConfig.prop.get("ta.index.basedir");
+	    	}
+	    	else {
+	    		databaseDirectory = DB_PATH  + File.separator + "bdbindex";
+	    	}
+		 
 		 open(false);
 	 }
 	 
@@ -87,13 +92,19 @@ public class IndexImplB implements Index{
 	           String url=NormalizeUrl(requrl);
 	           m.setUrl(url);
 	           Memento lm = check_last ( url,txn);
-		   String fcheck = getFirst(url); // artifacts after using delete function
-	           if (lm==null||fcheck==null) {
+	           String fcheck = getFirst(url); //artifacts after using delete function
+	           if (lm==null ||fcheck==null) {
 	        	   //first time
 	        	   m.setType("1");
 	        	   m.setId(m.getDupId());
 	        	   insertRecord( m,txn) ;
 	        	   addLast( url,txn);
+	        	  if( m.get_num_bytes()>0) {
+	        		  m.set_num_files(1);
+	        		  System.out.println("srv ip from put"+m.getSrvIP());
+	        		  insertRecord_to_stats(m,txn);
+	        	  }
+	        	 
 	        	   //insertRecordtoLastdateDb( m,txn);
 	        	   status = true;
 	           }
@@ -114,6 +125,12 @@ public class IndexImplB implements Index{
 	        			      m.setId(m.getDupId());
 	        			     
 	        			      insertRecord( m,txn);
+	        			      if( m.get_num_bytes()>0) {
+	        	        		  m.set_num_files(1);
+	        	        		  insertRecord_to_stats(m,txn);
+	        	        	  }
+	        	        	
+	        			     
 	        			     // insertRecordtoLastdateDb( m, txn);
 	        			       status=true;
 	        			      }
@@ -150,6 +167,7 @@ public class IndexImplB implements Index{
 	              				  cursor.close();
 	              				  txn.commitSync();
 	              				  log.finest("case0");
+	              				  status=false;
 	              				  return status;
 	              				  }
 	              			   
@@ -176,6 +194,10 @@ public class IndexImplB implements Index{
 	              				   m.setType("1");
 		        			       m.setId(m.getDupId());
 		        			       insertRecord( m,txn); 
+		        			       if( m.get_num_bytes()>0) {
+		        		        		  m.set_num_files(1);
+		        		        		  insertRecord_to_stats(m,txn);
+		        		        	  }
 	              				  //status need to be set
 	              				 status = true;
 	              				log.finest("case2");
@@ -185,6 +207,10 @@ public class IndexImplB implements Index{
 	              				   m.setType("1");
 		        			       m.setId(m.getDupId());
 		        			       insertRecord( m,txn); 
+		        			       if( m.get_num_bytes()>0) {
+		        		        		  m.set_num_files(1);
+		        		        		  insertRecord_to_stats(m,txn);
+		        		        	  }
 		        			       //may be need to check that record not too old;)
 		        			      // insertRecordtoLastdateDb( m, txn);
 		        			       //nuzno li change id? 
@@ -293,6 +319,7 @@ public class IndexImplB implements Index{
       			   ResourceRecord record = (ResourceRecord) binding.entryToObject(data);
       			   ResourceRecordToMemento(record, m);  
       			   log.finest("last date:"+ m.getAccessdate());
+      			   System.out.println("last date:"+ m.getAccessdate());
       		       String keyString = new String(key.getData(), "UTF-8");
 	    	       log.finest("key:"+keyString);
         	         return m;
@@ -389,6 +416,62 @@ public class IndexImplB implements Index{
 		}
 		
 	}
+	
+	public void insertRecord_to_stats(Memento m,Transaction txn) {
+		try {
+			
+		 StatsBinding binding = new StatsBinding();
+	     DatabaseEntry key = new DatabaseEntry((m.getSrvIP()).getBytes("UTF-8")); 
+	     DatabaseEntry data = new DatabaseEntry();
+	     OperationStatus status = bdbEnv.getArchiveStats().get(null, key, data, LockMode.DEFAULT);
+	   //  System.out.println("in insert stats num bytes :" + m.get_num_bytes());
+	     if (status == OperationStatus.SUCCESS)
+          {
+       	   StatsRecord record = (StatsRecord) binding.entryToObject(data);
+			  
+			   long mbytes  = record.getNumBytes();
+			   long mfiles  = record.getNumFiles();
+			  // System.out.print("mfiles from db" +mfiles);
+			   //keeping start date
+			   String sdate  = record.getStart();
+			   mbytes = mbytes + m.get_num_bytes();
+			   mfiles = mfiles + m.get_num_files();
+			   System.out.println("mfiles after adding one" +  mfiles  + "\n");
+			   System.out.println("mbytes after adding file" +  mbytes + "\n");
+			   record.setNumBytes( mbytes);
+			   record.setNumFiles( mfiles);
+			   DatabaseEntry metadata = new DatabaseEntry();
+			   binding.objectToEntry(record, metadata);
+			     OperationStatus st = bdbEnv.getArchiveStats().put(txn, key, metadata);
+        	  //record already exists so 
+          }
+          else  {
+        	  
+          // new record 
+         StatsRecord rec =   MementoToStatsRecord(m);
+        
+         DatabaseEntry metadata = new DatabaseEntry();
+        //System.out.println("her1");
+         binding.objectToEntry(rec, metadata);
+         OperationStatus st = bdbEnv.getArchiveStats().put(txn, key, metadata);
+          }
+		}
+		
+		catch (Exception e) {
+	    	   e.printStackTrace();
+	           try {
+	               if (txn != null)
+	                   txn.abort();
+	           } catch (DatabaseException dbe2) {
+	        	   log.info( "db problem in insering stats:" +dbe2.getMessage()); 
+	        	   System.out.println( "db problem in insering stats" +dbe2);
+	        	  dbe2.printStackTrace();
+	           }
+		}
+		
+	}
+	
+	
 	
 	 public void addHeaders(Memento m,Transaction txn ) {
 		 try {
@@ -622,6 +705,44 @@ public class IndexImplB implements Index{
 		// TODO Auto-generated method stub
 		return null;
 	}
+ 
+ public Map getStats() {
+	 Cursor  cursor = null;
+	 Map<String, StatsRecord> nmap = new TreeMap<String, StatsRecord>();
+	 DatabaseEntry key = new DatabaseEntry();
+	 //key.setPartial(true);
+	 DatabaseEntry data = new DatabaseEntry( );
+	 StatsBinding binding = new StatsBinding();
+	 try {
+	 cursor =  bdbEnv.getArchiveStats().openCursor(null, null);
+	 //int count = cursor.count();
+	 //System.out.println("cursor:"+count);
+	// OperationStatus ret =   cursor.getNext(key, data, LockMode.DEFAULT);
+	  while (cursor.getNext(key, data, LockMode.DEFAULT) ==
+        	  OperationStatus.SUCCESS) {       	  
+        	  String keyString = new String(key.getData(), "UTF-8");
+        	  StatsRecord record = (StatsRecord) binding.entryToObject(data);       	
+        	  nmap.put( keyString, record);
+        	  
+          }
+	  
+	 
+ } catch (Exception de) {
+	   log.log( Level.SEVERE, "db problem " ,de);
+	   de.printStackTrace();
+     //System.err.println("Error accessing database." + de);
+ }
+	  finally {
+	       // Cursors must be closed.
+	       cursor.close();
+	   }
+	   
+	 return nmap;
+ }
+ 
+ 
+ 
+ 
  
  // need to take this out
  /*
@@ -961,8 +1082,8 @@ public String  getFirst(String url){
 	       if (status == OperationStatus.SUCCESS) {
      	  String foundData = new String(data.getData(), "UTF-8"); 
      	   String strdate = foundData.substring((url+"|").length());
-               	      log.finest("First in Str:"+strdate);
-		      if (strdate.equals(maxdate)) return null; 
+     	      log.finest("First in Str:"+strdate);
+     	   if (strdate.equals(maxdate)) return null; 
      	  // Date next = new Date(Long.parseLong(foundData));
            // System.out.println("First:"+next);
      	    return strdate;   
@@ -1221,6 +1342,15 @@ return null;
 		record.setResHeaders(m.getResheaders());
 		return record;
 	}
+	public  StatsRecord MementoToStatsRecord(Memento m) {
+		StatsRecord record = new StatsRecord();
+		record.setDomain(m.getDomain());
+		//record.setIP(m.getSrvIP());
+		record.setNumBytes(m.get_num_bytes());
+		record.setNumFiles(m.get_num_files());
+		record.setStart(Long.toString(m.getAccessdate().getTime()));
+		return record;
+	}
 	
 	public void ResourceRecordToMemento(ResourceRecord rec,Memento m) {
 		  Date mdate = new Date(Long.parseLong(rec.getDate()));
@@ -1395,16 +1525,16 @@ return null;
 		
 	}
 
-	// this function will delete all mementoes for particular url
+	// this function will delete all mementoes for particular url we do not use it now
 	
 	public void delete_by_url (String url,CallBack callback) {
 		 Transaction txn = null;
 		 Cursor cursor = null;
 	   	 try { 
 	   		 
-	   		 TransactionConfig config = new TransactionConfig();
+	   		// TransactionConfig config = new TransactionConfig();
 	     //   config.setNoSync(true);
-	            txn = bdbEnv.getEnv().beginTransaction(null, config);
+	            txn = bdbEnv.getEnv().beginTransaction(null, null);
 			    
 	             cursor =  bdbEnv.getResourceRecordDb().openCursor(txn, null);
 	            DatabaseEntry key = new DatabaseEntry(url.getBytes("UTF-8"));
@@ -1422,7 +1552,7 @@ return null;
 	 	    	     String fullurl = record.getUrl();
 	 	    	    DatabaseEntry dkey = new DatabaseEntry(uuid.getBytes("UTF-8"));
 	 	    	     log.finest("fullurl" +fullurl);
-	 	    	    String strdate = keyString.substring((url+"|").length());
+	 	    	     String strdate = keyString.substring((url+"|").length());
 	 	    	     log.finest("strdate" + strdate);
 	 	    	   //make shure that we are not deleting by domain
 	 	    	   if (fullurl.equals(url)) {
@@ -1449,20 +1579,24 @@ return null;
 	 	       
 		    } catch (Exception e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			    e.printStackTrace();
 			   log.log( Level.SEVERE, "db problem " ,e);
 			
-			  try {
-	              if (txn != null)
-	            	  if (cursor!=null)
-	            	  {cursor.close(); }
-	                  txn.abort();
-	          } catch (DatabaseException dbe2) {
-	       	   log.log( Level.SEVERE, "db problem " ,dbe2);
-	       	   //dbe2.printStackTrace();
-	          }
+			  //try {
+	           //   if (txn != null)
+	            //	  if (cursor!=null)
+	            	//  {cursor.close(); }
+	                 // txn.abort();
+	          //} catch (DatabaseException dbe2) {
+	       	  // log.log( Level.SEVERE, "db problem " ,dbe2);
+	       	  // dbe2.printStackTrace();
+	          //}
 		}
-	            
+	   	 finally{
+			 if (cursor!=null) {
+			 cursor.close(); 
+			 }
+		 }              
 	}
 	
 	 //this will delete range
@@ -1471,50 +1605,59 @@ return null;
 		 Transaction txn = null;
 		 Cursor  cursor = null;
 	   	 try { 
-	   		 
+	   		System.out.println("delete_by_date_url: procedure");
 	   		 TransactionConfig config = new TransactionConfig();
-	     //   config.setNoSync(true);
-	            txn = bdbEnv.getEnv().beginTransaction(null, config);
-			    
-	              cursor =  bdbEnv.getResourceRecordDb().openCursor(txn, null);
+	       //config.setNoSync(true);
+	   		  config.setReadUncommitted(true);
+	          txn = bdbEnv.getEnv().beginTransaction(null, config);
+			    cursor =  bdbEnv.getResourceRecordDb().openCursor(txn, null);
 	            DatabaseEntry key = new DatabaseEntry((url+"|"+date).getBytes("UTF-8"));
 	            //DatabaseEntry key = new DatabaseEntry(url.getBytes("UTF-8"));
 	            DatabaseEntry data = new DatabaseEntry();
 	          //  key.setPartialLength(url.getBytes().length);
 	            //SearchKey or Search KeyRange ?
+	          System.out.println("delete_by_date_url:");
 	            OperationStatus ret =   cursor.getSearchKeyRange(key, data, LockMode.DEFAULT);
 	            int count = 0;
 	            while (ret == OperationStatus.SUCCESS) {
-	 	    	    log.finest("delete range by date and url");
-	 	    	    String keyString = new String(key.getData(), "UTF-8");
-	 	    	  
-	 	    		  String strdate = keyString.substring((url+"|").length());
+	 	    	     log.finest("delete range by date and url");
+	 	    	   //   String keyString = new String(key.getData(), "UTF-8");
+	 	    	      
+	 	    	     // System.out.println("delete_by_date_url:keyString" +keyString);
+	 	    	
+	 	    		  //String strdate = keyString.substring((url+"|").length());
 	 	    		  
 	 	    	     ResourceBinding binding = new ResourceBinding();
    				     ResourceRecord record = (ResourceRecord) binding.entryToObject(data);
    				     String fullurl = record.getUrl();
+   				     String strdate = record.getDate();
 	 	    		 String uuid = record.getDupId();  
+	 	    		 String id = record.getId();
+	 	    		 System.out.println("delete_by_date_url:type" +record.getType() + "for"+fullurl);
 	 	    		   DatabaseEntry dkey = new DatabaseEntry(uuid.getBytes("UTF-8"));
-	 	    	   if (url.equals(fullurl)) {
-	 	    		  log.finest("deleting " +keyString);
-	 	    	   if (count==0) {
-	 	    		   if (strdate.equals(date)) {
-	 	    			  cursor.delete();
-	 	    			  bdbEnv.getHeadersBlob().delete(txn, dkey);
+	 	    	     if (url.equals(fullurl)) {
+	 	    		  //log.finest("deleting " +keyString);
+	 	    		  //System.out.println(keyString);
+	 	    	          if (count==0) {
+	 	    		             if (strdate.equals(date)) {
+	 	    			          update_storage (txn, url,strdate, callback,id);
+	 	    			          cursor.delete();
+	 	    			          bdbEnv.getHeadersBlob().delete(txn, dkey);
 	 	    			//  txn.commit();
-	 	    			  if(!strdate.equals(maxdate)){
-	 	    			   callback.methodToCallBack(uuid);
-	 	    			  }
-	 	    		   }
+	 	    			             if(!strdate.equals(maxdate)){
+	 	    			              callback.methodToCallBack(uuid);
+	 	    			             }
+	 	    		              }
 	 	    		   
-	 	    	   }else
-	 	    	   {
-	 	    	   cursor.delete();
-	 	    	   bdbEnv.getHeadersBlob().delete(txn, dkey);
+	 	    	          } else
+	 	    	           {
+	 	    		       update_storage (txn, url,strdate, callback,id);
+	 	    	           cursor.delete();
+	 	    	               bdbEnv.getHeadersBlob().delete(txn, dkey);
 	 	    	               if(!strdate.equals(maxdate)){
 	 				               callback.methodToCallBack(uuid);
 	 	    	                }
-	 	    	   }
+	 	    	              }
 	 	    	   
 	 	    	   }
 	 	    	   else {
@@ -1530,36 +1673,98 @@ return null;
 	 	       
 		    } catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace();			
 			
-			
-			  try {
-	              if (txn != null)
-	            	  if (cursor!=null) {
-	            	  cursor.close();
-	            	  }
-	                  txn.abort();
-	          } catch (DatabaseException dbe2) {
-	       	   log.log( Level.SEVERE, "db problem " ,dbe2);
-	       	   //dbe2.printStackTrace();
-	          }
+			  //try {
+	              //if (txn != null)
+	            	//  if (cursor!=null) {
+	            	 // cursor.close();
+	            	  //}
+	                 // txn.abort();
+	         // } catch (DatabaseException dbe2) {
+	       	  // log.log( Level.SEVERE, "db problem " ,dbe2);
+	       	  // dbe2.printStackTrace();
+	          //}
 		}
-	            
+	   	 finally{
+			 if (cursor!=null) {
+			 cursor.close(); 
+			 }
+		 }        
 		
+	}
+	
+	
+	
+ public void	update_storage (Transaction txn,String url,String datestr, CallBack callback,String previd) {
+	 Cursor  cursor = null;
+	 try {
+		DatabaseEntry rkey =
+		    	   new DatabaseEntry(  (url +"|"+datestr).getBytes("UTF-8"));
+		DatabaseEntry data = new DatabaseEntry( );
+			   //DatabaseEntry dkey = new DatabaseEntry(uuid.getBytes("UTF-8"));
+			   cursor = bdbEnv.getResourceRecordDb().openCursor(txn, null);
+			 //  System.out.println("update_storage:url:datestr"+url +":"+datestr);
+			   OperationStatus status =  cursor.getSearchKey(rkey,  data,  LockMode.DEFAULT); 
+			  // OperationStatus status =  cursor.getNext(rkey,  data,  LockMode.DEFAULT); 
+			 
+			   if (status == OperationStatus.SUCCESS) {
+				  if (cursor.getNext(rkey, data, LockMode.DEFAULT) == 
+	            	        OperationStatus.SUCCESS) {
+					  String keyString = new String(rkey.getData(), "UTF-8"); 
+					 // System.out.println("update_storage:next:"+keyString);
+				   ResourceBinding binding = new ResourceBinding();
+				   ResourceRecord record = (ResourceRecord) binding.entryToObject(data);
+				   String dupid = record.getDupId();
+				   String id = record.getId();
+				  // System.out.println("update_storage:id"+id);
+				  // System.out.println("update_storage:previd"+previd);
+				   String mdatestr = record.getDate();
+				   String murl = record.getUrl();
+				   String type = record.getType();
+				  // System.out.println("update_storage:type:"+type);
+				   Memento mem = new Memento();
+				   ResourceRecordToMemento(record, mem);
+				   //record to mem
+				   if (murl.equals(url)) {
+				   if (type.equals("0") ) {
+					   if (previd.equals(id)) {
+					   mem.setType("1");
+					   mem.setId(dupid);
+					   //set type to 1;
+					   //set id to dup id
+					   insertRecord( mem,txn);
+					   System.out.println ("copy file from one location to another"+url);
+					   callback.methodToCallBack(id+"|"+dupid);
+					   
+					   }
+				   }
+				   }
+				  }
+			   }
+			   
+			   
+	   } catch (Exception e) {
+		   e.printStackTrace();  
+	   }
+	 finally{
+		 if (cursor!=null) {
+		 cursor.close(); 
+		 }
+	 }
 	}
 	
 	public void delete_by_date (String date, CallBack callback) {
 		 Transaction txn = null;
+		  SecondaryCursor  cursor = null;
 	   	 try { 
 	   		 
-	   		 TransactionConfig config = new TransactionConfig();
+	   		  TransactionConfig config = new TransactionConfig();
+	   		  config.setReadUncommitted(true);
 	     //   config.setNoSync(true);
 	            txn = bdbEnv.getEnv().beginTransaction(null, config);
 			    
-	            
-	            SecondaryCursor  cursor = null;
-	     	  
-	     	       
+	                 	       
 	     		   DatabaseEntry key = new DatabaseEntry(date.getBytes("UTF-8"));
 	     		
 	     		   DatabaseEntry data = new DatabaseEntry( );
@@ -1578,11 +1783,13 @@ return null;
 	     				   ResourceBinding binding = new ResourceBinding();
 	    				   ResourceRecord record = (ResourceRecord) binding.entryToObject(data);
 	    				   String uuid = record.getDupId();
+	    				   String id = record.getId();
 	    				   String datestr = record.getDate();
 	    				   String url = record.getUrl();
 	    				   DatabaseEntry rkey =
 	    			    	   new DatabaseEntry(  (url +"|"+datestr).getBytes("UTF-8"));
 	    				   DatabaseEntry dkey = new DatabaseEntry(uuid.getBytes("UTF-8"));
+	    				   update_storage (txn, url,datestr, callback,id);
 	    				   bdbEnv.getResourceRecordDb().delete(txn,rkey);
 	    				   bdbEnv.getHeadersBlob().delete(txn, dkey);
 	    				   
@@ -1604,21 +1811,99 @@ return null;
 	 	       
 		    } catch (Exception e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			   e.printStackTrace();
 			   log.log( Level.SEVERE, "db problem " ,e);
 			
-			  try {
-	              if (txn != null)
-	                  txn.abort();
-	          } catch (DatabaseException dbe2) {
-	       	   log.log( Level.SEVERE, "db problem " ,dbe2);
+			  //try {
+	              //if (txn != null)
+	                 // txn.abort();
+	              //xm. files already deleted
+	         // } catch (DatabaseException dbe2) {
+	       	  // log.log( Level.SEVERE, "db problem " ,dbe2);
 	       	  // dbe2.printStackTrace();
-	          }
+	          //}
 		}
-	            
+	   	 finally{
+			 if (cursor!=null) {
+			 cursor.close(); 
+			 }
+			 
+		 }        
 	}	
 	
-	
+	// not used so far 
+	public void delete_by_domain (String url,CallBack callback) {
+		Transaction txn = null;
+			 Cursor cursor = null;
+		   	 try { 
+		   		 
+		   		 TransactionConfig config = new TransactionConfig();
+		   		
+			       //config.setNoSync(true);
+			   		 config.setReadUncommitted(true);
+		     //   config.setNoSync(true);
+		            txn = bdbEnv.getEnv().beginTransaction(null, config);
+				    
+		             cursor =  bdbEnv.getResourceRecordDb().openCursor(txn, null);
+		            DatabaseEntry key = new DatabaseEntry(url.getBytes("UTF-8"));
+		            DatabaseEntry data = new DatabaseEntry();
+		            key.setPartialLength(url.getBytes().length);
+		            //SearchKey or Search KeyRange ?
+		            OperationStatus ret =   cursor.getSearchKeyRange(key, data, LockMode.DEFAULT);
+		            
+		            while (ret == OperationStatus.SUCCESS) {
+		 	    	   log.finest("delete range");
+		 	    	   String keyString = new String(key.getData(), "UTF-8");
+		 	    	     ResourceBinding binding = new ResourceBinding();
+					     ResourceRecord record = (ResourceRecord) binding.entryToObject(data);
+		 	    		 String uuid = record.getDupId();  
+		 	    	     String fullurl = record.getUrl();
+		 	    	    DatabaseEntry dkey = new DatabaseEntry(uuid.getBytes("UTF-8"));
+		 	    	     log.finest("fullurl" +fullurl);
+		 	    	    String strdate = keyString.substring((url+"|").length());
+		 	    	     log.finest("strdate" + strdate);
+		 	    	   // deleting by domain
+		 	    	   if (fullurl.startsWith(url)) {
+		 	    	         log.finest("deleting " +keyString);
+		 	    	         cursor.delete();
+		 	    	         bdbEnv.getHeadersBlob().delete(txn, dkey);
+		 	    	        // txn.commit(); 
+		 	    	           //no representation for dummy record at file system
+		 	    	           if(!strdate.equals(maxdate)){
+		 	    	        	  
+		 	 				      callback.methodToCallBack(uuid);
+		 	    	           }
+		 	    	   }
+		 	    	   else {
+		 	    		   //range query may get different urls;
+		 	    		   break;
+		 	    	   }
+		 	    	   ret = cursor.getNext(key, data, LockMode.DEFAULT);
+		 	    	   
+		 	       }
+		            cursor.close();
+		            
+		            txn.commitSync(); //need commiting after each thousend records?
+		 	       
+			    } catch (Exception e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+				   log.log( Level.SEVERE, "db problem " ,e);
+				
+				  try {
+		              if (txn != null)
+		            	  if (cursor!=null)
+		            	  {cursor.close(); }
+		                  txn.abort();
+		          } catch (DatabaseException dbe2) {
+		       	   log.log( Level.SEVERE, "db problem " ,dbe2);
+		       	   //dbe2.printStackTrace();
+		          }
+			}
+		            
+		}
+		
+		
 	
 	
    //deleting by url; 

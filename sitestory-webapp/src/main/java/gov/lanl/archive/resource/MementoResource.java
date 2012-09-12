@@ -130,7 +130,7 @@ public class MementoResource {
 		URI ur = uriInfo.getRequestUri(); 
 		 //System.out.println("request url:"+ur.toString());
 		
-		  url = ur.toString().replaceFirst(baseUri.toString()+"memento/"+date +"/", "");
+		  url = ur.toString().replace(baseUri.toString()+"memento/"+date +"/", "");
 		 System.out.println("get into get:"+url);
 		Response r =  getHead( url, date);
 		return r;

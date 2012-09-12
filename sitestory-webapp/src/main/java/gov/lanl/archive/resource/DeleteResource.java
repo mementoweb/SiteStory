@@ -42,20 +42,24 @@ public class DeleteResource {
 	
 	@GET
 
-    public Response DeleteSelected(@PathParam("idp") String id,@PathParam("date") String date, @Context UriInfo uriInfo ) {
+    public Response DeleteSelected(@PathParam("id") String id,@PathParam("date") String date, @Context UriInfo uriInfo ) {
 	  try {
 		  String mydate = null;
 		  URI ur = uriInfo.getRequestUri(); 
-			 //System.out.println("request url:"+ur.toString());
-			
-			  id = ur.toString().replaceFirst(baseUri.toString()+"delete/" +date +"/", "");
-			 System.out.println("get into get:"+id);
+			// System.out.println("request url:"+ur.toString());
+			//System.out.println("date:" + date);
+		
+			//System.out.println("baseuri"+baseUri.toString());
+			String prefix=baseUri.toString()+"delete/" + date +"/";
+			//System.out.println("prefix:"+prefix);
+			 String url = (ur.toString()).replace(prefix, "");
+			 System.out.println("get into get:"+url);
 		  if (date.equals("*")) {
 			  Date ndate = new Date();
 			  
 			  //date = null; //so changed logic not deleting everything, but  untill now 
 			  mydate = Long.toString(ndate.getTime());
-			  System.out.println("deleting by id" +id + "until"  + ndate);
+			  System.out.println("deleting by id" +url + "until"  + ndate);
 		  }
 		  else {
 			 Date resourcedate = mc.checkMementoDateValidity(date);
@@ -63,14 +67,14 @@ public class DeleteResource {
 			 mydate = Long.toString(resourcedate.getTime());
 		  }
 		  
-		  if (id.equals("*")) { id = null; 
+		  if (url.equals("*")) { url = null; 
 		 
 		  System.out.println("deleting all urls until  date" + mydate);  
 		  }
 		  
 		 //unix format expecting
 		  
-		  idx.delete(id,mydate,callback);
+		  idx.delete(url,mydate,callback);
 		  
 		  return  Response.status(200).build();	
 	} catch (Exception e) {

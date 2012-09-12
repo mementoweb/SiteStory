@@ -100,7 +100,7 @@ public class WARCUnloadResource {
 				 System.out.println("request url:"+ur.toString());
 				 URI baseurl = ui.getBaseUri();
 				 System.out.println("baseurl"+baseurl.toString());
-				 String id = ur.toString().replaceFirst(baseurl.toString()+"warcunload/"+date+"/", "");
+				 String id = ur.toString().replace(baseurl.toString()+"warcunload/"+date+"/", "");
 				 System.out.println("get into get:"+id);
 			  
 			  

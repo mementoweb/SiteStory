@@ -116,7 +116,7 @@ public class TimeGateResource {
 		 URI ur = uriInfo.getRequestUri(); 
 		 //System.out.println("request url:"+ur.toString());
 		
-		 String id = ur.toString().replaceFirst(baseUri.toString()+"timegate/", "");
+		 String id = ur.toString().replace(baseUri.toString()+"timegate/", "");
 		 System.out.println("get into get:"+id);
 		 List <String> hdatetime = hh.getRequestHeader("Accept-Datetime");
 		 try {
@@ -184,10 +184,10 @@ public class TimeGateResource {
 			             //check if user specified interval of validity
 			             
 			             Map intervalmap = new HashMap();
-			             boolean intervalerror = check_interval(hdatetime.get(0),reqtime, intervalmap);
+			           //  boolean intervalerror = check_interval(hdatetime.get(0),reqtime, intervalmap);
 			             
 			          
-			             if (intervalerror) {
+			          /*   if (intervalerror) {
 			            	  Memento m = idx.get(id, date);
 				               System.out.println("interval problem date");
 				               String links = mc.composeLinkHeader(m.getAccessdate(),m.getLastMemento().getAccessdate(),m.getFirstMemento().getAccessdate(),id);
@@ -198,7 +198,7 @@ public class TimeGateResource {
 						        return r.build();
 			            	  
 			              }
-			             
+			             */
 			              
 					             Memento m = idx.get(id, dtdate);
 					      					             
@@ -239,7 +239,8 @@ public class TimeGateResource {
 					       
 					    		
 					    		links=sb.toString();
-					    		 
+					    		
+					    		/* 
 					    		//memento out of interval requested
 					    		if (intervalmap.containsKey("intdate1")&&intervalmap.containsKey("intdate2")) {
 					    			Date intdate1=(Date) intervalmap.get("intdate1");
@@ -296,7 +297,7 @@ public class TimeGateResource {
 					    			
 					    		}
 					    		
-					    		
+					    		*/
 					    		
 		                         ResponseBuilder r = Response.status(302);
 	                                        r.header("Location",location);
@@ -324,7 +325,7 @@ public class TimeGateResource {
 		  
 	
 }
-	
+	/*
 	public boolean check_interval(String hdatetime,long reqtime, Map map) {
 		// Map map = new HashMap();
 		boolean intervalerror=false;
@@ -388,5 +389,5 @@ public class TimeGateResource {
          return intervalerror;
 	}
 	
-	
+	*/
 }

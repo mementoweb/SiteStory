@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>gov.lanl.archive</groupId>
-    <artifactId>ta-projects</artifactId>
+    <artifactId>sitestory-projects</artifactId>
     <version>1.0</version>
   </parent>
   <groupId>gov.lanl.archive</groupId>
-  <artifactId>ta-core</artifactId>
+  <artifactId>sitestory-core</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>  <name>ta-core</name>
   <url>http://maven.apache.org</url>
