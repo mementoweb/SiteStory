@@ -2,12 +2,12 @@
 <metadata>
   <groupId>gov.lanl.director</groupId>
   <artifactId>tg-redirector</artifactId>
-  <version>1.0</version>
+  <version>1.0.1</version>
   <versioning>
-    <release>1.0</release>
+    <release>1.0.1</release>
     <versions>
-      <version>1.0</version>
+      <version>1.0.1</version>
     </versions>
-    <lastUpdated>20120817180330</lastUpdated>
+    <lastUpdated>20120921161931</lastUpdated>
   </versioning>
 </metadata>
