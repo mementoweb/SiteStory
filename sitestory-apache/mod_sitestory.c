@@ -502,8 +502,12 @@ static apr_status_t ta_out_filter3(ap_filter_t *f,apr_bucket_brigade *bb){
 	    token = apr_strtok(req_line," ", &a);
 	    token = apr_strtok(NULL, " ", &a);   
 	    line = apr_pstrcat(r->pool,"<",conf->tgurl,sprotocol,r->hostname,token,">;rel=timegate",NULL);
-	    if (conf->tgurl!=NULL) {
-            apr_table_set(r->headers_out, "Link", line);
+	    int ex = 0;
+	    ex = check_excluded_dirs(conf,r);
+            if (conf->tgurl!=NULL) {
+	      if (ex==0) {
+              apr_table_set(r->headers_out, "Link", line);
+	      }
 	    }
             //apr_table_add(r->headers_out, "Link", r->the_request);
 	    if (conf->enable_ta) {
@@ -515,9 +519,8 @@ static apr_status_t ta_out_filter3(ap_filter_t *f,apr_bucket_brigade *bb){
 	      //    if (conf->enable_ta) {
                 // We only process GET  requests.  
 		if(r->method_number == M_GET){ 
-		  int ex=0;
-		  
-                      ex= check_excluded_dirs(conf,r);
+		  // int ex=0;		  
+		  //  ex= check_excluded_dirs(conf,r);
 		      ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r,"mod_sitestory:  excluded  flag %d",ex) ;
 		      if (ex==0) {
 			 char *uri =  r->unparsed_uri;
