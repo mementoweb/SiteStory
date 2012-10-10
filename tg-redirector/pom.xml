@@ -5,11 +5,11 @@
   <parent>
     <artifactId>sitestory-projects</artifactId>
     <groupId>gov.lanl.archive</groupId>
-    <version>1.0</version>
+    <version>1.0.1</version>
   </parent>
   <groupId>gov.lanl.director</groupId>
   <artifactId>tg-redirector</artifactId>
-  <version>1.0</version>
+  <version>1.0.1</version>
   <packaging>war</packaging>
   <name>TimeGate Redirector </name>
   <url>http://maven.apache.org</url>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>gov.lanl.archive</groupId>
       <artifactId>sitestory</artifactId>
-      <version>1.0</version>
+      <version>1.0.1</version>
     </dependency>
      <dependency>
             <groupId>com.sun.jersey</groupId>

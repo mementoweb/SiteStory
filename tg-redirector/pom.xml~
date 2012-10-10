@@ -5,7 +5,7 @@
   <parent>
     <artifactId>sitestory-projects</artifactId>
     <groupId>gov.lanl.archive</groupId>
-    <version>1.0</version>
+    <version>1.0.1</version>
   </parent>
   <groupId>gov.lanl.director</groupId>
   <artifactId>tg-redirector</artifactId>
@@ -53,7 +53,7 @@
 
     <dependency>
       <groupId>gov.lanl.archive</groupId>
-      <artifactId>sitestory-webapp</artifactId>
+      <artifactId>sitestory</artifactId>
       <version>1.0</version>
     </dependency>
      <dependency>

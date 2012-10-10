@@ -15,6 +15,7 @@ import java.util.TimeZone;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
@@ -67,6 +68,7 @@ static SimpleDateFormat httpformat;
 	
 	@GET
 	// I may need to copy all  logic to @HEAD
+	@Produces("application/link-format" )
 	public Response  getTimegate( @Context HttpHeaders hh, @Context UriInfo ui, @PathParam("id") String id ) throws ParseException, URISyntaxException {
 		// URI u = ui.getAbsolutePath();
 		// System.out.println("absolute path"+u.toString());

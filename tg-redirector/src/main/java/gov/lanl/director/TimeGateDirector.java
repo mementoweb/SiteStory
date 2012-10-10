@@ -77,9 +77,9 @@ public class TimeGateDirector {
 		 System.out.println("get into get:"+url);
  		
          String timemap = "<"+baseurl.toString() +"timemap/" + 
-         id+">;rel=\"timemap index\"; type=\"application/link-format\"";
+         url+">;rel=\"timemap index\"; type=\"application/link-format\"";
 
-		
+         String origlink ="<"+url+">;rel=\"original\"";
 		           //config.processConfig();
 		          SortedMap map = config.getmap();
 		           List list = config.getList();
@@ -95,9 +95,10 @@ public class TimeGateDirector {
 	    if (hdatetime ==null) { //"go to the last one" //should I sort
 	    	tgurl = (String) map.get(map.lastKey());
 	    	  ResponseBuilder r = Response.status(302);
-	    	   r.header("Link", timemap );
+	    	   r.header("Link", origlink+","+timemap );
                r.header("Location",tgurl+url);
-               r.header("Vary","negotiate,accept-datetime");
+              // r.header("Link",origlink);
+             //  r.header("Vary","negotiate,accept-datetime");
              return  r.build();
 	    	
 	    }
@@ -136,10 +137,10 @@ public class TimeGateDirector {
 	    System.out.println("tg:vary added");
 		                         ResponseBuilder r = Response.status(302);
 		                         
-		                         r.header("Link", timemap );
-		                         r.header("Vary","negotiate,accept-datetime");
+		                         r.header("Link", origlink +","+timemap );
+		                         //r.header("Vary","negotiate,accept-datetime");
 	                                       r.header("Location",tgurl+url);
-	                                     
+	                                      // r.header("Link",origlink);
                                           //  r.header("TCN", "choice"); 
                                            // r.header("Link",origlink+ links +timemap +timebundle);
 	                                      return  r.build();
