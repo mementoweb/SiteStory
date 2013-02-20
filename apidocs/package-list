@@ -1,7 +1,10 @@
 gov.lanl.archive
 gov.lanl.archive.index.bdb
 gov.lanl.archive.location
+gov.lanl.archive.quartz
 gov.lanl.archive.resource
+gov.lanl.archive.rewrite
+gov.lanl.archive.rewrite.charset
 gov.lanl.archive.unload
 gov.lanl.archive.webapp
 gov.lanl.diagnostic
