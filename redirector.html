@@ -7,7 +7,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SiteStory  Web Archive - Team list</title>
+    <title>SiteStory  Web Archive - 
+   SiteStory  TimeGate Redirector Getting Started Guide</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -99,8 +100,8 @@
                           <a href="getStarted.html" title="Geting Started">Geting Started</a>
             </li>
                   <li class="none">
-                          <a href="redirector.html" title="TimeGate Redirector">TimeGate Redirector</a>
-            </li>
+            <strong>TimeGate Redirector</strong>
+          </li>
                   <li class="none">
                           <a href="putprotocol.html" title="Put Protocol">Put Protocol</a>
             </li>
@@ -122,20 +123,9 @@
           </ul>
                         <h3>Project Documentation</h3>
                   <ul>
-                                                                                                                  <li class="expanded">
+                                                                                                        <li class="collapsed">
                           <a href="project-info.html" title="Project Information">Project Information</a>
-                    <ul>
-                      <li class="none">
-                          <a href="mail-lists.html" title="Mailing Lists">Mailing Lists</a>
-            </li>
-                      <li class="none">
-                          <a href="license.html" title="Project License">Project License</a>
-            </li>
-                      <li class="none">
-            <strong>Project Team</strong>
-          </li>
-              </ul>
-        </li>
+                  </li>
                                                                     <li class="collapsed">
                           <a href="project-reports.html" title="Project Reports">Project Reports</a>
                   </li>
@@ -158,23 +148,57 @@
         
         <div id="bodyColumn"  class="span9" >
                                   
-            <div class="section"><h2>The Team<a name="The_Team"></a></h2><p>A successful project requires many people to play many roles. Some members write code or documentation, while others are valuable as testers, submitting patches and suggestions.</p><p>The team is comprised of Members and Contributors. Members have direct access to the source of a project and actively evolve the code-base. Contributors improve the project through submission of patches and suggestions to the Members. The number of Contributors to the project is unbounded. Get involved today. All contributions to the project are greatly appreciated.</p><div class="section"><h3>Members<a name="Members"></a></h3><p>The following is a list of developers with commit privileges that have directly contributed to the project in one way or another.</p><table border="0" class="table table-striped"><tr class="a"><th>Id</th><th>Name</th><th>Email</th><th>URL</th><th>Organization</th><th>Time Zone</th><th>Actual Time (GMT)</th></tr><tr class="b"><td><a name="ludab"></a>ludab</td><td>Lyudmila Balakireva</td><td>ludab at lanl dot gov</td><td><a class="externalLink" href="http://library.lanl.gov/">http://library.lanl.gov/</a></td><td>LANL RL Proto Team</td><td>-7</td><td><span id="developer-0">-7</span></td></tr></table></div><div class="section"><h3>Contributors<a name="Contributors"></a></h3><p>There are no contributors listed for this project. Please check back again later.</p></div></div><script type="text/javascript">
-function offsetDate(id, offset) {
-    var now = new Date();
-    var nowTime = now.getTime();
-    var localOffset = now.getTimezoneOffset();
-    var developerTime = nowTime + ( offset * 60 * 60 * 1000 )+ ( localOffset * 60 * 1000 );
-    var developerDate = new Date(developerTime);
+            <div class="section" id="sc_TG">
+<h2>TimeGate Redirector Interface<a name="TimeGate_Redirector_Interface"></a></h2>
+<p> Long-term deployment of a transactional archive will require a more complex distributed set-up.
+ For example, several SiteStory  archives can be created on different machines.  Older data can be offloaded from SiteStory to the WARC file format and deployed as <a class="externalLink" href="http://archive-access.sourceforge.net/projects/wayback/downloads.html"> Wayback archive</a> and old data can be purged from the SiteStory Archive instance. The WARC format provides more compact storage in relation to  total number of files in the file system. For the web servers  with very dynamic pages,  total number of files in SiteStory Archive vs inode disk parameter can be an important indicator of the need to offload data to a Wayback archive or start a new SiteStory Archive at a new disk. The archiving setup involving data distribution between  SiteStory and IA Wayback  archives is demonstrated here. Please note that Wayback software supports the Memento interface, see <a href="wayback_memento.html"> Wayback Memento install how-to</a> for more information.</p> <p> To make a Memento client work seamlessly with multiple archives, the TimeGate Redirector   interface is provided. TimeGate Redirector dispatches a Memento client to the correct TimeGate,  depending on the date requested in the  Accept-datetime link header.</p>
+  <p> <p>Setting up a TimeGate Redirector server under Tomcat is straightforward. The server is contained in a single WAR file named &quot;tg-redirector.war&quot;. The installation therefore only consists of  editing  a configuration file. Once you copied the WAR file into the [TOMCAT-HOME]/webapps directory, you can find the timegates.xml file   in the [TOMCAT-HOME]/webapps/tg-redirector/WEB-INF/classes directory. Restart Tomcat after editing the timegates.xml file.  </p> From the example below we can see that archived data is distributed between the Wayback archive ( timegate:http://lanlproto.santafe.edu:8080/memento/timegate/) and SiteStory (timegate : http://www.theresourcedepot.com/000010/timegate/).
+</p>
+<div class="source"><pre class="prettyprint">
 
-    document.getElementById(id).innerHTML = developerDate;
-}
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;timegates&gt;
+          &lt;timegate uri=&quot;http://lanlproto.santafe.edu:8080/memento/timegate/&quot;&gt;
+          &lt;start&gt;Tue\, 27 Mar 2012 22:08:10 GMT&lt;/start&gt;
+          &lt;end&gt;Mon\, 09 Apr 2012 23:35:02 GMT&lt;/end&gt;
+          &lt;timemap uri=&quot;http://lanlproto.santafe.edu:8080/memento/timemap/link/&quot; /&gt;
+          &lt;/timegate&gt;
+          &lt;timegate uri=&quot;http://www.theresourcedepot.com/000010/timegate/&quot;&gt;
+          &lt;start&gt;Mon\, 09 Apr 2012 23:35:03 GMT&lt;/start&gt;
+          &lt;end&gt;Tue\, 19 Apr 2031 12:00:02 GMT&lt;/end&gt;
+          &lt;timemap uri=&quot;http://www.theresourcedepot.com/000010/timemap/link/&quot; /&gt;
+          &lt;/timegate&gt;
+&lt;/timegates&gt;
 
-function init(){
-    offsetDate('developer-0', '-7');
-}
+</pre></div>
+<p>If you have multiple archives installed with TimeGate Redirector, you also will need to change the TimeGate link header at your mod_sitestory Apache module config section.
+For example, if TimeGate Redirector is installed at http://www.theresourcedepot.com/000010D (war file was renamed to 000010D.war), then the <b>ArchiveTimeGate </b> parameter  needs to point to that URL.<br></br> Example output from TimeGate Redirector: </p>
+<div class="source"><pre class="prettyprint">
+curl -D my.txt -I  -H &quot;Accept-datetime: Sun, 25 June 2010 12:00:00 GMT&quot; \
+http://theresourcedepot.org/000010D/http://www.dans.knaw.nl
+HTTP/1.1 302 Moved Temporarily
+Date: Wed, 30 May 2012 18:46:13 GMT
+Location: http://lanlproto.santafe.edu:8080/memento/timegate/http://www.dans.knaw.nl
+Link:&lt;http://www.dans.knaw.nl&gt;;rel=&quot;original&quot;, &lt;http://theresourcedepot.org/000010D/timemap/http://www.dans.knaw.nl&gt;;rel=&quot;timemap index&quot;; type=&quot;application/link-format&quot;
+Connection: close
+Content-Type: text/plain; charset=UTF-8
+Content-Language: nl
 
-window.onLoad = init();
-</script>
+</pre></div>
+<p>To facilitate  discovery of multiple archives by clients we also provide a TimeMap index service with this application.  Example output from index TimeMap service:  </p>
+<div class="source"><pre class="prettyprint">
+
+curl \
+ http://theresourcedepot.org/000010D/timemap/http://www.dans.knaw.nl
+http://www.dans.knaw.nl&gt;;rel=&quot;original&quot;,
+ &lt;http://theresourcedepot.org/000010D/timemap/http://www.dans.knaw.nl&gt;;rel=&quot;self &quot;; type=&quot;application/link-format&quot; ,
+ &lt;http://lanlproto.santafe.edu:8080/list/timemap/link/http://www.dans.knaw.nl&gt;;rel=&quot;timemap&quot;; from=&quot;Tue, 27 Mar 2012 22:08:10 GMT&quot;; until=&quot;Mon, 09 Apr 2012 23:35:02 GMT&quot;; type=&quot;application/link-format&quot;,
+ &lt;http://www.theresourcedepot.com/000010/timemap/link/http://www.dans.knaw.nl&gt;;rel=&quot;timemap&quot;; from=&quot;Mon, 09 Apr 2012 23:35:03 GMT&quot;; until=&quot;Fri, 21 Sep 2012 20:24:40 GMT&quot;; type=&quot;application/link-format&quot;
+
+</pre></div>
+<p>The index TimeMap is constructed from the timemap entries of the timegates.xml config file.   </p>
+</div>
+
                   </div>
             </div>
       

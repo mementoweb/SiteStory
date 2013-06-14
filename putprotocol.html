@@ -7,7 +7,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SiteStory  Web Archive - Team list</title>
+    <title>SiteStory  Web Archive - 
+   SiteStory  Put protocol  Getting Started Guide</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -102,8 +103,8 @@
                           <a href="redirector.html" title="TimeGate Redirector">TimeGate Redirector</a>
             </li>
                   <li class="none">
-                          <a href="putprotocol.html" title="Put Protocol">Put Protocol</a>
-            </li>
+            <strong>Put Protocol</strong>
+          </li>
                   <li class="none">
                           <a href="testbed.html" title="Testbed">Testbed</a>
             </li>
@@ -122,20 +123,9 @@
           </ul>
                         <h3>Project Documentation</h3>
                   <ul>
-                                                                                                                  <li class="expanded">
+                                                                                                        <li class="collapsed">
                           <a href="project-info.html" title="Project Information">Project Information</a>
-                    <ul>
-                      <li class="none">
-                          <a href="mail-lists.html" title="Mailing Lists">Mailing Lists</a>
-            </li>
-                      <li class="none">
-                          <a href="license.html" title="Project License">Project License</a>
-            </li>
-                      <li class="none">
-            <strong>Project Team</strong>
-          </li>
-              </ul>
-        </li>
+                  </li>
                                                                     <li class="collapsed">
                           <a href="project-reports.html" title="Project Reports">Project Reports</a>
                   </li>
@@ -158,23 +148,72 @@
         
         <div id="bodyColumn"  class="span9" >
                                   
-            <div class="section"><h2>The Team<a name="The_Team"></a></h2><p>A successful project requires many people to play many roles. Some members write code or documentation, while others are valuable as testers, submitting patches and suggestions.</p><p>The team is comprised of Members and Contributors. Members have direct access to the source of a project and actively evolve the code-base. Contributors improve the project through submission of patches and suggestions to the Members. The number of Contributors to the project is unbounded. Get involved today. All contributions to the project are greatly appreciated.</p><div class="section"><h3>Members<a name="Members"></a></h3><p>The following is a list of developers with commit privileges that have directly contributed to the project in one way or another.</p><table border="0" class="table table-striped"><tr class="a"><th>Id</th><th>Name</th><th>Email</th><th>URL</th><th>Organization</th><th>Time Zone</th><th>Actual Time (GMT)</th></tr><tr class="b"><td><a name="ludab"></a>ludab</td><td>Lyudmila Balakireva</td><td>ludab at lanl dot gov</td><td><a class="externalLink" href="http://library.lanl.gov/">http://library.lanl.gov/</a></td><td>LANL RL Proto Team</td><td>-7</td><td><span id="developer-0">-7</span></td></tr></table></div><div class="section"><h3>Contributors<a name="Contributors"></a></h3><p>There are no contributors listed for this project. Please check back again later.</p></div></div><script type="text/javascript">
-function offsetDate(id, offset) {
-    var now = new Date();
-    var nowTime = now.getTime();
-    var localOffset = now.getTimezoneOffset();
-    var developerTime = nowTime + ( offset * 60 * 60 * 1000 )+ ( localOffset * 60 * 1000 );
-    var developerDate = new Date(developerTime);
+            <div class="section" id="sc_TG">
+<h2>Put Protocol <a name="Put_Protocol"></a></h2>
+<p>The SiteStory software included the mod_sitestory plugin for the Apache content webserver. It is possible to implement push plug-in to SiteStory from other content servers or from a  custom client in any programming  language. The SiteStory archive has an interface which utilizes the HTTP PUT method to accept the  data related to the client's request to the original server.  The following URL pattern is used to submit the request/response pair :</p>
+<div class="source"><pre class="prettyprint">http://[host]:[port]/sitestory/put/[original_url]</pre></div>
+<p> The format for the data submited consists of a request line, http_request_headers, an empty line, followed by a status-line of client response, http_response_headers, an empty line and an optional message body. The status-line and headers must all end with  &lt;CR&gt;&lt;LF&gt;  (a carriage return followed by a line feed). The empty line must consist of only  &lt;CR&gt;&lt;LF&gt;   and no other whitespace. While constructing this new PUT request with its own http headers you will need to calculate length of this new compound message body and include  Content-Length header (for ex. Content-Length: 3495) or send PUT request in chunked form (Transfer-Encoding: chunked). Please note, that  URL-M (url of memento)  would be constructed from original http_request_headers using Host header and url portion in the GET request line.    
+</p>
+<p>As illustration of the general idea, how to push content to the SiteStory, find bellow a client example in java: </p>
+<div class="source"><pre class="prettyprint">
 
-    document.getElementById(id).innerHTML = developerDate;
+....
+import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PutMethod;
+....
+
+public static void test_put() throws HttpException, IOException {
+    HttpClient mClient = new HttpClient();
+    String bodyonly = &quot;&lt;html&gt;&lt;title&gt;Hello World!&lt;/title&gt;&lt;body&gt;&quot;+
+                      &quot;&lt;p&gt;&lt;font size=\&quot;14\&quot;&gt;Hello World! Page created at  Sun, 30 Jul 2009 &lt;/font&gt;&quot;+
+                      &quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;; 
+    int size = bodyonly.length();
+    String req_header =&quot;GET /misc/jquery.js?R HTTP/1.1\r\n&quot;+
+                       &quot;User-Agent:Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)\r\n&quot; +
+                       &quot;Referer:http://www.dans.knaw.nl/en/content/geospatial-sciences-data-collection\r\n&quot; +
+                       &quot;Accept:*/*\r\n&quot;+
+                       &quot;Accept-Language:en-US,nl;q=0.5\r\n&quot;+
+                       &quot;Accept-Encoding:gzip, deflate\r\n&quot; +
+                       &quot;Connection:keep-alive\r\n&quot; +
+                       &quot;Host:www.test.knaw.nl\r\n&quot;;
+
+     String res_header =&quot;HTTP/1.1 200 OK\r\nDate: Mon, 30 Jul 2009 14:29:09 GMT\r\nServer: Apache\r\nContent-Length:&quot; + size +
+                        &quot;\r\nConnection: close\r\nContent-Type: text/html; charset=UTF-8\r\n&quot;;
+     String body=req_header+&quot;\r\n&quot;+res_header+&quot;\r\n&quot;+ bodyonly;
+     PutMethod mPut = new PutMethod(&quot;http://www.theresourcedepot.org:8080/SiteStory_Testbed/put/http://www.test.knaw.nl/misc/jquery.js?r&quot;);
+               mPut.setRequestBody(body);
+               mClient.executeMethod( mPut);
+               mPut.releaseConnection();
 }
+...
+ 
+</pre></div>
 
-function init(){
-    offsetDate('developer-0', '-7');
-}
+<p>After we execute client code above, we can access timegate/memento as follow:</p>
+<div class="source"><pre class="prettyprint">
 
-window.onLoad = init();
-</script>
+ curl -I http://www.theresourcedepot.org/SiteStory_Testbed/timegate/http://www.test.knaw.nl/misc/jquery.js?r
+HTTP/1.1 302 Moved Temporarily
+Date: Thu, 13 Jun 2013 19:45:51 GMT
+Location: http://www.theresourcedepot.org/SiteStory_Testbed/memento/20090730142909/http://www.test.knaw.nl/misc/jquery.js?r
+Vary: negotiate,accept-datetime
+Link: &lt;http://www.test.knaw.nl/misc/jquery.js?r&gt;;rel=&quot;original&quot;, &lt;http://www.theresourcedepot.org/SiteStory_Testbed/memento/20090730142909/http://www.test.knaw.nl/misc/jquery.js?r&gt;;rel=&quot;memento first last&quot;; datetime=&quot;Thu, 30 Jul 2009 14:29:09 GMT&quot; , &lt;http://www.theresourcedepot.org/SiteStory_Testbed/timemap/link/http://www.test.knaw.nl/misc/jquery.js?r&gt;;rel=&quot;timemap&quot;; type=&quot;application/link-format&quot;
+Connection: close
+Content-Type: text/javascript
+
+</pre></div>
+<div class="source"><pre class="prettyprint">
+
+curl http://www.theresourcedepot.org/SiteStory_Testbed/memento/20090730142909/http://www.test.knaw.nl/misc/jquery.js?r
+&lt;base href=&quot;http://www.test.knaw.nl/misc/jquery.js?r&quot; /&gt;&lt;html&gt;&lt;title&gt;Hello World!&lt;/title&gt;&lt;body&gt;&lt;p&gt;&lt;font size=&quot;14&quot;&gt;Hello World! Page created at  Sun, 30 Jul 2009 &lt;/font&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+
+</pre></div>
+<p>An optinal X-Client-IP header can be appended to the client  http_request_headers, in this case client ip information will be stored in database.</p>
+</div>
+
                   </div>
             </div>
       
