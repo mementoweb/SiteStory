@@ -424,8 +424,9 @@ static apr_status_t ta_out_filter3(ap_filter_t *f,apr_bucket_brigade *bb){
 	      ta_cfg* cfg = CFG;
 	      if (cfg->excluded_dirs == NULL) {
               cfg->excluded_dirs = apr_array_make(cmd->pool, 20, sizeof(const char*));
-              *(const char**)apr_array_push(cfg->excluded_dirs) = arg;
               }
+              *(const char**)apr_array_push(cfg->excluded_dirs) = arg;
+              
             return NULL ;
               }
 
