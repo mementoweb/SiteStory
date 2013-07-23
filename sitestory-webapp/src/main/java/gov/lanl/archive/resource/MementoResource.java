@@ -1,29 +1,25 @@
 package gov.lanl.archive.resource;
 
 import gov.lanl.archive.ArchiveConfig;
-
 import gov.lanl.archive.Index;
 import gov.lanl.archive.Memento;
-
 import gov.lanl.archive.location.PairReader;
+import gov.lanl.archive.rewrite.PageOperations;
+import gov.lanl.archive.rewrite.TextDocument;
 
-
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URL;
 import java.text.ParseException;
-//import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
-import javax.annotation.PreDestroy;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HEAD;
@@ -31,21 +27,17 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.UriInfo;
 
-import com.sleepycat.je.Transaction;
-
-//import org.htmlparser.Parser;
-
-import net.htmlparser.jericho.*;
-/*
-@author Lyudmila Balakireva
-*/
+//import net.htmlparser.jericho.Element;
+//import net.htmlparser.jericho.HTMLElementName;
+//import net.htmlparser.jericho.OutputDocument;
+//import net.htmlparser.jericho.Source;
+//import net.htmlparser.jericho.StartTag;
 
 @Path("/memento/{date}/{id:.*}")
 
@@ -53,9 +45,11 @@ public class MementoResource {
 	   static ThreadSafeSimpleDateFormat  httpformatter;
 	   private static Index idx;
 	   MementoCommons mc;
+	   static boolean URIrewrite;
 	  // static String indextimemap;
 	   protected final URI baseUri;
 	   String location;
+	   protected  static String agrbaseURI;
 	   static {
 	       
         httpformatter = new ThreadSafeSimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");	     
@@ -65,6 +59,29 @@ public class MementoResource {
         //indextimemap = System.getProperty( "ta.indextimemap");
         MyServletContextListener cl= MyServletContextListener.getInstance();
 	    cl.setAttribute("idx", idx);
+	    URIrewrite = false;
+	   // if (ArchiveConfig.prop.containsKey("page.rewrite")) {
+	    //	String urirewrite = ArchiveConfig.prop.get("page.rewrite");
+	    	//if (urirewrite.equals("true")) {
+	    	//URIrewrite = true;
+	    	//}
+	    	//else {
+	    		//URIrewrite=false;
+	    	//}
+	    //}
+	    //else {
+	    	//URIrewrite = false;
+	    //}
+	    
+	   // if  (ArchiveConfig.prop.containsKey("aggregator.rewrite")) {
+	    //	 agrbaseURI =  ArchiveConfig.prop.get("aggregator.rewrite");
+	     //}
+	    //else {
+	    	// agrbaseURI = "http://proto1.lanl.gov/tgsrv/";
+	   // }
+	    
+	    
+	    
     }
 	   String url;
 	  /* 
@@ -157,48 +174,21 @@ public class MementoResource {
 		PairReader reader = new PairReader();
 		
 		String code = m.getCode();
-		
-		
-		
-		
-		
-		
-	
+				
 	//	InputStream in = reader.read(locationid,"body");
-		System.out.println("mimetype:"+m.getMimetype());
-	     //	if (!m.getCompress().equals("")) {
-			
-		//}
+		 System.out.println("mimetype:"+m.getMimetype());
+	    
 		 String origlink ="<"+id+">;rel=\"original\"";
     	 String timemap = " , <"+baseUri.toString() +"timemap/link/" + id+">;rel=\"timemap\"; type=\"application/link-format\"";
 		// String timebundle = " , <"+baseUri.toString() +"timebundle/" + id+">;rel=\"timebundle\"";
 		 String timegate =" , <"+baseUri.toString() +"timegate/" + id+">;rel=\"timegate\" ";
-		 //if (indextimemap!=null) {
-           //timemap=" , <"+indextimemap+ id+">;rel=\"timemap\"; type=\"application/link-format\"";           
-		 //}
-		 
-		 /*
-		 String mem = mc.composeLink(m.getAccessdate(),id,"memento");  
-		 
-		 String lastmem =  mc.composeLink(m.getLastMemento().getAccessdate(),id,"last-memento");   
-		 String firstmem =   mc.composeLink(m.getFirstMemento().getAccessdate(),id,"first-memento"); 
-		 String nextmem="";
-		 if (m.getNextMemento()!= null) {
-		  nextmem =  mc.composeLink(m.getNextMemento().getAccessdate(),id,"next-memento");   
-		 }
-		 String prevmem="";
-		 if (m.getPrevMemento()!= null) {
-	           prevmem =  mc.composeLink(m.getPrevMemento().getAccessdate(),id,"prev-memento");   
-		 }		
-		*/
+		
 		 String links = mc.composeLinkHeader(m.getAccessdate(),m.getLastMemento().getAccessdate(),m.getFirstMemento().getAccessdate(),id);
 		 StringBuffer sb = new StringBuffer(links);
 		 // String mem =  mc.composeLink(m.getAccessdate(),id,"memento"); 
 		 
 		
-	
-		 
-		 if (m.getNextMemento()!= null) {
+	    if (m.getNextMemento()!= null) {
 				if (!(m.getNextMemento().getAccessdate().equals(m.getFirstMemento().getAccessdate()))) {
 					String next = mc.composeLink(m.getNextMemento().getAccessdate(),id,"memento next");
 				    sb.append(next);   }
@@ -207,9 +197,7 @@ public class MementoResource {
 		  			sb.insert(m_index + 1, "prev ");
 			    }
 		 }
-				
-				
-		 
+				 
 		 if (m.getPrevMemento()!= null) {
 			 
 		      if (!(m.getPrevMemento().getAccessdate().equals(m.getLastMemento().getAccessdate()))){
@@ -258,19 +246,65 @@ public class MementoResource {
 		 
 		 
 		 
-		 InputStream in = reader.read(locationid,"body");
+		 InputStream in  = new BufferedInputStream(reader.read(locationid,"body"));
+		 
 		 String htmlres="";
+		  			 
+		 ResponseBuilder r = null; 
 		 if (m.getMimetype().contains("text/html") || m.getMimetype().contains("application/xhtml+xml")){
 			// Parser parser;
-			 
-			// parser = new Parser ();
-			 BufferedReader br
-	        	= new BufferedReader(
-	        		new InputStreamReader(in));
-	 
-	    	StringBuilder sb1 = new StringBuilder();
-	 
-	    	String line;
+			  String charSet = getCharset(in,m.getMimetype());
+			  String content_enc_header = m.getMimetype();
+			     if (!content_enc_header.contains("charset")) {
+			    	 content_enc_header=content_enc_header+"; charset=" + charSet;
+			     }
+			  
+			             if (URIrewrite) {
+			            	 //not using this currently
+			                            PageOperations cv = new  PageOperations();
+			                              cv.setReplayURIPrefix(baseUri.toString()+"memento/");
+			                                    //temporary points to mine
+			                              cv.setAggregatorURIPrefix(agrbaseURI);
+			                              cv.setPageURI(id);
+			                              TextDocument page = new TextDocument(m,id,MementoCommons.formatterout.format(m.getAccessdate()),cv);
+			  		                       page.setCharSet(charSet);			  
+			                         try {
+				 
+				                      page.readFully(new InputStreamReader(in,charSet));				
+				                      page.resolveAllPageUrls();
+				                      page.addBase();
+				                      r = Response.ok(page.getResult(), content_enc_header );
+								    
+			                           } catch (IOException e1) {
+				                           // TODO Auto-generated catch block
+				                          e1.printStackTrace();
+			                             }
+			                           }
+			 else {
+				  //inserting baseurl to html page
+				  PageOperations cv = new  PageOperations();
+				  cv.setReplayURIPrefix(baseUri.toString()+"memento/");
+				  //no harm but not used
+				  //cv.setAggregatorURIPrefix("http://proto1.lanl.gov/tgsrv/");
+				  cv.setAggregatorURIPrefix("");
+				  cv.setPageURI(id);
+				  TextDocument page = new TextDocument(m,id,MementoCommons.formatterout.format(m.getAccessdate()),cv);
+				  		       page.setCharSet(charSet);			  
+				  try {
+					 
+					     page.readFully(new InputStreamReader(in,charSet));									  
+					     page.addBase();
+					     r = Response.ok(page.getResult(), content_enc_header );
+									    
+				  } catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				 
+		/*		 
+			BufferedReader 	 br	= new BufferedReader(new InputStreamReader(in,charSet)); 
+			StringBuilder sb1 = new StringBuilder();
+		    String line;
 	    	try {
 				while ((line = br.readLine()) != null) {
 					sb1.append(line);
@@ -281,9 +315,6 @@ public class MementoResource {
 	           URL ourl= new URL(id);
 	           final int port = ourl.getPort();
 	           String path = ourl.getPath();
-	           //if (!(path.lastIndexOf("/")==path.length())){
-	        	 //  path=path.substring(0, path.lastIndexOf("/"));
-	           //}
 	            
 	           String baseurl = ourl.getProtocol() + "://" + ourl.getHost()
 	            + (port != -1 && port != 80 ? ":" + port : "")
@@ -334,14 +365,37 @@ public class MementoResource {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
-			    
-		 }
-		 ResponseBuilder r = null;
-		 if (htmlres.length()>0) {
 			 r = Response.ok(htmlres,m.getMimetype());
+			 */
+			 }
+			 
 		 }
-		 else {   
-			 r=Response.ok(in,m.getMimetype());}
+		 else if (m.getMimetype().contains("text/css") && URIrewrite) {
+			 
+			 String charSet = getCharset(in,m.getMimetype());
+			  PageOperations cv = new  PageOperations();
+			  cv.setReplayURIPrefix(baseUri.toString()+"memento/");
+			  cv.setAggregatorURIPrefix(agrbaseURI);
+			  cv.setPageURI(id);
+			  TextDocument page = new TextDocument(m,id,MementoCommons.formatterout.format(m.getAccessdate()),cv);			
+			  page.setCharSet(charSet);
+			  try {
+				  page.readFully(new InputStreamReader(in,charSet));
+				  page.resolveCSSUrls();
+				  r = Response.ok(page.getResult(), m.getMimetype());
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			  
+		 }
+		 else {
+			 r = Response.ok(in,m.getMimetype());
+		 }
+	
 		 if (!m.getCompress().equals("")) {
 			r.header("Content-Encoding",m.getCompress());	
 			//not acceptable 406? or just put headers?
@@ -362,6 +416,20 @@ public class MementoResource {
 		
 	    }
 	     
+	
+	public String getCharset( InputStream in,String content_type) {
+		 gov.lanl.archive.rewrite.charset.CharsetDetector charsetDetector = new gov.lanl.archive.rewrite.charset.StandardCharsetDetector();
+		  String charSet = null;
+		try {
+			charSet = charsetDetector.getCharset(in,content_type);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		  System.out.println ("detected charset:" +charSet);
+		  return charSet;
+	}
+	
 public  Response getHead(String id,String date) throws ParseException {
 		
 	    Date resourcedate = mc.checkMementoDateValidity(date);

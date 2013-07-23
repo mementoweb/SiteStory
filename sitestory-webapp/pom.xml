@@ -7,7 +7,7 @@
     <parent>
     <groupId>gov.lanl.archive</groupId>
     <artifactId>sitestory-projects</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
    </parent>
    <!-- <profiles>
         <profile>
@@ -25,7 +25,7 @@
         </profile>
     </profiles>
     -->
-    <version>1.0</version>
+    <version>1.0.1</version>
     <name>SiteStory Archive Webapp</name>
     <build>
         <finalName>sitestory</finalName>
@@ -69,13 +69,18 @@
       <dependency>
       <groupId>gov.lanl.archive</groupId>
       <artifactId>sitestory-core</artifactId>
-      <version>1.0</version>
+      <version>1.0.1</version>
         </dependency>
  <!-- javamelody-core -->
         <dependency>
         <groupId>net.bull.javamelody</groupId>
          <artifactId>javamelody-core</artifactId>
          <version>1.31.0</version>
+        </dependency>
+        <dependency>
+        <groupId>org.mozilla</groupId>
+        <artifactId>juniversalchardet</artifactId>
+        <version>1.0.3</version>
         </dependency>
       <!--  <dependency>
         <groupId>fastutil</groupId>
@@ -169,12 +174,12 @@
             <artifactId>grizzly-servlet-webserver</artifactId>
             <version>1.9.8</version>
         </dependency>
-         <dependency>
+     <!--     <dependency>
     	<groupId>org.dspace</groupId>
     	<artifactId>foresite</artifactId>
     	<version>SNAPSHOT</version>
-         </dependency>
-         <dependency>
+         </dependency> -->
+          <dependency>
          <groupId>net.htmlparser.jericho</groupId>
          <artifactId>jericho-html</artifactId>
          <version>3.1</version>

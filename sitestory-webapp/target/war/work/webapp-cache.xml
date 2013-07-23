@@ -10,27 +10,36 @@
           <string>WEB-INF/classes/headers.txt</string>
           <string>WEB-INF/web.xml</string>
           <string>index.jsp</string>
-          <string>WEB-INF/classes/gov/lanl/archive/resource/DeleteResource.class</string>
-          <string>WEB-INF/classes/gov/lanl/archive/resource/MIMEParse.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/rewrite/TextDocument.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/rewrite/TextDocument$MMSToHTTPResultURIConverter.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/rewrite/charset/CharsetDetector.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/rewrite/charset/StandardCharsetDetector.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/rewrite/UrlOperations.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/rewrite/TextDocument$SpecialResultURIConverter.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/rewrite/PageOperations.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/rewrite/TagParser.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/rewrite/LinkConverter.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/resource/PutResource.class</string>
           <string>WEB-INF/classes/gov/lanl/archive/resource/WARCUnloadResource$1.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/resource/MIMEParse$ParseResults.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/resource/MementoResource.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/resource/TimeGateResource.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/resource/DeleteResource.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/resource/ThreadSafeSimpleDateFormat.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/resource/Base32.class</string>
           <string>WEB-INF/classes/gov/lanl/archive/resource/TimeMapResource.class</string>
           <string>WEB-INF/classes/gov/lanl/archive/resource/MyWebApplication.class</string>
-          <string>WEB-INF/classes/gov/lanl/archive/resource/ThreadSafeSimpleDateFormat.class</string>
-          <string>WEB-INF/classes/gov/lanl/archive/resource/MementoResource.class</string>
-          <string>WEB-INF/classes/gov/lanl/archive/resource/MementoCommons.class</string>
-          <string>WEB-INF/classes/gov/lanl/archive/resource/MyServletContextListener.class</string>
-          <string>WEB-INF/classes/gov/lanl/archive/resource/TimeGateResource.class</string>
-          <string>WEB-INF/classes/gov/lanl/archive/resource/MIMEParse$ParseResults.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/resource/MIMEParse.class</string>
           <string>WEB-INF/classes/gov/lanl/archive/resource/WARCUnloadResource.class</string>
-          <string>WEB-INF/classes/gov/lanl/archive/resource/PutResource.class</string>
-          <string>WEB-INF/classes/gov/lanl/archive/resource/Base32.class</string>
           <string>WEB-INF/classes/gov/lanl/archive/resource/MIMEParse$FitnessAndQuality.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/resource/MyServletContextListener.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/resource/MementoCommons.class</string>
+          <string>WEB-INF/classes/gov/lanl/archive/webapp/MementoServer.class</string>
           <string>WEB-INF/classes/gov/lanl/archive/webapp/Main.class</string>
           <string>WEB-INF/classes/gov/lanl/archive/webapp/ClientTest.class</string>
-          <string>WEB-INF/classes/gov/lanl/archive/webapp/MementoServer.class</string>
           <string>WEB-INF/classes/gov/lanl/archive/webapp/Main$1.class</string>
           <string>WEB-INF/classes/gov/lanl/archive/webapp/Args.class</string>
-          <string>WEB-INF/lib/sitestory-core-1.0.jar</string>
+          <string>WEB-INF/lib/sitestory-core-1.0.1.jar</string>
           <string>WEB-INF/lib/heritrix-commons-3.1.0.jar</string>
           <string>WEB-INF/lib/je-4.0.103.jar</string>
           <string>WEB-INF/lib/commons-lang-2.3.jar</string>
@@ -50,6 +59,7 @@
           <string>WEB-INF/lib/commons-httpclient-3.1.jar</string>
           <string>WEB-INF/lib/javamelody-core-1.31.0.jar</string>
           <string>WEB-INF/lib/jrobin-1.5.9.jar</string>
+          <string>WEB-INF/lib/juniversalchardet-1.0.3.jar</string>
           <string>WEB-INF/lib/jena-2.5.5.jar</string>
           <string>WEB-INF/lib/arq-2.2.jar</string>
           <string>WEB-INF/lib/xercesImpl-2.9.1.jar</string>
@@ -70,7 +80,6 @@
           <string>WEB-INF/lib/grizzly-portunif-1.9.8.jar</string>
           <string>WEB-INF/lib/grizzly-http-servlet-1.9.8.jar</string>
           <string>WEB-INF/lib/servlet-api-2.5.jar</string>
-          <string>WEB-INF/lib/foresite-SNAPSHOT.jar</string>
           <string>WEB-INF/lib/jericho-html-3.1.jar</string>
         </pathsSet>
       </path-set>
@@ -81,13 +90,13 @@
       <dependency>
         <groupId>gov.lanl.archive</groupId>
         <artifactId>sitestory-core</artifactId>
-        <version>1.0</version>
+        <version>1.0.1</version>
         <type>jar</type>
         <scope>compile</scope>
         <exclusions/>
         <optional>false</optional>
       </dependency>
-      <targetFileName>sitestory-core-1.0.jar</targetFileName>
+      <targetFileName>sitestory-core-1.0.1.jar</targetFileName>
     </org.apache.maven.plugin.war.util.DependencyInfo>
     <org.apache.maven.plugin.war.util.DependencyInfo>
       <dependency>
@@ -100,6 +109,18 @@
         <optional>false</optional>
       </dependency>
       <targetFileName>javamelody-core-1.31.0.jar</targetFileName>
+    </org.apache.maven.plugin.war.util.DependencyInfo>
+    <org.apache.maven.plugin.war.util.DependencyInfo>
+      <dependency>
+        <groupId>org.mozilla</groupId>
+        <artifactId>juniversalchardet</artifactId>
+        <version>1.0.3</version>
+        <type>jar</type>
+        <scope>compile</scope>
+        <exclusions/>
+        <optional>false</optional>
+      </dependency>
+      <targetFileName>juniversalchardet-1.0.3.jar</targetFileName>
     </org.apache.maven.plugin.war.util.DependencyInfo>
     <org.apache.maven.plugin.war.util.DependencyInfo>
       <dependency>
@@ -218,18 +239,6 @@
         <optional>false</optional>
       </dependency>
       <targetFileName>grizzly-servlet-webserver-1.9.8.jar</targetFileName>
-    </org.apache.maven.plugin.war.util.DependencyInfo>
-    <org.apache.maven.plugin.war.util.DependencyInfo>
-      <dependency>
-        <groupId>org.dspace</groupId>
-        <artifactId>foresite</artifactId>
-        <version>SNAPSHOT</version>
-        <type>jar</type>
-        <scope>compile</scope>
-        <exclusions/>
-        <optional>false</optional>
-      </dependency>
-      <targetFileName>foresite-SNAPSHOT.jar</targetFileName>
     </org.apache.maven.plugin.war.util.DependencyInfo>
     <org.apache.maven.plugin.war.util.DependencyInfo>
       <dependency>
