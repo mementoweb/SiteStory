@@ -89,7 +89,7 @@ int iterate_func(void *req, const char *key, const char *value) {
      s_ctx* sctx = (s_ctx*) f->ctx;
     
     if (key == NULL || value == NULL || value[0] == '\0' || key[0]=='\0') return 1;
-             ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "mod_tafilter3: in the iterate function%s:%s",key,value) ;
+             ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "mod_sitestory: in the iterate function%s:%s",key,value) ;
              line = apr_pstrcat(r->pool,key,":",value,"\r\n",NULL);
 	
 	      if (!sctx->headers) {
@@ -197,7 +197,7 @@ static apr_status_t ta_out_filter3(ap_filter_t *f,apr_bucket_brigade *bb){
 	
        
 	if (sctx  == NULL) {
-		 ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "mod_tafilter3: in the init section   filter function") ;
+		 ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "mod_sitestory: in the init section   filter function") ;
 	      
 		 sctx = f->ctx = apr_pcalloc(r->pool, sizeof(s_ctx));
 		 apr_pool_cleanup_null(sctx->headers);
@@ -493,7 +493,7 @@ static apr_status_t ta_out_filter3(ap_filter_t *f,apr_bucket_brigade *bb){
             char * pcH;
 	    pch=strchr(protocolstr,'s');
             pcH=strchr(protocolstr,'S');
-            if (pch != NULL|| pch!=NULL){
+            if (pch != NULL|| pcH!=NULL){
 	      sprotocol = "https://";
             }
             else {
